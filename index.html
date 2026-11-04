@@ -269,6 +269,13 @@ body{background-image:linear-gradient(color-mix(in oklab,var(--bg) 55%,transpare
 .segs i{border-radius:0}
 .try{border-left-style:solid;border-left-width:2px}
 .installbar{border-radius:8px}
+.art{position:absolute!important;top:clamp(44px,7vh,70px);right:clamp(16px,5vw,32px);width:clamp(52px,15vw,72px);height:auto;fill:none;stroke:var(--hue);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;opacity:.42;mix-blend-mode:var(--blend);z-index:-1;pointer-events:none;
+  filter:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='i'><feTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='2' seed='3'/><feDisplacementMap in='SourceGraphic' scale='1.6'/></filter></svg>#i")}
+.intro>.art{top:auto;bottom:clamp(20px,4vh,40px);right:clamp(18px,5vw,32px);width:clamp(64px,18vw,88px);opacity:.3}
+.on>.art{animation:inkin 1.2s ease-out both}
+@keyframes inkin{from{opacity:.1;transform:translateY(4px)}}
+.foot{gap:5px}.foot .icon{width:38px;height:38px}
+.foot .icon svg{width:17px;height:17px}
 @media (min-width:760px){.slot{padding-inline:max(0px,calc((100% - 720px)/2))}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -850,13 +857,24 @@ const I={save:'<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg
   note:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
   more:'<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
   share:'<svg viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>'};
+const ART={ // tiny ink sketches, one per theme
+  habits:'<path d="M32 58V30M32 40c-10 0-16-8-16-16 10 0 16 6 16 16zM32 33c8 0 16-6 16-16-10 0-16 6-16 16zM18 58h28"/>',
+  mind:'<path d="M25 41c-7-6-8-17-2-24 6-7 17-7 22 1 5 8 3 17-4 23v6H26zM27 51h12M29 55h8M28 33l4-6 4 6"/>',
+  money:'<ellipse cx="32" cy="47" rx="14" ry="5"/><path d="M18 47v-6M46 47v-6"/><ellipse cx="32" cy="41" rx="14" ry="5"/><path d="M18 41v-6M46 41v-6"/><ellipse cx="32" cy="35" rx="14" ry="5"/><path d="M27 35h10"/>',
+  work:'<path d="M32 8l12 22-8 20h-8l-8-20zM32 30v20M26 56h12"/><circle cx="32" cy="30" r="3"/>',
+  people:'<circle cx="24" cy="21" r="6"/><circle cx="41" cy="23" r="5.5"/><path d="M12 50c0-12 22-12 22 0M31 50c1-10 20-10 21 0"/>',
+  meaning:'<path d="M13 40c5 12 33 12 38 0zM11 40h42M32 38c-6-7-3-15 0-21 3 6 6 14 0 21z"/><path d="M32 36v-6" opacity=".6"/>',
+  strategy:'<circle cx="32" cy="33" r="20"/><path d="M32 17l4 16-4 16-4-16zM32 9v4M32 53v4M8 33h4M52 33h4"/>',
+  health:'<path d="M32 50c-10-6-10-20 0-30 10 10 10 24 0 30zM32 50c-12 0-20-8-22-16 10 0 18 6 22 16zM32 50c12 0 20-8 22-16-10 0-18 6-22 16zM12 56c6-3 12 3 20 0s14-3 20 0"/>',
+  book:'<path d="M8 20c10-4 18-4 24 2 6-6 14-6 24-2v28c-10-4-18-4-24 2-6-6-14-6-24-2zM32 22v28M14 28c4-1 8-1 12 1M14 34c4-1 8-1 12 1M38 29c4-2 8-2 12-1M38 35c4-2 8-2 12-1"/>'};
+const art=k=>`<svg class="art" viewBox="0 0 64 64" aria-hidden="true">${ART[k]}</svg>`;
 const yr=y=>y<0?`c. ${-y} BC`:y<1000?`c. ${y} AD`:y;
 const secs=i=>{const w=(IDEAS[i][5]+" "+IDEAS[i][6]+" "+IDEAS[i][4]).split(/\s+/).length;return Math.max(15,Math.round(w/230*60/5)*5)};
 const dateStr=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
 
 function ideaCard(i,n,len){const [b,a,y,t]=IDEAS[i],k=keyOf(i),nt=notes[k]||"",c=cardText(i),{idea,body,tr}=c,l=c.l,L=LANGS[l];
   return `<section class="slot" data-i="${i}"><article class="card" style="--hue:var(--h-${t})" lang="${l}">
-    <span class="glyph" aria-hidden="true">${esc(b[0])}</span>
+    <span class="glyph" aria-hidden="true">${esc(b[0])}</span>${art(t)}
     <p class="meta"><span class="tag">${themeName(t,l)}</span><span>${pad2(n+1)} / ${pad2(len)} · ${secs(i)} ${L.sec}</span></p>
     <h2 class="idea">${esc(idea)}</h2>
     <p class="body">${esc(body)}</p>
@@ -865,8 +883,9 @@ function ideaCard(i,n,len){const [b,a,y,t]=IDEAS[i],k=keyOf(i),nt=notes[k]||"",c
     <p class="note" data-note-for="${i}"${nt?"":" hidden"}>${esc(nt)}</p>
     <div class="foot"><button class="book booklink" data-book="${esc(b)}" aria-label="All ideas from ${esc(b)}"><span class="t">${esc(b)}</span><span class="a">${esc(a)} · ${yr(y)}</span></button>
       <button class="icon" data-listen="${i}" aria-pressed="false" aria-label="Listen">${I.play}</button>
+      <button class="icon" data-share="${i}" aria-label="Share as image">${I.share}</button>
       <button class="icon" data-save="${i}" aria-pressed="${saved.has(k)}" aria-label="Save idea">${I.save}</button>
-      <button class="icon" data-more="${i}" aria-label="More: note, share, translate">${I.more}</button></div>
+      <button class="icon" data-more="${i}" aria-label="More: note, translate, copy">${I.more}</button></div>
   </article></section>`}
 
 function quizCards(deck){
@@ -904,24 +923,24 @@ function render(){
   else if(shelf==="notes")list=ids.filter(i=>notes[keyOf(i)]);
   else if(shelf.startsWith("book:"))list=(bookOf(shelf.slice(5))||{ids:[]}).ids.slice();
   else list=ids.filter(i=>IDEAS[i][3]===shelf&&inLang(i));
-  if(shelf==="today")h+=`<section class="slot"><div class="card intro">
+  if(shelf==="today")h+=`<section class="slot"><div class="card intro">${art("book")}
       <p class="meta"><span>${dateStr}</span><span>${streak()?streak()+"-day streak":"Day one"}</span></p>
       <h2 class="big">Five minutes, <em>${list.length===12?"twelve":list.length}</em> idea${list.length===1?"":"s"}.</h2>
       <p class="lede">${list.length?"Each card holds one idea from a different great book, about 25 seconds a card.":"Your deck is empty. Choose some books or add a language."}</p>
       <div class="chips" style="flex-wrap:wrap">${langChips()}<button class="chip" data-goto="books">Choose books</button></div>
-      <ul class="tips"><li><kbd>Swipe up</kbd>Next idea</li><li><kbd>Tap card</kbd>Focus mode, hides everything else</li><li><kbd>Double-tap</kbd>Save an idea</li><li><kbd>Book name</kbd>Open that book's deep-dive</li><li><kbd>•••</kbd>Note, share, translate</li></ul>
+      <ul class="tips"><li><kbd>Swipe up</kbd>Next idea</li><li><kbd>Tap card</kbd>Focus mode, hides everything else</li><li><kbd>Double-tap</kbd>Save an idea</li><li><kbd>Book name</kbd>Open that book's deep-dive</li><li><kbd>•••</kbd>Note, translate, copy</li></ul>
       <div class="row"><button class="go" id="go">Start reading</button><button class="go ghost" data-listen-all>Listen to today</button></div>
       ${canInstallHere?`<button class="go install" data-install><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Install Qshelf as an app</button>`:""}
     </div></section>`+quizCards(list);
   if(shelf.startsWith("book:")){const b=bookOf(shelf.slice(5));if(b){const mins=Math.max(1,Math.round(b.ids.reduce((s,i)=>s+secs(i),0)/60));
-    h+=`<section class="slot"><div class="card intro" style="--hue:var(--h-${b.theme})" lang="${b.lang}"><span class="glyph" aria-hidden="true">${esc(b.name[0])}</span>
+    h+=`<section class="slot"><div class="card intro" style="--hue:var(--h-${b.theme})" lang="${b.lang}"><span class="glyph" aria-hidden="true">${esc(b.name[0])}</span>${art("book")}
       <p class="meta"><span class="tag">Book deep-dive · ${LANGS[b.lang].name}</span><span>${b.ids.length} idea${b.ids.length>1?"s":""} · about ${mins} min</span></p>
       <h2 class="big">${esc(b.name)}</h2><p class="lede">${esc(b.author)} · ${yr(b.year)}</p>
       <div class="row"><button class="go" id="go">Start</button><button class="go ghost" data-listen-all>Listen</button><button class="go ghost" data-goto="books">All books</button></div></div></section>`;once("book-open")}}
   if(!list.length){const e=shelf==="notes"?["Nothing <em>noted</em> yet","Tap the pencil on any card to write what the idea means for you."]:["Nothing <em>saved</em> yet","Double-tap any card, or tap its bookmark, to keep it here for rereading."];
     h+=`<section class="slot"><div class="card intro"><h2 class="big">${e[0]}</h2><p class="lede">${e[1]}</p></div></section>`}
   list.forEach((i,n)=>h+=ideaCard(i,n,list.length));
-  if(list.length&&shelf!=="saved"&&shelf!=="notes")h+=`<section class="slot" data-end><div class="card intro">
+  if(list.length&&shelf!=="saved"&&shelf!=="notes")h+=`<section class="slot" data-end><div class="card intro">${art("book")}
       <p class="meta"><span>Session</span><span id="endTime"></span></p>
       <h2 class="big">That's the <em>shelf</em>.</h2>
       <p class="lede" id="endLede"></p>
@@ -1099,6 +1118,7 @@ feed.addEventListener("click",e=>{
   const q=(sel)=>e.target.closest(sel);let el;
   if(el=q("[data-save]"))return toggleSave(+el.dataset.save);
   if(el=q("[data-more]"))return openMore(+el.dataset.more);
+  if(el=q("[data-share]"))return openShare(+el.dataset.share);
   if(el=q("[data-lang]"))return toggleLang(el.dataset.lang);
   if(el=q("[data-tog]")){const n=el.dataset.tog,o=new Set(set.off);o.has(n)?o.delete(n):o.add(n);set.off=[...o];store.set("set",set);el.setAttribute("aria-pressed",!o.has(n));updBkCount();return}
   if(el=q("[data-allbooks]")){const shown=BOOKS.filter(b=>set.langs.includes(b.lang)).map(b=>b.name),o=new Set(set.off);shown.forEach(n=>el.dataset.allbooks==="1"?o.delete(n):o.add(n));set.off=[...o];store.set("set",set);
