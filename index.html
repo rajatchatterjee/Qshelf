@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#15212c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Qshelf</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Literata:opsz,wght@7..72,400;7..72,500&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one full-height reading card per screen, snapped vertically, with a slim clock bar and shelf chips on top */
+:root{
+  --bg:#e9edf1; --surface:#fbfcfd; --ink:#15212c; --muted:#5b6977; --line:#cfd7df; --accent:#2b5c8a;
+  --h-habits:#3f8a5c; --h-mind:#5a5fc4; --h-money:#b7862a; --h-work:#2f78b5; --h-people:#c2557a; --h-meaning:#8a5bb8; --h-strategy:#278a8a;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Literata",Georgia,"Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1217; --surface:#161d25; --ink:#e7edf2; --muted:#93a2b0; --line:#2a3540; --accent:#7fb0de;
+  --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1217; --surface:#161d25; --ink:#e7edf2; --muted:#93a2b0; --line:#2a3540; --accent:#7fb0de;
+  --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4;
+  color-scheme:dark}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box}
+html,body{height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);display:flex;flex-direction:column;overflow:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.top{display:flex;flex-direction:column;gap:10px;padding-block:12px 8px}
+.bar{display:flex;align-items:center;gap:12px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.15rem;letter-spacing:-.01em;margin:0;flex:1;min-width:0}
+.brand span{color:var(--muted);font-weight:500}
+.clock{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px 6px 8px;font-family:var(--f-mono);font-size:.85rem;font-variant-numeric:tabular-nums}
+.clock svg{width:20px;height:20px;transform:rotate(-90deg)}
+.clock .trk{stroke:var(--line)} .clock .val{stroke:var(--accent);transition:stroke-dashoffset 1s linear}
+.clock.done .val{stroke:var(--h-habits)}
+.count{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-4px;padding:2px 4px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 12px;font-family:var(--f-display);font-size:.82rem;font-weight:500;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+.feed{flex:1;min-height:0;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none}
+.feed::-webkit-scrollbar{display:none}
+.slot{height:100%;padding-block:4px 12px;scroll-snap-align:start;scroll-snap-stop:always}
+.card{--hue:var(--accent);height:100%;border-radius:22px;background:color-mix(in oklab,var(--hue) 10%,var(--surface));border:1px solid color-mix(in oklab,var(--hue) 22%,var(--line));
+  display:flex;flex-direction:column;padding:clamp(20px,5vw,36px);gap:clamp(12px,2.4vh,20px);overflow:hidden;position:relative}
+.card>*{max-width:62ch}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tag{color:var(--hue);display:flex;align-items:center;gap:7px}
+.tag::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--hue)}
+.idea{font-family:var(--f-display);font-weight:700;font-size:clamp(1.9rem,7.4vw,3.2rem);line-height:1.02;letter-spacing:-.025em;margin:auto 0 0;text-wrap:balance}
+.body{font-size:clamp(1.02rem,3.9vw,1.2rem);line-height:1.58;margin:0}
+.try{border-left:3px solid var(--hue);padding:4px 0 4px 14px;font-size:.98rem;line-height:1.5;margin:0}
+.try b{display:block;font-family:var(--f-mono);font-weight:500;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--hue);margin-bottom:3px}
+.foot{margin-top:auto;display:flex;align-items:flex-end;gap:12px;padding-top:14px;border-top:1px solid color-mix(in oklab,var(--hue) 25%,var(--line))}
+.book{flex:1;min-width:0}
+.book .t{font-family:var(--f-display);font-weight:700;font-size:1.02rem;margin:0}
+.book .a{font-size:.88rem;color:var(--muted);margin:2px 0 0}
+.icon{width:42px;height:42px;border-radius:50%;border:1px solid color-mix(in oklab,var(--hue) 30%,var(--line));background:var(--surface);display:grid;place-items:center;flex:none}
+.icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon[aria-pressed="true"]{background:var(--hue);border-color:var(--hue);color:var(--surface)}
+.icon[aria-pressed="true"] svg{fill:currentColor}
+
+.intro .idea{margin-top:0}
+.intro{justify-content:center;gap:18px}
+.big{font-family:var(--f-display);font-weight:700;font-size:clamp(2.6rem,11vw,4.6rem);line-height:.95;letter-spacing:-.035em;margin:0;text-wrap:balance}
+.big em{font-style:normal;color:var(--accent)}
+.lede{font-size:1.08rem;line-height:1.55;color:var(--muted);margin:0}
+.stats{display:flex;gap:28px;flex-wrap:wrap;font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stats strong{display:block;font-family:var(--f-display);font-size:1.7rem;letter-spacing:-.02em;color:var(--ink);text-transform:none;font-variant-numeric:tabular-nums}
+.go{align-self:flex-start;border:0;border-radius:999px;background:var(--ink);color:var(--bg);padding:14px 26px;font-family:var(--f-display);font-weight:700;font-size:1.02rem}
+.hint{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.hint svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(4px)}}
+.empty{justify-content:center}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,0);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-family:var(--f-display);font-size:.9rem;font-weight:500;z-index:5;transition:opacity .25s,transform .25s;white-space:nowrap}
+.toast[hidden]{display:block!important;opacity:0;transform:translate(-50%,12px);pointer-events:none}
+@media (min-width:760px){.slot{padding-inline:max(0px,calc((100% - 720px)/2))}}
+@media (max-height:640px){.try{display:none}}
+@media (prefers-reduced-motion:reduce){.hint svg{animation:none}.feed{scroll-behavior:auto}.clock .val{transition:none}}
+</style>
+
+</head><body>
+<header class="top">
+  <div class="bar">
+    <h1 class="brand">Q<span>shelf</span></h1>
+    <span class="count" id="count">0 / 12</span>
+    <div class="clock" id="clock" role="timer" aria-label="Session time left">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle class="trk" cx="10" cy="10" r="8" fill="none" stroke-width="2.4"/><circle class="val" id="ring" cx="10" cy="10" r="8" fill="none" stroke-width="2.4" stroke-dasharray="50.27" stroke-dashoffset="0" stroke-linecap="round"/></svg>
+      <span id="time">5:00</span>
+    </div>
+  </div>
+  <nav class="chips" id="chips" aria-label="Shelves"></nav>
+</header>
+<main class="feed" id="feed" tabindex="-1"></main>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const THEMES={habits:"Habits",mind:"Thinking",money:"Money",work:"Work",people:"People",meaning:"Meaning",strategy:"Strategy"};
+// [book, author, year, theme, idea, explanation, try-this]
+const IDEAS=[
+["Atomic Habits","James Clear",2018,"habits","Small gains compound quietly","Getting a little better each day looks like nothing for weeks. Then the curve bends. Most people quit in the flat stretch, right before the payoff shows up.","Pick one habit and shrink it until it takes under two minutes. Do that version today."],
+["Atomic Habits","James Clear",2018,"habits","Become the person, not the goal","Goals describe an outcome. Habits stick when they describe who you are. Every repetition is a vote for an identity, and enough votes change how you see yourself.","Finish this sentence: I am the kind of person who… Then do one thing that proves it."],
+["Atomic Habits","James Clear",2018,"habits","Design the room, not your willpower","People with strong self-control mostly avoid temptation rather than resist it. Make good cues obvious and bad cues invisible, and the behavior follows.","Move one distraction out of sight and put one helpful tool where you will trip over it."],
+["Deep Work","Cal Newport",2016,"work","Focus is a rare and valuable skill","Hard, uninterrupted concentration produces work others can't easily copy. Constant switching leaves a residue of attention on the last task, so you never fully arrive at the next one.","Block 90 minutes on tomorrow's calendar with notifications off. Guard it like a meeting with your boss."],
+["Deep Work","Cal Newport",2016,"work","Practice being bored","If you grab your phone every time you wait in line, your brain learns that it never has to tolerate a quiet moment. That makes deep focus much harder later.","Next time you wait, do nothing for two minutes. Just notice the urge and let it pass."],
+["Thinking, Fast and Slow","Daniel Kahneman",2011,"mind","Two systems run your head","One system is fast, automatic and confident. The other is slow, effortful and lazy. Most errors happen when the fast one answers a question the slow one should have handled.","Before your next big decision, write down the one fact that would change your mind."],
+["Thinking, Fast and Slow","Daniel Kahneman",2011,"mind","The first number sticks","An initial figure, even a random one, pulls later estimates toward it. Negotiators, sellers and salary offers all use this, often without saying so.","In your next negotiation, state your number first and anchor the conversation yourself."],
+["Thinking, Fast and Slow","Daniel Kahneman",2011,"mind","You judge from what you can see","The mind builds a confident story from whatever information is in front of it, and rarely asks what's missing. A coherent story feels true even when it's thin.","Ask of any strong opinion you hold: what would I need to know that I don't?"],
+["The Psychology of Money","Morgan Housel",2020,"money","Know what enough looks like","Without a clear finish line, the goalpost keeps moving and people risk what they have for things they don't need. Enough is the point where more stops adding to your life.","Write down a number or a life you would call enough. Keep it somewhere you'll see it."],
+["The Psychology of Money","Morgan Housel",2020,"money","Leave room for error","Plans fail in ways you can't predict. A buffer of savings, time or slack lets you survive the bad stretch long enough for good decisions to pay off.","Look at one plan you have and add a margin for the scenario you're not expecting."],
+["The Psychology of Money","Morgan Housel",2020,"money","Time does the heavy lifting","Most of a famous investor's wealth was built after his sixties, simply because he started early and never stopped. Compounding rewards staying in the game more than brilliance.","Check whether any of your money is sitting idle when it could be compounding."],
+["Man's Search for Meaning","Viktor Frankl",1946,"meaning","You choose your response","Frankl watched people in the camps keep their dignity under the worst conditions. Even when circumstances take everything, the attitude you take toward them stays yours.","Name one situation you can't change this week. Decide how you want to show up in it."],
+["Man's Search for Meaning","Viktor Frankl",1946,"meaning","Meaning beats comfort","People can endure almost any how if they have a why. Meaning comes from work, from love, and from the way you carry unavoidable suffering.","Write one sentence about who or what your current hard work is for."],
+["Meditations","Marcus Aurelius",180,"meaning","The obstacle becomes the path","An emperor's private journal returns again and again to one idea: what blocks the way can become the way. Each setback is material for practicing patience, courage or fairness.","Take today's biggest annoyance and ask which virtue it lets you practice."],
+["Meditations","Marcus Aurelius",180,"meaning","Your opinion causes the pain","Events are neutral. The suffering comes from the judgment you add on top. Drop the judgment and much of the harm goes with it.","Rewrite one complaint as a plain description of what happened, with no adjectives."],
+["The 7 Habits of Highly Effective People","Stephen Covey",1989,"work","Important beats urgent","Urgent tasks shout. Important ones wait quietly until they turn into crises. Effective people spend more time on important work that isn't urgent yet: planning, relationships, health.","Move one important-but-not-urgent task into tomorrow morning, before email."],
+["The 7 Habits of Highly Effective People","Stephen Covey",1989,"people","Seek first to understand","Most people listen with the intent to reply. When you truly understand someone's view first, they become far more willing to hear yours.","In your next disagreement, restate their point until they say yes, that's it."],
+["Essentialism","Greg McKeown",2014,"work","If it isn't a clear yes, it's a no","Saying yes to everything spreads you thin, and the vital few things get the same effort as the trivial many. Being selective is a discipline, not a luxury.","Decline or defer one commitment this week that you only half want."],
+["Sapiens","Yuval Noah Harari",2011,"strategy","Shared stories let strangers cooperate","Humans can coordinate in millions because they believe the same fictions: money, nations, companies, laws. These stories are invented, yet they run the world.","Notice which shared story is driving a decision at work this week, like a brand, a budget or a rank."],
+["Mindset","Carol Dweck",2006,"mind","Add the word yet","People who see ability as fixed avoid challenges that might expose them. People who see it as growable treat failure as information. The belief itself changes how hard you try.","Catch one I'm not good at this today and finish it with yet."],
+["Influence","Robert Cialdini",1984,"people","Give first","People feel a strong pull to repay what they receive, even small, unasked-for favors. A genuine first gift opens doors that a request never would.","Do one useful thing for a colleague today with no ask attached."],
+["Influence","Robert Cialdini",1984,"people","We copy people like us","When unsure, we look at what similar others are doing. Showing that peers already act a certain way persuades better than any argument.","When pitching an idea, mention who like your listener has already adopted it."],
+["Never Split the Difference","Chris Voss",2016,"people","Name the emotion","A former FBI negotiator found that calmly labeling what the other side feels, like it seems you're worried about timing, lowers tension and gets them talking.","In a tense conversation, try one It sounds like you… and then stay quiet."],
+["Never Split the Difference","Chris Voss",2016,"people","Ask how, not why","Questions starting with how or what make the other side solve your problem with you. Why tends to sound like an accusation.","Swap a demand for How am I supposed to do that? and see what they offer."],
+["The Lean Startup","Eric Ries",2011,"strategy","Ship the smallest test","Instead of building the full product, build the least you need to learn whether anyone wants it. Learning fast beats being right on the first try.","Take an idea you're sitting on and design a test you could run in a week."],
+["Zero to One","Peter Thiel",2014,"strategy","Compete less, create more","Fierce competition erodes profits for everyone. The best businesses do something new so well that they have no close substitute.","Ask: what do I believe about my field that few people agree with?"],
+["Range","David Epstein",2019,"work","Wander before you specialize","Many top performers sampled widely before settling. Breadth gives you analogies and transferable skills that narrow specialists miss, especially in messy, changing fields.","Spend 20 minutes this week learning something unrelated to your job."],
+["Antifragile","Nassim Nicholas Taleb",2012,"strategy","Some things grow from shocks","Fragile things break under stress, robust things survive it, and antifragile things improve because of it. Muscles, startups and immune systems need some stress to get stronger.","Find one small, safe stressor to add: a harder workout, a stretch task, a tough critic."],
+["Antifragile","Nassim Nicholas Taleb",2012,"strategy","Subtract before you add","Removing a bad habit, a toxic contact or a needless risk often does more good than adding something new. Improvement by removal is underrated.","List three things you could stop doing. Drop one of them this week."],
+["Getting Things Done","David Allen",2001,"work","Your head is for ideas, not storage","Open loops in your mind drain attention even when you're not thinking about them. Capturing everything in a trusted list frees your head to focus.","Do a five-minute brain dump of every open task, then pick one next physical action."],
+["The Almanack of Naval Ravikant","Eric Jorgenson",2020,"money","Seek leverage, not just hours","Pay for time has a ceiling. Code, media, capital and people multiply your effort, so one good decision can be worth more than a year of hard work.","Identify one task you repeat that could become a template, a tool or a script."],
+["Poor Charlie's Almanack","Charlie Munger",2005,"mind","Invert, always invert","Hard problems often get easier backwards. Instead of asking how to succeed, ask what would guarantee failure, and avoid those things.","For your current project, list five ways to make it fail for sure."],
+["How to Win Friends and Influence People","Dale Carnegie",1936,"people","Be interested, not interesting","People warm to those who show real curiosity about them. You'll make more friends in a month of genuine interest than in a year of trying to impress.","In your next chat, ask two follow-up questions before you share anything about yourself."],
+["Drive","Daniel Pink",2009,"work","Carrots fail on creative work","Rewards help with routine tasks but can hurt creative ones. What drives people there is autonomy, getting better at something, and working toward a purpose.","Give someone on your team control over how a task gets done, not just what."],
+["Thinking in Bets","Annie Duke",2018,"mind","Don't judge a decision by its result","A good decision can turn out badly through luck, and a bad one can turn out well. Judging only by outcomes teaches the wrong lessons.","Review a recent decision on what you knew at the time, not on how it ended."],
+["Four Thousand Weeks","Oliver Burkeman",2021,"meaning","You will never clear the list","An average life is about four thousand weeks. Efficiency only invites more demands. Peace comes from choosing what to neglect, on purpose.","Choose one thing you'll consciously not do this week, and feel fine about it."],
+["The Courage to Be Disliked","Kishimi & Koga",2013,"people","Separate your tasks from theirs","Much stress comes from carrying problems that belong to others, like their opinion of you. Ask whose task this really is, and leave theirs to them.","Pick one worry and ask: is this mine to solve, or theirs?"],
+["Superforecasting","Philip Tetlock",2015,"mind","Update in small steps","The best forecasters aren't geniuses. They break questions into parts, start from base rates, and adjust gradually as evidence comes in, instead of lurching.","Put a probability on something you're unsure about. Revisit it next week."],
+["Good to Great","Jim Collins",2001,"strategy","First who, then what","Great companies got the right people on board before deciding direction. The right people adapt to a changing plan; the wrong ones sink a good one.","Before your next project kicks off, think about who must be on it and who shouldn't."],
+["High Output Management","Andrew Grove",1983,"work","A manager's output is the team's output","Your value as a leader is what your team and neighboring teams produce. Choose the activities with the highest leverage over that output.","Look at tomorrow's calendar. Which meeting has the most leverage? Prepare for it most."],
+["Nudge","Thaler & Sunstein",2008,"strategy","Defaults decide","Most people stick with whatever option is pre-selected. Whoever sets the default, from pension plans to forms, shapes the outcome more than any argument.","Change one default in your own life, like auto-saving a fixed amount each payday."],
+["Thinking in Systems","Donella Meadows",2008,"strategy","Fix the structure, not the symptom","Systems are stocks and flows tied together by feedback loops. Repeated problems usually come from the structure. Pushing harder on symptoms often makes them worse.","For a problem that keeps coming back, sketch what feeds it and what drains it."],
+["Peak","Anders Ericsson",2016,"habits","Practice at the edge","Repetition alone doesn't build expertise. Getting better takes focused practice just beyond your current ability, with fast feedback on what went wrong.","Pick one skill and design a 20-minute drill that's slightly too hard."],
+["The War of Art","Steven Pressfield",2002,"habits","Resistance is a signal","The stronger the urge to avoid a piece of work, the more it probably matters to you. Professionals show up anyway, on schedule, inspired or not.","Notice what you've been avoiding the most. Give it 25 minutes today."],
+["Principles","Ray Dalio",2017,"mind","Pain plus reflection equals progress","Mistakes hurt, and the pain tempts you to look away. If you stop and examine what caused it, each failure becomes a rule you can reuse.","Write down your last mistake and one principle you'd follow next time."],
+["Make It Stick","Brown, Roediger & McDaniel",2014,"habits","Test yourself to remember","Rereading feels productive but fades fast. Pulling information from memory, spaced over days, makes it stick far better.","Close this app and recall the last three ideas you read. Out loud, if you can."],
+["The Mom Test","Rob Fitzpatrick",2013,"strategy","Ask about the past, not the future","People are polite about your idea and bad at predicting their own behavior. Ask what they did last time the problem came up, and what they spent fixing it.","Rewrite one would you use this? question as When did this last happen to you?"],
+["Getting to Yes","Fisher & Ury",1981,"people","Interests, not positions","Two people want the same orange. One needs the peel, the other the juice. Arguing over positions hides interests that could both be met.","In your next conflict, ask what the other person needs this for."],
+["Outliers","Malcolm Gladwell",2008,"work","Small early edges snowball","Slight advantages, like a birth month or early access to a computer, compound into big gaps. Success is rarely a solo story.","Think of one early break you got. Who could you give a similar one to?"]
+];
+
+const $=s=>document.querySelector(s);
+const feed=$("#feed"), chipsEl=$("#chips"), countEl=$("#count"), timeEl=$("#time"), ring=$("#ring"), clock=$("#clock"), toast=$("#toast");
+const store={get(k,d){try{const v=localStorage.getItem("fms:"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("fms:"+k,JSON.stringify(v))}catch(e){}}};
+const ids=IDEAS.map((_,i)=>i);
+let saved=new Set(store.get("saved",[]));
+let doneDays=store.get("days",[]);
+const today=new Date().toISOString().slice(0,10);
+
+function rng(seed){let s=0;for(const c of seed)s=(s*31+c.charCodeAt(0))>>>0;return()=>{s^=s<<13;s>>>=0;s^=s>>17;s^=s<<5;s>>>=0;return s/4294967296}}
+function shuffle(a,seed){const r=rng(seed),b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function todaysDeck(){ // 12 cards, no two from the same book
+  const seen=new Set(),out=[];for(const i of shuffle(ids,today)){if(seen.has(IDEAS[i][0]))continue;seen.add(IDEAS[i][0]);out.push(i);if(out.length===12)break}return out}
+
+const SHELVES=[["today","Today"],["all","All ideas"],...Object.entries(THEMES),["saved","Saved"]];
+let shelf="today";
+chipsEl.innerHTML=SHELVES.map(([k,n])=>`<button class="chip" data-k="${k}" aria-pressed="${k===shelf}">${n}</button>`).join("");
+chipsEl.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;shelf=b.dataset.k;
+  chipsEl.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b));render();feed.scrollTop=0});
+
+function streak(){let n=0,d=new Date();const set=new Set(doneDays);for(;;){const k=d.toISOString().slice(0,10);if(set.has(k)){n++;d.setDate(d.getDate()-1)}else if(n===0&&k===today){d.setDate(d.getDate()-1)}else break}return n}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const BOOKMARK='<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>';
+const COPY='<svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>';
+const yr=y=>y<1000?`c. ${y} AD`:y;
+
+let list=[];
+function render(){
+  if(shelf==="today")list=todaysDeck();
+  else if(shelf==="all")list=shuffle(ids,today+"all");
+  else if(shelf==="saved")list=ids.filter(i=>saved.has(i));
+  else list=ids.filter(i=>IDEAS[i][3]===shelf);
+  let html="";
+  if(shelf==="today"){
+    html+=`<section class="slot"><div class="card intro">
+      <p class="meta"><span>${new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})}</span></p>
+      <h2 class="big">Five minutes, <em>twelve</em> ideas.</h2>
+      <p class="lede">One idea from a different great book on each card. About 25 seconds each. Swipe up to start the clock.</p>
+      <div class="stats"><span><strong>${streak()}</strong>day streak</span><span><strong>${IDEAS.length}</strong>ideas on the shelf</span><span><strong>${saved.size}</strong>saved</span></div>
+      <button class="go" id="go">Start reading</button>
+      <span class="hint"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>Or swipe up</span>
+    </div></section>`}
+  if(!list.length)html+=`<section class="slot"><div class="card empty"><h2 class="idea" style="margin:0">Nothing saved yet</h2><p class="body">Tap the bookmark on any card to keep it here for rereading.</p></div></section>`;
+  list.forEach((i,n)=>{const [b,a,y,t,idea,body,tr]=IDEAS[i];
+    html+=`<section class="slot" data-i="${i}"><article class="card t-${t}" style="--hue:var(--h-${t})">
+      <p class="meta"><span class="tag">${THEMES[t]}</span><span>${String(n+1).padStart(2,"0")} / ${String(list.length).padStart(2,"0")}</span></p>
+      <h2 class="idea">${esc(idea)}</h2>
+      <p class="body">${esc(body)}</p>
+      <p class="try"><b>Try this</b>${esc(tr)}</p>
+      <div class="foot"><div class="book"><p class="t">${esc(b)}</p><p class="a">${esc(a)} · ${yr(y)}</p></div>
+        <button class="icon" data-copy="${i}" aria-label="Copy idea">${COPY}</button>
+        <button class="icon" data-save="${i}" aria-pressed="${saved.has(i)}" aria-label="Save idea">${BOOKMARK}</button></div>
+    </article></section>`});
+  if(shelf==="today"&&list.length)html+=`<section class="slot"><div class="card intro">
+      <h2 class="big">That's today's <em>shelf</em>.</h2>
+      <p class="lede">A new set of twelve arrives tomorrow. Want more now? Browse a theme or the full shelf.</p>
+      <button class="go" data-goto="all">Browse all ideas</button></div></section>`;
+  feed.innerHTML=html;
+  observe();updateCount();
+}
+
+// reading progress
+const read=new Set();let current=0;
+let io;
+function observe(){io&&io.disconnect();io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.target.dataset.i!==undefined){const i=+e.target.dataset.i;read.add(i);current=list.indexOf(i)+1;startTimer();updateCount()}})},{root:feed,threshold:.6});
+  feed.querySelectorAll(".slot[data-i]").forEach(s=>io.observe(s))}
+function updateCount(){countEl.textContent=`${current} / ${list.length}`}
+
+// 5-minute session clock
+const SESSION=300;let left=SESSION,tick=null,finished=false;const C=50.27;
+function paint(){timeEl.textContent=`${Math.floor(left/60)}:${String(left%60).padStart(2,"0")}`;ring.style.strokeDashoffset=C*(1-left/SESSION)}
+function startTimer(){if(tick||finished)return;tick=setInterval(()=>{if(document.hidden)return;left--;paint();if(left<=0)finish()},1000)}
+function finish(){clearInterval(tick);tick=null;finished=true;clock.classList.add("done");timeEl.textContent="Done";
+  if(!doneDays.includes(today)){doneDays.push(today);doneDays=doneDays.slice(-400);store.set("days",doneDays)}
+  show(`Five minutes done · ${read.size} ideas read`)}
+clock.addEventListener("click",()=>{if(finished){finished=false;left=SESSION;clock.classList.remove("done");paint();startTimer()}});
+paint();
+
+let tt;function show(m){toast.textContent=m;toast.hidden=false;clearTimeout(tt);tt=setTimeout(()=>toast.hidden=true,2600)}
+
+feed.addEventListener("click",e=>{
+  const s=e.target.closest("[data-save]"),c=e.target.closest("[data-copy]"),g=e.target.closest("#go"),to=e.target.closest("[data-goto]");
+  if(s){const i=+s.dataset.save;saved.has(i)?saved.delete(i):saved.add(i);store.set("saved",[...saved]);s.setAttribute("aria-pressed",saved.has(i));show(saved.has(i)?"Saved":"Removed from saved")}
+  if(c){const [b,a,,,idea,body]=IDEAS[+c.dataset.copy];const txt=`${idea}\n${body}\n— ${b}, ${a}`;
+    const p=navigator.clipboard&&navigator.clipboard.writeText(txt);if(p)p.then(()=>show("Copied"),()=>show("Copy isn't allowed here"));else show("Copy isn't allowed here")}
+  if(g){step(1);startTimer()}
+  if(to){chipsEl.querySelector(`[data-k="${to.dataset.goto}"]`).click()}
+});
+function step(d){const h=feed.clientHeight;feed.scrollTo({top:Math.round(feed.scrollTop/h+d)*h,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}
+addEventListener("keydown",e=>{if(["ArrowDown","j","PageDown"," "].includes(e.key)){e.preventDefault();step(1)}if(["ArrowUp","k","PageUp"].includes(e.key)){e.preventDefault();step(-1)}});
+render();
+if("serviceWorker" in navigator&&location.protocol==="https:"&&!/claude|anthropic/.test(location.host))navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+
+</body></html>
