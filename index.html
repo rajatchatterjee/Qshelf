@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#15212c">
+<meta name="theme-color" content="#ece0c8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
@@ -495,7 +495,8 @@ let saved=loadKeys("saved2").size?loadKeys("saved2"):loadKeys("saved");
 let notes=store.get("notes",{}),hist=store.get("hist",{}),doneDays=store.get("days",[]);
 const pad2=n=>String(n).padStart(2,"0");
 const now=new Date(),today=`${now.getFullYear()}-${pad2(now.getMonth()+1)}-${pad2(now.getDate())}`;
-const set=Object.assign({skin:"auto",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true,voice:"",rate:1,rem:"07:30"},store.get("set",{}));
+const set=Object.assign({skin:"sepia",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true,voice:"",rate:1,rem:"07:30"},store.get("set",{}));
+if(!set.v){set.skin="sepia";set.v=2}   // Sepia became the default; earlier installs had saved Auto without choosing it
 const SIZES=[.9,1,1.12,1.26,1.4];
 
 /* ---------- usage counting (live site only, anonymous) ---------- */
@@ -509,7 +510,7 @@ addEventListener("appinstalled",()=>track("installed"));
 const tracked=new Set();const once=n=>{if(!tracked.has(n)){tracked.add(n);track(n)}};
 
 /* ---------- settings ---------- */
-const SKINS=[["auto","Auto",["#fbfcfd","#161d25"],"#15212c"],["paper","Paper",["#fbfcfd"],"#15212c"],["sepia","Sepia",["#f7efdd"],"#3a2a1a"],["night","Night",["#161d25"],"#e7edf2"],["midnight","Midnight",["#101b3b"],"#e6bc62"],["forest","Forest",["#13241d"],"#8fd6a8"]];
+const SKINS=[["sepia","Sepia",["#f7efdd"],"#3a2a1a"],["auto","Auto",["#fbfcfd","#161d25"],"#15212c"],["paper","Paper",["#fbfcfd"],"#15212c"],["night","Night",["#161d25"],"#e7edf2"],["midnight","Midnight",["#101b3b"],"#e6bc62"],["forest","Forest",["#13241d"],"#8fd6a8"]];
 $("#skins").innerHTML=SKINS.map(([k,n,bg,fg])=>`<button class="sw" data-v="${k}"><i style="background:${bg.length>1?`linear-gradient(135deg,${bg[0]} 50%,${bg[1]} 50%)`:bg[0]};color:${fg}">${k==="auto"?"":"Aa"}</i>${n}</button>`).join("");
 $("#sizeDots").innerHTML=SIZES.map(()=>"<i></i>").join("");
 function applySet(){

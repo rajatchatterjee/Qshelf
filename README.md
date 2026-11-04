@@ -11,7 +11,7 @@ Five minutes a day of big ideas from great books. Swipe through one idea per car
 - **Daily reminder**: add a recurring event to Google Calendar or any calendar app
 - **5-minute clock** that starts on your first swipe, plus a daily streak
 - **Save and copy** any card, or double-tap a card to save it
-- **Reading themes**: Auto, Paper, Sepia, Night, Midnight, Forest
+- **Reading themes**: Sepia (default), Auto, Paper, Night, Midnight, Forest
 - **Reader settings**: text size, Serif / Sans / Easy-read typeface, line spacing
 - **Focus mode**: tap a card to hide everything but the idea
 - **Listen**: read-aloud with a voice picker and speed control, and it can move through the deck on its own
