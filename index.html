@@ -218,6 +218,27 @@ body.focus .mini{opacity:1}
 .mitem{display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;border:1px solid var(--line);font-family:var(--f-sans);font-size:1rem;text-align:left}
 .mitem svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .sheet .chips{flex-wrap:wrap}
+/* install prompt (browser only) */
+.installbar{display:flex;align-items:center;gap:12px;margin-block:0 10px;padding:12px 12px 12px 14px;border-radius:18px;background:var(--ink);color:var(--bg);box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.installbar .ib-ic{width:40px;height:40px;border-radius:11px;background:var(--accent);display:grid;place-items:center;flex:none}
+.installbar .ib-ic svg{width:24px;height:24px}
+.installbar .ib-t{flex:1;min-width:0;display:grid;gap:2px}
+.installbar b{font-family:var(--f-display);font-size:1rem}
+.installbar .ib-t span{font-family:var(--f-sans);font-size:.82rem;opacity:.8}
+.installbar .ib-go{border-radius:999px;background:var(--accent);color:var(--surface);padding:10px 16px;font-family:var(--f-display);font-weight:700;font-size:.92rem;flex:none}
+.installbar .ib-x{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;opacity:.7}
+.installbar .ib-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.focus .installbar{display:none}
+.go.install{background:var(--accent);color:var(--surface);display:inline-flex;align-items:center;gap:8px}
+.isteps{margin:0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:s}
+.isteps li{display:flex;gap:12px;align-items:flex-start;font-family:var(--f-sans);font-size:1rem;line-height:1.45;counter-increment:s}
+.isteps li::before{content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:.9rem}
+.kicon{display:inline-grid;place-items:center;vertical-align:-5px;width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:var(--bg);margin:0 2px}
+.kicon svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.iwhy{display:grid;gap:6px;margin:0;padding:12px 14px;border-radius:14px;background:var(--bg);font-family:var(--f-sans);font-size:.9rem;color:var(--muted);list-style:none}
+.iwhy li::before{content:"✓  ";color:var(--accent);font-weight:700}
+.urlbox{display:flex;gap:8px;align-items:center}
+.urlbox code{flex:1;min-width:0;overflow-wrap:anywhere;font-family:var(--f-mono);font-size:.82rem;padding:10px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);user-select:all}
 @media (min-width:760px){.slot{padding-inline:max(0px,calc((100% - 720px)/2))}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -241,11 +262,18 @@ body.focus .mini{opacity:1}
 <span class="mini" id="mini">5:00</span>
 <main class="feed" id="feed" tabindex="-1"></main>
 
+<div class="installbar" id="ibar" role="region" aria-label="Install Qshelf" hidden>
+  <span class="ib-ic"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="5" width="3" height="13" rx="1"/><rect x="8.5" y="3" width="3" height="15" rx="1"/><rect x="13" y="6" width="3" height="12" rx="1"/><rect x="17.2" y="4.5" width="3" height="13.5" rx="1" transform="rotate(8 18.7 11)"/><rect x="3" y="19" width="18" height="1.6" rx=".8"/></svg></span>
+  <span class="ib-t"><b>Install Qshelf on this phone</b><span id="ibSub">One tap from your home screen. Works offline.</span></span>
+  <button class="ib-go" id="ibGo">Install</button>
+  <button class="ib-x" id="ibX" aria-label="Not now"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</div>
 <div class="scrim" id="scrim" hidden></div>
 <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="setT" hidden>
   <div class="in">
     <div class="grab"></div>
     <h2 id="setT">Reading settings <button class="round" id="closeSet" data-close aria-label="Close settings"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
+    <div class="grp" id="instGrp" hidden><span class="lab">App</span><button class="btn" id="setInstall" style="justify-self:start">Install Qshelf on this phone</button></div>
     <div class="grp"><span class="lab">Languages</span><div class="chips" id="langSet"></div><p class="hintp">Hindi, Bangla and Marathi books appear in their own language. Any card can be translated from its ••• menu.</p></div>
     <div class="grp"><span class="lab">Theme</span><div class="swatches" id="skins"></div></div>
     <div class="grp"><span class="lab">Text size</span>
@@ -293,6 +321,12 @@ body.focus .mini{opacity:1}
     <div class="grp"><span class="lab">Translate to</span><div class="chips" id="tlBtns"></div>
       <a class="btn" id="tlOpen" target="_blank" rel="noopener" hidden>Open in Google Translate</a>
       <p class="hintp">Translates on your phone when the browser supports it, otherwise opens Google Translate.</p></div>
+  </div></section>
+<section class="sheet" id="installSheet" role="dialog" aria-modal="true" aria-labelledby="instT" hidden>
+  <div class="in"><div class="grab"></div>
+    <h2 id="instT">Install Qshelf <button class="round" data-close aria-label="Close install steps"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
+    <div id="instBody" class="grp"></div>
+    <ul class="iwhy"><li>Opens full screen from your home screen, like any app</li><li>Works offline, on flights and in the metro</li><li>Free, no app store, no sign-up</li></ul>
   </div></section>
 <section class="sheet" id="shareSheet" role="dialog" aria-modal="true" aria-labelledby="shareT" hidden>
   <div class="in"><div class="grab"></div>
@@ -842,6 +876,7 @@ function render(){
       <div class="chips" style="flex-wrap:wrap">${langChips()}<button class="chip" data-goto="books">Choose books</button></div>
       <ul class="tips"><li><kbd>Swipe up</kbd>Next idea</li><li><kbd>Tap card</kbd>Focus mode, hides everything else</li><li><kbd>Double-tap</kbd>Save an idea</li><li><kbd>Book name</kbd>Open that book's deep-dive</li><li><kbd>•••</kbd>Note, share, translate</li></ul>
       <div class="row"><button class="go" id="go">Start reading</button><button class="go ghost" data-listen-all>Listen to today</button></div>
+      ${canInstallHere?`<button class="go install" data-install><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Install Qshelf as an app</button>`:""}
     </div></section>`+quizCards(list);
   if(shelf.startsWith("book:")){const b=bookOf(shelf.slice(5));if(b){const mins=Math.max(1,Math.round(b.ids.reduce((s,i)=>s+secs(i),0)/60));
     h+=`<section class="slot"><div class="card intro" style="--hue:var(--h-${b.theme})" lang="${b.lang}"><span class="glyph" aria-hidden="true">${esc(b.name[0])}</span>
@@ -963,6 +998,47 @@ function applyTranslation(i,[idea,body,tr],tl){feed.querySelectorAll(`.slot[data
   const n=c.querySelector(".tnote");n.hidden=false;n.innerHTML=`Translated to ${LANGS[tl].name} on your device · <button class="linkbtn" data-orig="${i}">Show original</button>`})}
 function updBkCount(){const off=offSet(),shown=BOOKS.filter(b=>set.langs.includes(b.lang)),c=$("#bkCount");if(c)c.textContent=`${shown.filter(b=>!off.has(b.name)).length} of ${shown.length} in your deck`}
 
+
+/* ---------- install prompt (only in a browser, never in the installed app) ---------- */
+const UA=navigator.userAgent,isStandalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const isIOS=/iPad|iPhone|iPod/.test(UA)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const isInApp=/FBAN|FBAV|Instagram|WhatsApp|Line\/|Snapchat|LinkedInApp|Twitter|GSA\//.test(UA);
+const isAndroid=/Android/.test(UA),isSamsung=/SamsungBrowser/.test(UA),isFirefox=/Firefox|FxiOS/.test(UA),isIOSChrome=/CriOS/.test(UA);
+const canInstallHere=!isStandalone&&!/claude|anthropic/.test(location.host)&&!/^file:/.test(location.protocol);
+let deferredPrompt=null;
+const K={share:'<svg viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>',
+  plus:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>',
+  dots:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>',
+  menu:'<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+  inst:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M12 8v6M9 11l3 3 3-3M8 21h8"/></svg>'};
+const ki=k=>`<span class="kicon" aria-hidden="true">${K[k]}</span>`;
+function installSteps(){
+  if(isInApp)return `<p class="hintp" style="font-size:1rem;color:var(--ink)">You're reading Qshelf inside another app, which can't install it. Open this link in ${isIOS?"Safari":"Chrome"} first:</p>
+    <div class="urlbox"><code>${APP_URL}</code><button class="btn ghost" id="copyUrl">Copy</button></div>
+    <ol class="isteps"><li>Tap ${ki(isIOS?"share":"dots")} in this app and choose <b>Open in ${isIOS?"Safari":"browser"}</b>, or paste the link into ${isIOS?"Safari":"Chrome"}.</li><li>Then come back to this screen and follow the steps there.</li></ol>`;
+  if(isIOS)return `<ol class="isteps">
+    <li>Tap the <b>Share</b> button ${ki("share")} ${isIOSChrome?"next to the address bar":"at the bottom of Safari"}.</li>
+    <li>Scroll down and tap <b>Add to Home Screen</b> ${ki("plus")}.</li>
+    <li>Tap <b>Add</b>. Qshelf now sits on your home screen. Open it from there.</li></ol>
+    ${isIOSChrome||isFirefox?`<p class="hintp">If you don't see Add to Home Screen, open ${APP_URL} in Safari and try again.</p>`:""}`;
+  if(isSamsung)return `<ol class="isteps"><li>Tap the menu ${ki("menu")} at the bottom right.</li><li>Tap <b>Add page to</b>, then <b>Home screen</b>.</li><li>Tap <b>Add</b>, then open Qshelf from your home screen.</li></ol>`;
+  if(isFirefox)return `<ol class="isteps"><li>Tap the menu ${ki("dots")} in Firefox.</li><li>Tap <b>Install</b> or <b>Add to Home screen</b>.</li><li>Confirm, then open Qshelf from your home screen.</li></ol>`;
+  if(isAndroid)return `<ol class="isteps"><li>Tap the menu ${ki("dots")} at the top right of Chrome.</li><li>Tap <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap <b>Install</b>, then open Qshelf from your home screen or app drawer.</li></ol>`;
+  return `<ol class="isteps"><li>Look for the install icon ${ki("inst")} at the right end of the address bar in Chrome or Edge.</li><li>Click it and choose <b>Install</b>.</li><li>Qshelf opens in its own window and appears with your apps.</li></ol>
+    <p class="hintp">For your phone, open ${APP_URL} there and use this same button.</p>`}
+async function startInstall(src){track("install-click-"+src);
+  if(deferredPrompt){deferredPrompt.prompt();const c=await deferredPrompt.userChoice.catch(()=>({}));track("install-"+(c.outcome||"unknown"));deferredPrompt=null;if(c.outcome==="accepted")$("#ibar").hidden=true;return}
+  $("#instBody").innerHTML=installSteps();const cu=$("#copyUrl");if(cu)cu.onclick=()=>{const p=navigator.clipboard&&navigator.clipboard.writeText(APP_URL);p?p.then(()=>show("Link copied"),()=>show("Select the link and copy it")):show("Select the link and copy it")};
+  sheetOpen($("#installSheet"))}
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("#ibSub").textContent="One tap to add it. Works offline."});
+addEventListener("appinstalled",()=>{$("#ibar").hidden=true;show("Installed. Open Qshelf from your home screen.")});
+if(canInstallHere){const until=store.get("ibHideUntil",0);if(Date.now()>until){$("#ibar").hidden=false;once("install-bar-shown")}
+  if(isInApp){$("#ibGo").textContent="How?";$("#ibSub").textContent="Open in your browser to install."}
+  else if(isIOS)$("#ibSub").textContent="Add it to your home screen in 3 taps.";}
+$("#ibGo").onclick=()=>startInstall("bar");
+if(canInstallHere){$("#instGrp").hidden=false;$("#setInstall").onclick=()=>startInstall("settings")}
+$("#ibX").onclick=()=>{$("#ibar").hidden=true;store.set("ibHideUntil",Date.now()+3*864e5);show("You can still install from the Today card or settings")};
+
 /* ---------- interactions ---------- */
 let tt;function show(m){toast.textContent=m;toast.hidden=false;clearTimeout(tt);tt=setTimeout(()=>toast.hidden=true,2400)}
 function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
@@ -985,6 +1061,7 @@ feed.addEventListener("click",e=>{
     card.querySelector(".qres").hidden=false;buzz(ok?12:[10,40,10]);show(ok?"Nice recall":"Now you'll remember it");track(ok?"quiz-right":"quiz-wrong");return}
   if(q("#go")){step(1);return}
   if(q("[data-listen-all]")){if(!synth)return show("Read-aloud isn't available here");listening=true;once("listen");const first=feed.querySelector(".slot[data-i]");first&&first.scrollIntoView({behavior:"smooth",block:"start"});return}
+  if(q("[data-install]"))return startInstall("today");
   if(el=q("[data-goto]")){setShelf(el.dataset.goto);return}
   if(el=q("[data-orig]")){const i=+el.dataset.orig,s=feed.querySelector(`.slot[data-i="${i}"]`),n=document.createElement("div");n.innerHTML=ideaCard(i,list.indexOf(i),list.length);s.replaceWith(n.firstElementChild);observe();return}
   if(q("button,a,ul.readlist,.opts"))return;
