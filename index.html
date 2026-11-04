@@ -274,7 +274,9 @@ body.focus .installbar{display:none}
     <div class="grab"></div>
     <h2 id="setT">Reading settings <button class="round" id="closeSet" data-close aria-label="Close settings"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
     <div class="grp" id="instGrp" hidden><span class="lab">App</span><button class="btn" id="setInstall" style="justify-self:start">Install Qshelf on this phone</button></div>
-    <div class="grp"><span class="lab">Languages</span><div class="chips" id="langSet"></div><p class="hintp">Hindi, Bangla and Marathi books appear in their own language. Any card can be translated from its ••• menu.</p></div>
+    <div class="grp"><span class="lab">Languages</span><div class="chips" id="langSet"></div><p class="hintp">Pick which books appear in your deck. Hindi, Bangla and Marathi books are written in their own language.</p>
+      <span class="lab" style="margin-top:6px">Read every card in</span><select class="field" id="readIn" aria-label="Read every card in"></select>
+      <p class="hintp">Any single card can also be switched from its ••• menu.</p></div>
     <div class="grp"><span class="lab">Theme</span><div class="swatches" id="skins"></div></div>
     <div class="grp"><span class="lab">Text size</span>
       <div class="sizer"><button id="smaller" aria-label="Smaller text" style="font-size:.85rem">A</button><div class="dots" id="sizeDots"></div><button id="bigger" aria-label="Larger text" style="font-size:1.25rem">A</button></div>
@@ -319,8 +321,8 @@ body.focus .installbar{display:none}
       <button class="mitem" id="mCopy"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>Copy text</button>
     </div>
     <div class="grp"><span class="lab">Translate to</span><div class="chips" id="tlBtns"></div>
-      <a class="btn" id="tlOpen" target="_blank" rel="noopener" hidden>Open in Google Translate</a>
-      <p class="hintp">Translates on your phone when the browser supports it, otherwise opens Google Translate.</p></div>
+      <p class="hintp" id="tlMsg" role="status" hidden></p>
+      <p class="hintp">The card changes language right here. Tap Original to switch back.</p></div>
   </div></section>
 <section class="sheet" id="installSheet" role="dialog" aria-modal="true" aria-labelledby="instT" hidden>
   <div class="in"><div class="grab"></div>
@@ -685,7 +687,7 @@ let saved=loadKeys("saved2").size?loadKeys("saved2"):loadKeys("saved");
 let notes=store.get("notes",{}),hist=store.get("hist",{}),doneDays=store.get("days",[]);
 const pad2=n=>String(n).padStart(2,"0");
 const now=new Date(),today=`${now.getFullYear()}-${pad2(now.getMonth()+1)}-${pad2(now.getDate())}`;
-const set=Object.assign({skin:"sepia",langs:null,off:[],tl:"",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true,voice:"",rate:1,rem:"07:30"},store.get("set",{}));
+const set=Object.assign({skin:"sepia",langs:null,off:[],readIn:"",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true,voice:"",rate:1,rem:"07:30"},store.get("set",{}));
 if(!set.v){set.skin="sepia";set.v=2}   // Sepia became the default; earlier installs had saved Auto without choosing it
 if(!Array.isArray(set.langs)||!set.langs.length){const d=(navigator.language||"").slice(0,2);set.langs=["en"];if(["hi","bn","mr"].includes(d))set.langs.push(d)}
 const SIZES=[.9,1,1.12,1.26,1.4];
@@ -713,7 +715,7 @@ function applySet(){
   mark("#skins",set.skin);mark("#fonts",set.font);mark("#spacing",set.lh);mark("#amb",set.amb);
   document.querySelectorAll("#sizeDots i").forEach((d,i)=>d.classList.toggle("on",i<=set.size));
   $("#tTry").setAttribute("aria-checked",set.tryOn);$("#tAuto").setAttribute("aria-checked",set.auto);
-  $("#rate").value=set.rate;$("#rateV").textContent=(+set.rate).toFixed(2)+"×";$("#remTime").value=set.rem;reminderLinks();
+  $("#readIn").value=set.readIn||"";$("#rate").value=set.rate;$("#rateV").textContent=(+set.rate).toFixed(2)+"×";$("#remTime").value=set.rem;reminderLinks();
   const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=getComputedStyle(document.body).backgroundColor;
   store.set("set",set);
 }
@@ -722,7 +724,9 @@ pick("#skins","skin",v=>track("theme-"+v));pick("#fonts","font");pick("#spacing"
 function langChips(){return Object.entries(LANGS).map(([k,v])=>`<button class="chip" data-lang="${k}" aria-pressed="${set.langs.includes(k)}">${v.name}</button>`).join("")}
 function toggleLang(k){const on=set.langs.includes(k);if(on&&set.langs.length===1)return show("Keep at least one language");set.langs=on?set.langs.filter(x=>x!==k):[...set.langs,k];store.set("set",set);
   document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",set.langs.includes(b.dataset.lang)));if(!on)track("lang-"+k);render()}
-$("#langSet").innerHTML=langChips();$("#langSet").addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(b)toggleLang(b.dataset.lang)});
+$("#langSet").innerHTML=langChips();
+$("#readIn").innerHTML=`<option value="">Each card in its own language</option>`+Object.entries(LANGS).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join("");
+$("#readIn").onchange=async e=>{set.readIn=e.target.value;store.set("set",set);Object.keys(view).forEach(k=>delete view[k]);if(set.readIn){show("Loading translations…");await loadTR(set.readIn);track("readin-"+set.readIn)}render()};$("#langSet").addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(b)toggleLang(b.dataset.lang)});
 $("#smaller").onclick=()=>{set.size=Math.max(0,set.size-1);applySet()};
 $("#bigger").onclick=()=>{set.size=Math.min(SIZES.length-1,set.size+1);applySet()};
 $("#tTry").onclick=()=>{set.tryOn=!set.tryOn;applySet()};
@@ -819,14 +823,14 @@ const yr=y=>y<0?`c. ${-y} BC`:y<1000?`c. ${y} AD`:y;
 const secs=i=>{const w=(IDEAS[i][5]+" "+IDEAS[i][6]+" "+IDEAS[i][4]).split(/\s+/).length;return Math.max(15,Math.round(w/230*60/5)*5)};
 const dateStr=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
 
-function ideaCard(i,n,len){const [b,a,y,t,idea,body,tr]=IDEAS[i],k=keyOf(i),nt=notes[k]||"",l=langOf(i),L=LANGS[l];
+function ideaCard(i,n,len){const [b,a,y,t]=IDEAS[i],k=keyOf(i),nt=notes[k]||"",c=cardText(i),{idea,body,tr}=c,l=c.l,L=LANGS[l];
   return `<section class="slot" data-i="${i}"><article class="card" style="--hue:var(--h-${t})" lang="${l}">
     <span class="glyph" aria-hidden="true">${esc(b[0])}</span>
     <p class="meta"><span class="tag">${themeName(t,l)}</span><span>${pad2(n+1)} / ${pad2(len)} · ${secs(i)} ${L.sec}</span></p>
     <h2 class="idea">${esc(idea)}</h2>
     <p class="body">${esc(body)}</p>
     <p class="try"><b>${L.try}</b><span>${esc(tr)}</span></p>
-    <p class="tnote" hidden></p>
+    <p class="tnote"${c.tx?"":" hidden"}>${c.tx?`Translated from ${LANGS[langOf(i)].name} · <button class="linkbtn" data-orig="${i}">Show original</button>`:""}</p>
     <p class="note" data-note-for="${i}"${nt?"":" hidden"}>${esc(nt)}</p>
     <div class="foot"><button class="book booklink" data-book="${esc(b)}" aria-label="All ideas from ${esc(b)}"><span class="t">${esc(b)}</span><span class="a">${esc(a)} · ${yr(y)}</span></button>
       <button class="icon" data-listen="${i}" aria-pressed="false" aria-label="Listen">${I.play}</button>
@@ -930,8 +934,8 @@ paint();
 /* ---------- read aloud ---------- */
 let listening=false,speakingI=null;
 function speak(i){if(!synth)return;if(speakingI===i)return;synth.cancel();speakingI=i;
-  const [b,a,,,idea,body,tr]=IDEAS[i],L=LANGS[langOf(i)];if(langOf(i)!=="en"&&!allVoices.some(x=>x.lang.toLowerCase().startsWith(langOf(i))))show(`No ${L.name} voice on this phone yet. See Reading settings.`);
-  const u=utter(`${idea}। ${body} ${set.tryOn?L.try+"। "+tr:""} ${L.from(b,a)}`.replace(/।/g,langOf(i)==="en"?".":"।"),langOf(i));
+  const [b,a]=IDEAS[i],c=cardText(i),{idea,body,tr}=c,vl=c.l,L=LANGS[vl];if(vl!=="en"&&!allVoices.some(x=>x.lang.toLowerCase().startsWith(vl)))show(`No ${L.name} voice on this phone yet. See Reading settings.`);
+  const u=utter(`${idea}। ${body} ${set.tryOn?L.try+"। "+tr:""} ${L.from(b,a)}`.replace(/।/g,vl==="en"?".":"।"),vl);
   u.onend=()=>{if(speakingI!==i)return;speakingI=null;markSpeaking();if(listening&&set.auto)setTimeout(()=>listening&&step(1),700);else{listening=false;markSpeaking()}};
   synth.speak(u);markSpeaking()}
 function stopSpeech(){listening=false;speakingI=null;try{synth&&synth.cancel()}catch(e){}markSpeaking()}
@@ -949,9 +953,9 @@ let shareBlob=null,shareI=null;
 function wrap(ctx,text,w){const words=text.split(" "),lines=[];let line="";for(const wd of words){const t=line?line+" "+wd:wd;if(ctx.measureText(t).width>w&&line){lines.push(line);line=wd}else line=t}if(line)lines.push(line);return lines}
 function rgba(hex,a){hex=hex.trim();if(!/^#[0-9a-f]{6}$/i.test(hex))return `rgba(127,127,127,${a})`;const n=parseInt(hex.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
 async function makeImage(i){
-  const [b,a,y,t,idea,body]=IDEAS[i],cs=getComputedStyle(root),v=n=>cs.getPropertyValue(n).trim();
+  const [b,a,y,t]=IDEAS[i],ct=cardText(i),{idea,body}=ct,cs=getComputedStyle(root),v=n=>cs.getPropertyValue(n).trim();
   const hue=v("--h-"+t),surf=v("--surface"),ink=v("--ink"),muted=v("--muted");
-  const l=langOf(i),IND=l==="bn"?'"Noto Sans Bengali"':'"Noto Sans Devanagari"',INDS=l==="bn"?'"Noto Serif Bengali"':'"Noto Serif Devanagari"',smp=l==="bn"?"অআ":"अआ";
+  const l=ct.l,IND=l==="bn"?'"Noto Sans Bengali"':'"Noto Sans Devanagari"',INDS=l==="bn"?'"Noto Serif Bengali"':'"Noto Serif Devanagari"',smp=l==="bn"?"অআ":"अआ";
   try{await Promise.all(['800 80px "Bricolage Grotesque"','700 36px "Bricolage Grotesque"','400 40px "Literata"','500 28px "JetBrains Mono"'].map(f=>document.fonts.load(f)));if(l!=="en")await Promise.all([document.fonts.load(`700 80px ${IND}`,smp),document.fonts.load(`400 40px ${INDS}`,smp)])}catch(e){}
   const TF=`"Bricolage Grotesque", ${IND}, sans-serif`,BF=`"Literata", ${INDS}, serif`,TLH=l==="en"?1.06:1.3;
   const W=1080,H=1350,P=96,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
@@ -977,25 +981,38 @@ async function openShare(i){shareI=i;const img=$("#shareImg");img.removeAttribut
   const f=new File([shareBlob],"qshelf-idea.png",{type:"image/png"});$("#shareNative").hidden=!(navigator.canShare&&navigator.canShare({files:[f]}));track("share-open")}
 $("#shareNative").onclick=async()=>{try{await navigator.share({files:[new File([shareBlob],"qshelf-idea.png",{type:"image/png"})],title:IDEAS[shareI][4],text:`${IDEAS[shareI][4]}, from ${IDEAS[shareI][0]}. ${APP_URL}`});track("share-sent")}catch(e){}};
 $("#shareSave").addEventListener("click",()=>track("share-saved"));
-$("#shareCopy").onclick=()=>{const [b,a,,,idea,body]=IDEAS[shareI];const p=navigator.clipboard&&navigator.clipboard.writeText(`${idea}\n${body}\n— ${b}, ${a}\n${APP_URL}`);p?p.then(()=>show("Copied"),()=>show("Copy isn't allowed here")):show("Copy isn't allowed here")};
+$("#shareCopy").onclick=()=>{const [b,a]=IDEAS[shareI],{idea,body}=cardText(shareI);const p=navigator.clipboard&&navigator.clipboard.writeText(`${idea}\n${body}\n— ${b}, ${a}\n${APP_URL}`);p?p.then(()=>show("Copied"),()=>show("Copy isn't allowed here")):show("Copy isn't allowed here")};
+
+/* ---------- translations: bundled files first, then the phone's translator, then a free service ---------- */
+const TR={},MT=store.get("mt",{}),view={};   // view[i] = language a card is shown in ("orig" forces original)
+const TR_VER="1";
+async function loadTR(tl){if(tl in TR)return TR[tl];TR[tl]=null;try{const r=await fetch(`tr/${tl}.json?v=${TR_VER}`);TR[tl]=r.ok?await r.json():{}}catch(e){TR[tl]={}}return TR[tl]}
+function trFor(i,tl){const k=keyOf(i);return (TR[tl]&&TR[tl][k])||(MT[tl]&&MT[tl][k])||null}
+function unent(s){const t=document.createElement("textarea");t.innerHTML=s;return t.value}
+async function fetchTr(i,tl){await loadTR(tl);let t=trFor(i,tl);if(t)return t;
+  const src=langOf(i),[,,,,idea,body,tr]=IDEAS[i];
+  if("Translator" in self){try{if(await Translator.availability({sourceLanguage:src,targetLanguage:tl})!=="unavailable"){const x=await Translator.create({sourceLanguage:src,targetLanguage:tl});t=await Promise.all([idea,body,tr].map(s=>x.translate(s)))}}catch(e){t=null}}
+  if(!t){try{t=await Promise.all([idea,body,tr].map(async s=>{const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),9000);const r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(s)}&langpair=${src}|${tl}`,{signal:ac.signal});clearTimeout(tm);const j=await r.json();
+      if(+j.responseStatus!==200||!j.responseData||!j.responseData.translatedText)throw new Error("mt");return unent(j.responseData.translatedText)}));track("translate-fallback")}catch(e){t=null}}
+  if(t){(MT[tl]=MT[tl]||{})[keyOf(i)]=t;store.set("mt",MT)}return t}
+function viewLang(i){const v=view[i];if(v==="orig")return langOf(i);if(v)return v;const r=set.readIn;return r&&r!==langOf(i)&&trFor(i,r)?r:langOf(i)}
+function cardText(i){const l=viewLang(i),[b,a,y,t,idea,body,tr]=IDEAS[i];if(l===langOf(i))return {l,idea,body,tr,tx:false};const x=trFor(i,l);return x?{l,idea:x[0],body:x[1],tr:x[2],tx:true}:{l:langOf(i),idea,body,tr,tx:false}}
+function rerenderCard(i){feed.querySelectorAll(`.slot[data-i="${i}"]`).forEach(s=>{const n=document.createElement("div");n.innerHTML=ideaCard(i,list.indexOf(i),list.length);const c=n.firstElementChild;c.firstElementChild.classList.add("on");s.replaceWith(c);if(activeSlot===s)activeSlot=c});observe()}
 
 /* ---------- card menu: note, share, translate, copy ---------- */
 let moreI=null;
-function openMore(i){moreI=i;const l=langOf(i);$("#moreIdea").textContent=`${IDEAS[i][4]} · ${IDEAS[i][0]}`;
-  $("#tlBtns").innerHTML=Object.entries(LANGS).filter(([k])=>k!==l).map(([k,v])=>`<button class="chip" data-tl="${k}">${v.name}</button>`).join("")+`<button class="chip" data-tl="other">Other language</button>`;
-  $("#tlOpen").hidden=true;sheetOpen($("#moreSheet"))}
+function openMore(i){moreI=i;const l=viewLang(i),o=langOf(i);$("#moreIdea").textContent=`${IDEAS[i][4]} · ${IDEAS[i][0]}`;
+  $("#tlBtns").innerHTML=(l!==o?`<button class="chip" data-tl="orig">Original (${LANGS[o].name})</button>`:"")+Object.entries(LANGS).filter(([k])=>k!==l&&k!==o).map(([k,v])=>`<button class="chip" data-tl="${k}">${v.name}</button>`).join("");
+  $("#tlMsg").hidden=true;sheetOpen($("#moreSheet"))}
 $("#mNote").onclick=()=>{const i=moreI;sheetClose();openNote(i)};
 $("#mShare").onclick=()=>{const i=moreI;sheetClose();openShare(i)};
-$("#mCopy").onclick=()=>{const [b,a,,,idea,body]=IDEAS[moreI];const p=navigator.clipboard&&navigator.clipboard.writeText(`${idea}\n${body}\n— ${b}, ${a}\n${APP_URL}`);p?p.then(()=>show("Copied"),()=>show("Copy isn't allowed here")):show("Copy isn't allowed here")};
-const gtUrl=(i,tl)=>{const [,,,,idea,body,tr]=IDEAS[i];return `https://translate.google.com/?sl=${langOf(i)}&tl=${tl==="other"?(navigator.language||"en").slice(0,2):tl}&text=${encodeURIComponent(idea+"\n\n"+body+"\n\n"+tr)}&op=translate`};
-$("#tlBtns").addEventListener("click",async e=>{const b=e.target.closest("[data-tl]");if(!b)return;const i=moreI,tl=b.dataset.tl,src=langOf(i);track("translate-"+src+"-"+tl);
-  if(tl!=="other"&&"Translator" in self){try{const av=await Translator.availability({sourceLanguage:src,targetLanguage:tl});
-      if(av!=="unavailable"){show("Translating…");const t=await Translator.create({sourceLanguage:src,targetLanguage:tl});const [,,,,idea,body,tr]=IDEAS[i];
-        const out=await Promise.all([idea,body,tr].map(x=>t.translate(x)));applyTranslation(i,out,tl);sheetClose();return}}catch(err){}}
-  const a=$("#tlOpen");a.href=gtUrl(i,tl);a.textContent=`Open in Google Translate (${tl==="other"?"your language":LANGS[tl].name})`;a.hidden=false;a.focus()});
-function applyTranslation(i,[idea,body,tr],tl){feed.querySelectorAll(`.slot[data-i="${i}"] .card`).forEach(c=>{
-  c.querySelector(".idea").textContent=idea;c.querySelector(".body").textContent=body;c.querySelector(".try span").textContent=tr;c.setAttribute("lang",tl);
-  const n=c.querySelector(".tnote");n.hidden=false;n.innerHTML=`Translated to ${LANGS[tl].name} on your device · <button class="linkbtn" data-orig="${i}">Show original</button>`})}
+$("#mCopy").onclick=()=>{const c=cardText(moreI),[b,a]=IDEAS[moreI];const p=navigator.clipboard&&navigator.clipboard.writeText(`${c.idea}\n${c.body}\n— ${b}, ${a}\n${APP_URL}`);p?p.then(()=>show("Copied"),()=>show("Copy isn't allowed here")):show("Copy isn't allowed here")};
+$("#tlBtns").addEventListener("click",async e=>{const b=e.target.closest("[data-tl]");if(!b)return;const i=moreI,tl=b.dataset.tl;
+  if(tl==="orig"){view[i]="orig";rerenderCard(i);sheetClose();return}
+  track("translate-"+langOf(i)+"-"+tl);b.disabled=true;const old=b.textContent;b.textContent="Translating…";
+  const t=await fetchTr(i,tl);b.disabled=false;b.textContent=old;
+  if(!t){const m=$("#tlMsg");m.hidden=false;m.textContent="Couldn't translate this card right now. Check your internet connection and try again.";return}
+  view[i]=tl;rerenderCard(i);sheetClose();buzz(10)});
 function updBkCount(){const off=offSet(),shown=BOOKS.filter(b=>set.langs.includes(b.lang)),c=$("#bkCount");if(c)c.textContent=`${shown.filter(b=>!off.has(b.name)).length} of ${shown.length} in your deck`}
 
 
@@ -1063,7 +1080,7 @@ feed.addEventListener("click",e=>{
   if(q("[data-listen-all]")){if(!synth)return show("Read-aloud isn't available here");listening=true;once("listen");const first=feed.querySelector(".slot[data-i]");first&&first.scrollIntoView({behavior:"smooth",block:"start"});return}
   if(q("[data-install]"))return startInstall("today");
   if(el=q("[data-goto]")){setShelf(el.dataset.goto);return}
-  if(el=q("[data-orig]")){const i=+el.dataset.orig,s=feed.querySelector(`.slot[data-i="${i}"]`),n=document.createElement("div");n.innerHTML=ideaCard(i,list.indexOf(i),list.length);s.replaceWith(n.firstElementChild);observe();return}
+  if(el=q("[data-orig]")){view[+el.dataset.orig]="orig";rerenderCard(+el.dataset.orig);return}
   if(q("button,a,ul.readlist,.opts"))return;
   const slot=q(".slot[data-i]");
   if(tapT){clearTimeout(tapT);tapT=null;if(slot){const i=+slot.dataset.i;if(!saved.has(keyOf(i)))toggleSave(i);const card=slot.firstElementChild,bu=document.createElement("span");bu.className="burst";bu.innerHTML=I.save;card.appendChild(bu);setTimeout(()=>bu.remove(),750)}return}
@@ -1081,6 +1098,7 @@ addEventListener("keydown",e=>{if(openSh){if(e.key==="Escape")sheetClose();retur
 if(set.amb!=="off")addEventListener("pointerdown",()=>ambience(set.amb),{once:true});
 if(synth){loadVoices();synth.onvoiceschanged=loadVoices}
 applySet();setShelf("today");
+if(set.readIn)loadTR(set.readIn).then(()=>{if(!feed.scrollTop)render()});
 if("serviceWorker" in navigator&&location.protocol==="https:"&&!/claude|anthropic/.test(location.host))navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 
