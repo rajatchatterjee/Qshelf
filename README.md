@@ -36,3 +36,7 @@ Ideas live in the `IDEAS` array in `index.html`, one line each: book, author, ye
 ## Usage counts
 
 Anonymous visits and a few events (sessions started and finished, listens, shares, quiz answers, saves) go to the tidycorners GoatCounter dashboard under paths starting with `/qshelf`. Nothing is counted in the Claude preview, and notes and saved ideas stay on the device.
+
+## Credits
+
+Made by Rajat Chatterjee, Pune. Ideas are paraphrased from the books named on each card.

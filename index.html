@@ -239,6 +239,36 @@ body.focus .installbar{display:none}
 .iwhy li::before{content:"✓  ";color:var(--accent);font-weight:700}
 .urlbox{display:flex;gap:8px;align-items:center}
 .urlbox code{flex:1;min-width:0;overflow-wrap:anywhere;font-family:var(--f-mono);font-size:.82rem;padding:10px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);user-select:all}
+.credit{margin:6px 0 0;padding-top:16px;border-top:1px solid var(--line);font-family:var(--f-sans);font-size:.9rem;color:var(--ink);display:grid;gap:4px;text-align:center}
+.credit b{font-family:var(--f-display)}
+.credit span{font-size:.78rem;color:var(--muted)}
+.endcredit{font-family:var(--f-sans);font-size:.8rem;color:var(--muted);margin:0}
+
+/* ---------- paper look: grain, fibres, page shadows, ink-pressed type ---------- */
+:root{--grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .32 0 0 0 0 .25 0 0 0 0 .16 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");--fiber:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.012 .09' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .18 0 0 0 .35 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");--grain-o:.14;--fiber-o:.12;--blend:multiply;--page-edge:rgba(92,64,30,.10);--page-shadow:rgba(60,40,15,.16)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--grain-o:.10;--fiber-o:.10;--blend:screen;--page-edge:rgba(0,0,0,.35);--page-shadow:rgba(0,0,0,.45)}}
+:root[data-theme="dark"],:root[data-skin="night"],:root[data-skin="midnight"],:root[data-skin="forest"]{--grain-o:.10;--fiber-o:.10;--blend:screen;--page-edge:rgba(0,0,0,.35);--page-shadow:rgba(0,0,0,.45)}
+:root[data-skin="paper"],:root[data-skin="sepia"]{--grain-o:.14;--fiber-o:.12;--blend:multiply;--page-edge:rgba(92,64,30,.10);--page-shadow:rgba(60,40,15,.16)}
+:root[data-skin="sepia"]{--bg:#e6d6b8;--surface:#f3e7cc;--line:#d6c29d;--grain-o:.18;--fiber-o:.14}
+:root[data-skin="paper"]{--bg:#e7e4dc;--surface:#f7f5ef;--line:#d8d3c7;--muted:#5f625e}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;background-image:var(--grain);opacity:var(--grain-o);mix-blend-mode:var(--blend)}
+body{background-image:linear-gradient(color-mix(in oklab,var(--bg) 55%,transparent),color-mix(in oklab,var(--bg) 55%,transparent)),var(--fiber);background-size:auto,600px 600px}
+.card{background:
+    radial-gradient(130% 90% at 50% 40%,transparent 62%,var(--page-edge) 100%),
+    linear-gradient(180deg,color-mix(in oklab,var(--hue) 5%,transparent),transparent 40%),
+    linear-gradient(color-mix(in oklab,var(--surface) 70%,transparent),color-mix(in oklab,var(--surface) 70%,transparent)),var(--fiber),
+    color-mix(in oklab,var(--hue) 3%,var(--surface));
+  background-size:auto,auto,auto,600px 600px,auto;background-blend-mode:normal,normal,normal,var(--blend),normal;
+  border:1px solid color-mix(in oklab,var(--line) 85%,transparent);border-radius:6px 6px 8px 8px;
+  box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 1px 1px var(--page-shadow),0 10px 24px -14px var(--page-shadow),3px 0 0 -1px color-mix(in oklab,var(--surface) 92%,#000) ,6px 1px 0 -2px color-mix(in oklab,var(--surface) 86%,#000)}
+.glyph{opacity:.06;mix-blend-mode:var(--blend);filter:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='r'><feTurbulence baseFrequency='.9' numOctaves='2'/><feDisplacementMap in='SourceGraphic' scale='6'/></filter></svg>#r")}
+.idea,.big{text-shadow:0 0 .5px color-mix(in oklab,var(--ink) 40%,transparent)}
+.sheet{background:var(--fiber),var(--surface);background-size:600px 600px,auto;background-blend-mode:var(--blend),normal}
+.chip,.pill,.round{background-color:color-mix(in oklab,var(--surface) 70%,transparent)}
+.chip[aria-pressed="true"]{background-color:var(--ink)}
+.segs i{border-radius:0}
+.try{border-left-style:solid;border-left-width:2px}
+.installbar{border-radius:8px}
 @media (min-width:760px){.slot{padding-inline:max(0px,calc((100% - 720px)/2))}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -302,6 +332,7 @@ body.focus .installbar{display:none}
       <div class="toggle"><span>Keep listening<small>Read-aloud moves to the next card on its own</small></span><button class="sw-t" role="switch" id="tAuto" aria-label="Keep listening"></button></div>
     </div>
     <p class="hintp">Qshelf counts anonymous visits and a few actions, like sessions finished, to see how many people use it. No names, accounts or cookies. Your notes and saved ideas never leave this device.</p>
+    <p class="credit">Qshelf is made by <b>Rajat Chatterjee</b> in Pune.<span>Ideas are paraphrased from the books named on each card.</span></p>
   </div>
 </section>
 <section class="sheet" id="noteSheet" role="dialog" aria-modal="true" aria-labelledby="noteT" hidden>
@@ -703,7 +734,7 @@ addEventListener("appinstalled",()=>track("installed"));
 const tracked=new Set();const once=n=>{if(!tracked.has(n)){tracked.add(n);track(n)}};
 
 /* ---------- settings ---------- */
-const SKINS=[["sepia","Sepia",["#f7efdd"],"#3a2a1a"],["auto","Auto",["#fbfcfd","#161d25"],"#15212c"],["paper","Paper",["#fbfcfd"],"#15212c"],["night","Night",["#161d25"],"#e7edf2"],["midnight","Midnight",["#101b3b"],"#e6bc62"],["forest","Forest",["#13241d"],"#8fd6a8"]];
+const SKINS=[["sepia","Sepia",["#f3e7cc"],"#3a2a1a"],["auto","Auto",["#fbfcfd","#161d25"],"#15212c"],["paper","Paper",["#f7f5ef"],"#15212c"],["night","Night",["#161d25"],"#e7edf2"],["midnight","Midnight",["#101b3b"],"#e6bc62"],["forest","Forest",["#13241d"],"#8fd6a8"]];
 $("#skins").innerHTML=SKINS.map(([k,n,bg,fg])=>`<button class="sw" data-v="${k}"><i style="background:${bg.length>1?`linear-gradient(135deg,${bg[0]} 50%,${bg[1]} 50%)`:bg[0]};color:${fg}">${k==="auto"?"":"Aa"}</i>${n}</button>`).join("");
 $("#sizeDots").innerHTML=SIZES.map(()=>"<i></i>").join("");
 function applySet(){
@@ -895,7 +926,8 @@ function render(){
       <h2 class="big">That's the <em>shelf</em>.</h2>
       <p class="lede" id="endLede"></p>
       <ul class="readlist" id="endList"></ul>
-      <div class="row"><button class="go" data-goto="books">Choose books</button><button class="go ghost" data-goto="saved">Saved ideas</button></div></div></section>`;
+      <div class="row"><button class="go" data-goto="books">Choose books</button><button class="go ghost" data-goto="saved">Saved ideas</button></div>
+      <p class="endcredit">Qshelf, made by Rajat Chatterjee</p></div></section>`;
   feed.innerHTML=h;
   segs.className="segs"+(list.length>16?" bar1":"");
   segs.innerHTML=list.length>16?"<i></i>":list.map(()=>"<i></i>").join("");
