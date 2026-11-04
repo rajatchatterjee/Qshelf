@@ -26,11 +26,11 @@
   --f-read:var(--f-serif); --scale:1; --lh:1.62;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0d1217; --surface:#161d25; --ink:#e7edf2; --muted:#93a2b0; --line:#2a3540; --accent:#7fb0de; --scrim:rgba(0,0,0,.6);
+  --bg:#2b2824; --surface:#36322d; --ink:#efe8dc; --muted:#ada393; --line:#4a443c; --accent:#dcae72; --scrim:rgba(0,0,0,.6);
   --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4; --h-health:#f0976d;
   color-scheme:dark}}
 :root[data-theme="dark"],:root[data-skin="night"]{
-  --bg:#0d1217; --surface:#161d25; --ink:#e7edf2; --muted:#93a2b0; --line:#2a3540; --accent:#7fb0de; --scrim:rgba(0,0,0,.6);
+  --bg:#2b2824; --surface:#36322d; --ink:#efe8dc; --muted:#ada393; --line:#4a443c; --accent:#dcae72; --scrim:rgba(0,0,0,.6);
   --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4; --h-health:#f0976d;
   color-scheme:dark}
 /* reading skins chosen in settings */
@@ -41,8 +41,8 @@
   --h-habits:#55803d; --h-mind:#5d5aa8; --h-money:#a26b12; --h-work:#3a6f96; --h-people:#b2485f; --h-meaning:#82508f; --h-strategy:#2f7c73; --h-health:#b0552a}
 :root[data-skin="midnight"],:root[data-skin="forest"]{
   --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4; --h-health:#f0976d; --scrim:rgba(0,0,0,.6); color-scheme:dark}
-:root[data-skin="midnight"]{--bg:#081027; --surface:#101b3b; --ink:#efece2; --muted:#9ca5c4; --line:#24305a; --accent:#e6bc62}
-:root[data-skin="forest"]{--bg:#0b1713; --surface:#13241d; --ink:#e7f0ea; --muted:#93ad9f; --line:#24392f; --accent:#8fd6a8}
+:root[data-skin="midnight"]{--bg:#232e48; --surface:#2c3856; --ink:#f0ebdf; --muted:#b0b8cc; --line:#404c6c; --accent:#e9c06a}
+:root[data-skin="forest"]{--bg:#26352d; --surface:#2f4036; --ink:#ecf1e8; --muted:#a8baac; --line:#43574a; --accent:#a8dcb7}
 :root[data-font="sans"]{--f-read:var(--f-sans)}
 :root[data-font="readable"]{--f-read:var(--f-readable)}
 
@@ -246,8 +246,8 @@ body.focus .installbar{display:none}
 
 /* ---------- paper look: grain, fibres, page shadows, ink-pressed type ---------- */
 :root{--grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .32 0 0 0 0 .25 0 0 0 0 .16 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");--fiber:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.012 .09' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .18 0 0 0 .35 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");--grain-o:.14;--fiber-o:.12;--blend:multiply;--page-edge:rgba(92,64,30,.10);--page-shadow:rgba(60,40,15,.16)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--grain-o:.10;--fiber-o:.10;--blend:screen;--page-edge:rgba(0,0,0,.35);--page-shadow:rgba(0,0,0,.45)}}
-:root[data-theme="dark"],:root[data-skin="night"],:root[data-skin="midnight"],:root[data-skin="forest"]{--grain-o:.10;--fiber-o:.10;--blend:screen;--page-edge:rgba(0,0,0,.35);--page-shadow:rgba(0,0,0,.45)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--grain-o:.16;--fiber-o:.16;--blend:screen;--page-edge:rgba(0,0,0,.22);--page-shadow:rgba(0,0,0,.35)}}
+:root[data-theme="dark"],:root[data-skin="night"],:root[data-skin="midnight"],:root[data-skin="forest"]{--grain-o:.16;--fiber-o:.16;--blend:screen;--page-edge:rgba(0,0,0,.22);--page-shadow:rgba(0,0,0,.35)}
 :root[data-skin="paper"],:root[data-skin="sepia"],:root[data-skin="sage"],:root[data-skin="rose"],:root[data-skin="mist"]{--grain-o:.14;--fiber-o:.12;--blend:multiply;--page-edge:rgba(92,64,30,.10);--page-shadow:rgba(60,40,15,.16)}
 :root[data-skin="sepia"]{--bg:#e6d6b8;--surface:#f3e7cc;--line:#d6c29d;--grain-o:.18;--fiber-o:.14}
 :root[data-skin="paper"]{--bg:#ece5d9;--surface:#faf5ec;--ink:#201a14;--muted:#6b6358;--line:#ddd3c3;--accent:#2f5a7a}
@@ -317,7 +317,7 @@ body{background-image:linear-gradient(color-mix(in oklab,var(--bg) 55%,transpare
     <div class="grp"><span class="lab">Languages</span><div class="chips" id="langSet"></div><p class="hintp">Pick which books appear in your deck. Hindi, Bangla and Marathi books are written in their own language.</p>
       <span class="lab" style="margin-top:6px">Read every card in</span><select class="field" id="readIn" aria-label="Read every card in"></select>
       <p class="hintp">Any single card can also be switched from its ••• menu.</p></div>
-    <div class="grp"><span class="lab">Theme</span><div class="swatches" id="skins"></div></div>
+    <div class="grp"><span class="lab">Theme</span><div class="swatches" id="skins"></div><p class="hintp">Auto uses Sepia by day and Forest by night, following your phone's light and dark mode.</p></div>
     <div class="grp"><span class="lab">Text size</span>
       <div class="sizer"><button id="smaller" aria-label="Smaller text" style="font-size:.85rem">A</button><div class="dots" id="sizeDots"></div><button id="bigger" aria-label="Larger text" style="font-size:1.25rem">A</button></div>
       <p class="preview">Getting a little better each day looks like nothing for weeks. Then the curve bends.</p>
@@ -728,10 +728,12 @@ let saved=loadKeys("saved2").size?loadKeys("saved2"):loadKeys("saved");
 let notes=store.get("notes",{}),hist=store.get("hist",{}),doneDays=store.get("days",[]);
 const pad2=n=>String(n).padStart(2,"0");
 const now=new Date(),today=`${now.getFullYear()}-${pad2(now.getMonth()+1)}-${pad2(now.getDate())}`;
-const set=Object.assign({skin:"sepia",langs:null,off:[],readIn:"",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true,voice:"",rate:1,rem:"07:30"},store.get("set",{}));
-if(!set.v){set.skin="sepia";set.v=2}   // Sepia became the default; earlier installs had saved Auto without choosing it
+const set=Object.assign({skin:"auto",langs:null,off:[],readIn:"",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true,voice:"",rate:1,rem:"07:30"},store.get("set",{}));
+if(!set.v||set.v<3){if(!set.v||set.skin==="sepia")set.skin="auto";set.v=3}   // Auto (Sepia by day, Forest by night) is the default
 if(!Array.isArray(set.langs)||!set.langs.length){const d=(navigator.language||"").slice(0,2);set.langs=["en"];if(["hi","bn","mr"].includes(d))set.langs.push(d)}
 const SIZES=[.9,1,1.12,1.26,1.4];
+const darkMQ=matchMedia("(prefers-color-scheme: dark)");   // Auto follows the phone's day/night mode
+try{darkMQ.addEventListener("change",()=>{if(set.skin==="auto")applySet()})}catch(e){}
 
 /* ---------- usage counting (live site only, anonymous) ---------- */
 const GC_CODE="tidycorners",GC_PREFIX="/qshelf",GC_ON=/\.github\.io$/.test(location.hostname);
@@ -744,11 +746,11 @@ addEventListener("appinstalled",()=>track("installed"));
 const tracked=new Set();const once=n=>{if(!tracked.has(n)){tracked.add(n);track(n)}};
 
 /* ---------- settings ---------- */
-const SKINS=[["sepia","Sepia",["#f3e7cc"],"#3a2a1a"],["paper","Paper",["#faf5ec"],"#201a14"],["sage","Sage",["#eef2e7"],"#3d6b55"],["rose","Rose",["#f8ede8"],"#a2464f"],["mist","Mist",["#eff2f6"],"#3b5f8f"],["auto","Auto",["#faf5ec","#161d25"],"#15212c"],["night","Night",["#161d25"],"#e7edf2"],["midnight","Midnight",["#101b3b"],"#e6bc62"],["forest","Forest",["#13241d"],"#8fd6a8"]];
+const SKINS=[["sepia","Sepia",["#f3e7cc"],"#3a2a1a"],["paper","Paper",["#faf5ec"],"#201a14"],["sage","Sage",["#eef2e7"],"#3d6b55"],["rose","Rose",["#f8ede8"],"#a2464f"],["mist","Mist",["#eff2f6"],"#3b5f8f"],["auto","Auto",["#f3e7cc","#2f4036"],"#3a2a1a"],["night","Night",["#36322d"],"#efe8dc"],["midnight","Midnight",["#2c3856"],"#e9c06a"],["forest","Forest",["#2f4036"],"#a8dcb7"]];
 $("#skins").innerHTML=SKINS.map(([k,n,bg,fg])=>`<button class="sw" data-v="${k}"><i style="background:${bg.length>1?`linear-gradient(135deg,${bg[0]} 50%,${bg[1]} 50%)`:bg[0]};color:${fg}">${k==="auto"?"":"Aa"}</i>${n}</button>`).join("");
 $("#sizeDots").innerHTML=SIZES.map(()=>"<i></i>").join("");
 function applySet(){
-  set.skin==="auto"?root.removeAttribute("data-skin"):root.setAttribute("data-skin",set.skin);
+  root.setAttribute("data-skin",set.skin==="auto"?(darkMQ.matches?"forest":"sepia"):set.skin);
   set.font==="serif"?root.removeAttribute("data-font"):root.setAttribute("data-font",set.font);
   root.style.setProperty("--scale",SIZES[set.size]);root.style.setProperty("--lh",set.lh);
   document.body.classList.toggle("notry",!set.tryOn);
