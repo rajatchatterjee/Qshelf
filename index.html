@@ -17,7 +17,7 @@
 /* Layout: one immersive card per screen, snapped vertically; story-style segments on top, a chrome bar that hides in focus mode, and a bottom sheet for reading settings */
 :root{
   --bg:#e9edf1; --surface:#fbfcfd; --ink:#15212c; --muted:#5b6977; --line:#cfd7df; --accent:#2b5c8a; --scrim:rgba(10,16,22,.45);
-  --h-habits:#3f8a5c; --h-mind:#5a5fc4; --h-money:#b07f22; --h-work:#2f78b5; --h-people:#c2557a; --h-meaning:#8a5bb8; --h-strategy:#278a8a;
+  --h-habits:#3f8a5c; --h-mind:#5a5fc4; --h-money:#b07f22; --h-work:#2f78b5; --h-people:#c2557a; --h-meaning:#8a5bb8; --h-strategy:#278a8a; --h-health:#c4602f;
   --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --f-serif:"Literata",Georgia,"Times New Roman",serif;
   --f-sans:"Figtree",ui-sans-serif,system-ui,sans-serif;
@@ -27,20 +27,20 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0d1217; --surface:#161d25; --ink:#e7edf2; --muted:#93a2b0; --line:#2a3540; --accent:#7fb0de; --scrim:rgba(0,0,0,.6);
-  --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4;
+  --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4; --h-health:#f0976d;
   color-scheme:dark}}
 :root[data-theme="dark"],:root[data-skin="night"]{
   --bg:#0d1217; --surface:#161d25; --ink:#e7edf2; --muted:#93a2b0; --line:#2a3540; --accent:#7fb0de; --scrim:rgba(0,0,0,.6);
-  --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4;
+  --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4; --h-health:#f0976d;
   color-scheme:dark}
 /* reading skins chosen in settings */
 :root[data-skin="paper"],:root[data-skin="sepia"]{
-  --h-habits:#3f8a5c; --h-mind:#5a5fc4; --h-money:#b07f22; --h-work:#2f78b5; --h-people:#c2557a; --h-meaning:#8a5bb8; --h-strategy:#278a8a; --scrim:rgba(10,16,22,.45); color-scheme:light}
+  --h-habits:#3f8a5c; --h-mind:#5a5fc4; --h-money:#b07f22; --h-work:#2f78b5; --h-people:#c2557a; --h-meaning:#8a5bb8; --h-strategy:#278a8a; --h-health:#c4602f; --scrim:rgba(10,16,22,.45); color-scheme:light}
 :root[data-skin="paper"]{--bg:#e9edf1; --surface:#fbfcfd; --ink:#15212c; --muted:#5b6977; --line:#cfd7df; --accent:#2b5c8a}
 :root[data-skin="sepia"]{--bg:#ece0c8; --surface:#f7efdd; --ink:#3a2a1a; --muted:#7a654d; --line:#d9c6a6; --accent:#9a5427;
-  --h-habits:#55803d; --h-mind:#5d5aa8; --h-money:#a26b12; --h-work:#3a6f96; --h-people:#b2485f; --h-meaning:#82508f; --h-strategy:#2f7c73}
+  --h-habits:#55803d; --h-mind:#5d5aa8; --h-money:#a26b12; --h-work:#3a6f96; --h-people:#b2485f; --h-meaning:#82508f; --h-strategy:#2f7c73; --h-health:#b0552a}
 :root[data-skin="midnight"],:root[data-skin="forest"]{
-  --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4; --scrim:rgba(0,0,0,.6); color-scheme:dark}
+  --h-habits:#6cc48f; --h-mind:#9a9ef0; --h-money:#e2b65c; --h-work:#6aaee6; --h-people:#ec8aab; --h-meaning:#bb92e6; --h-strategy:#5cc4c4; --h-health:#f0976d; --scrim:rgba(0,0,0,.6); color-scheme:dark}
 :root[data-skin="midnight"]{--bg:#081027; --surface:#101b3b; --ink:#efece2; --muted:#9ca5c4; --line:#24305a; --accent:#e6bc62}
 :root[data-skin="forest"]{--bg:#0b1713; --surface:#13241d; --ink:#e7f0ea; --muted:#93ad9f; --line:#24392f; --accent:#8fd6a8}
 :root[data-font="sans"]{--f-read:var(--f-sans)}
@@ -101,6 +101,7 @@ body.focus .chrome{grid-template-rows:0fr;opacity:0;pointer-events:none}
 body.notry .try{display:none}
 .foot{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:14px;border-top:1px solid color-mix(in oklab,var(--hue) 25%,var(--line))}
 .book{flex:1;min-width:0}
+.book .t,.book .a{display:block}
 .book .t{font-family:var(--f-display);font-weight:700;font-size:1.02rem;margin:0;line-height:1.2}
 .book .a{font-size:.86rem;color:var(--muted);margin:3px 0 0;font-family:var(--f-sans)}
 .icon{width:42px;height:42px;border-radius:50%;border:1px solid color-mix(in oklab,var(--hue) 30%,var(--line));background:color-mix(in oklab,var(--surface) 80%,transparent);display:grid;place-items:center;flex:none;transition:background-color .2s,transform .15s}
@@ -172,6 +173,33 @@ body.focus .mini{opacity:1}
 .sw-t[aria-checked="true"]{background:var(--accent)}
 .sw-t[aria-checked="true"]::after{transform:translateX(18px)}
 
+
+/* added: notes, quiz, books, sheets */
+.foot{gap:6px}.foot .icon{width:40px;height:40px}
+.booklink{text-align:left;min-width:0}
+.booklink .t{text-decoration:underline;text-decoration-color:color-mix(in oklab,var(--hue) 45%,transparent);text-underline-offset:4px;text-decoration-thickness:2px}
+.note{font-family:var(--f-sans);font-size:calc(.92rem*var(--scale));line-height:1.5;margin:0;padding:10px 12px;border-radius:12px;background:color-mix(in oklab,var(--hue) 9%,var(--surface));border:1px dashed color-mix(in oklab,var(--hue) 45%,var(--line))}
+.note::before{content:"Your note";display:block;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--hue);margin-bottom:3px}
+.qq{font-family:var(--f-display);font-weight:700;font-size:calc(1.7rem*var(--scale));letter-spacing:-.02em;margin:auto 0 0;line-height:1.1}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-family:var(--f-display);font-weight:500;font-size:calc(1rem*var(--scale));line-height:1.3;transition:background-color .2s,border-color .2s}
+.opt.right{background:color-mix(in oklab,var(--h-habits) 22%,var(--surface));border-color:var(--h-habits)}
+.opt.wrong{background:color-mix(in oklab,var(--h-people) 18%,var(--surface));border-color:var(--h-people)}
+.opt:disabled{cursor:default}
+.qres{font-family:var(--f-sans);font-size:.92rem;color:var(--muted);margin:0}
+.blist{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;max-width:none!important}
+.bk{--hue:var(--accent);text-align:left;padding:12px;border-radius:14px;background:color-mix(in oklab,var(--hue) 10%,var(--surface));border:1px solid color-mix(in oklab,var(--hue) 26%,var(--line));display:grid;gap:4px;align-content:start;min-width:0}
+.bk b{font-family:var(--f-display);font-size:.95rem;line-height:1.2;overflow-wrap:anywhere}
+.bk span{font-family:var(--f-sans);font-size:.78rem;color:var(--muted)}
+.ta,.field{width:100%;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:11px 12px;font-family:var(--f-sans);font-size:1rem;line-height:1.5}
+.ta{min-height:140px;resize:vertical}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border-radius:999px;padding:11px 18px;font-family:var(--f-display);font-weight:700;font-size:.95rem;background:var(--ink);color:var(--bg);text-decoration:none;display:inline-flex;align-items:center;border:1px solid var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.shareimg{width:100%;max-width:340px;border-radius:16px;display:block;margin:0 auto;box-shadow:0 8px 30px rgba(0,0,0,.22);aspect-ratio:4/5;background:var(--bg)}
+.hintp{font-family:var(--f-sans);font-size:.84rem;color:var(--muted);margin:0;line-height:1.5}
+.rangerow{display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:.8rem;font-variant-numeric:tabular-nums}
+.rangerow input{flex:1;accent-color:var(--accent)}
 @media (min-width:760px){.slot{padding-inline:max(0px,calc((100% - 720px)/2))}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -199,7 +227,7 @@ body.focus .mini{opacity:1}
 <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="setT" hidden>
   <div class="in">
     <div class="grab"></div>
-    <h2 id="setT">Reading settings <button class="round" id="closeSet" aria-label="Close settings"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
+    <h2 id="setT">Reading settings <button class="round" id="closeSet" data-close aria-label="Close settings"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
     <div class="grp"><span class="lab">Theme</span><div class="swatches" id="skins"></div></div>
     <div class="grp"><span class="lab">Text size</span>
       <div class="sizer"><button id="smaller" aria-label="Smaller text" style="font-size:.85rem">A</button><div class="dots" id="sizeDots"></div><button id="bigger" aria-label="Larger text" style="font-size:1.25rem">A</button></div>
@@ -209,18 +237,42 @@ body.focus .mini{opacity:1}
       <button class="f-serif" data-v="serif">Serif</button><button class="f-sans" data-v="sans">Sans</button><button class="f-readable" data-v="readable">Easy read</button></div></div>
     <div class="grp"><span class="lab">Line spacing</span><div class="seg" id="spacing">
       <button data-v="1.48">Compact</button><button data-v="1.62">Comfort</button><button data-v="1.85">Airy</button></div></div>
+    <div class="grp"><span class="lab">Voice for Listen</span>
+      <select class="field" id="voice" aria-label="Voice"></select>
+      <div class="rangerow"><span>Speed</span><input type="range" id="rate" min="0.7" max="1.3" step="0.05" aria-label="Speech speed"><span id="rateV">1.00×</span></div>
+      <div class="btns"><button class="btn ghost" id="testVoice">Test voice</button></div>
+      <p class="hintp">Sounds robotic? Download a better voice on your phone. Android: Settings → Text-to-speech → Speech Services by Google → Install voice data. iPhone: Settings → Accessibility → Spoken Content → Voices, then pick one marked Enhanced or Premium. Then choose it here.</p></div>
     <div class="grp"><span class="lab">Ambience</span><div class="seg" id="amb">
       <button data-v="off">Off</button><button data-v="rain">Rain</button><button data-v="ocean">Ocean</button><button data-v="hearth">Hearth</button></div></div>
+    <div class="grp"><span class="lab">Daily reminder</span>
+      <div class="rangerow"><span>Remind me at</span><input class="field" type="time" id="remTime" style="flex:1" aria-label="Reminder time"></div>
+      <div class="btns"><a class="btn" id="gcal" target="_blank" rel="noopener">Add to Google Calendar</a><a class="btn ghost" id="ics" download="qshelf-reminder.ics">Calendar file</a></div>
+      <p class="hintp">Adds a daily event with a link back to Qshelf. Use the calendar file on iPhone or Outlook.</p></div>
     <div class="grp">
       <div class="toggle"><span>Show “Try this”<small>A small action at the end of each idea</small></span><button class="sw-t" role="switch" id="tTry" aria-label="Show Try this"></button></div>
       <div class="toggle"><span>Keep listening<small>Read-aloud moves to the next card on its own</small></span><button class="sw-t" role="switch" id="tAuto" aria-label="Keep listening"></button></div>
     </div>
+    <p class="hintp">Qshelf counts anonymous visits and a few actions, like sessions finished, to see how many people use it. No names, accounts or cookies. Your notes and saved ideas never leave this device.</p>
   </div>
 </section>
+<section class="sheet" id="noteSheet" role="dialog" aria-modal="true" aria-labelledby="noteT" hidden>
+  <div class="in"><div class="grab"></div>
+    <h2 id="noteT">Your note <button class="round" data-close aria-label="Close note"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
+    <p class="hintp" id="noteIdea"></p>
+    <textarea class="ta" id="noteText" placeholder="What does this mean for you? Where will you use it?"></textarea>
+    <div class="btns"><button class="btn" id="noteSave">Save note</button><button class="btn ghost" id="noteDel">Delete note</button></div>
+  </div></section>
+<section class="sheet" id="shareSheet" role="dialog" aria-modal="true" aria-labelledby="shareT" hidden>
+  <div class="in"><div class="grab"></div>
+    <h2 id="shareT">Share this idea <button class="round" data-close aria-label="Close share"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
+    <img class="shareimg" id="shareImg" alt="This idea as a shareable image">
+    <div class="btns"><button class="btn" id="shareNative">Share image</button><a class="btn ghost" id="shareSave" download="qshelf-idea.png">Save image</a><button class="btn ghost" id="shareCopy">Copy text</button></div>
+    <p class="hintp">You can also long-press the image to save or share it.</p>
+  </div></section>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
-const THEMES={habits:"Habits",mind:"Thinking",money:"Money",work:"Work",people:"People",meaning:"Meaning",strategy:"Strategy"};
+const THEMES={habits:"Habits",mind:"Thinking",money:"Money",work:"Work",people:"People",meaning:"Meaning",strategy:"Strategy",health:"Health"};
 const IDEAS=[
 ["Atomic Habits","James Clear",2018,"habits","Small gains compound quietly","Getting a little better each day looks like nothing for weeks. Then the curve bends. Most people quit in the flat stretch, right before the payoff shows up.","Pick one habit and shrink it until it takes under two minutes. Do that version today."],
 ["Atomic Habits","James Clear",2018,"habits","Become the person, not the goal","Goals describe an outcome. Habits stick when they describe who you are. Every repetition is a vote for an identity, and enough votes change how you see yourself.","Finish this sentence: I am the kind of person who… Then do one thing that proves it."],
@@ -270,16 +322,191 @@ const IDEAS=[
 ["Make It Stick","Brown, Roediger & McDaniel",2014,"habits","Test yourself to remember","Rereading feels productive but fades fast. Pulling information from memory, spaced over days, makes it stick far better.","Close this app and recall the last three ideas you read. Out loud, if you can."],
 ["The Mom Test","Rob Fitzpatrick",2013,"strategy","Ask about the past, not the future","People are polite about your idea and bad at predicting their own behavior. Ask what they did last time the problem came up, and what they spent fixing it.","Rewrite one would you use this? question as When did this last happen to you?"],
 ["Getting to Yes","Fisher & Ury",1981,"people","Interests, not positions","Two people want the same orange. One needs the peel, the other the juice. Arguing over positions hides interests that could both be met.","In your next conflict, ask what the other person needs this for."],
-["Outliers","Malcolm Gladwell",2008,"work","Small early edges snowball","Slight advantages, like a birth month or early access to a computer, compound into big gaps. Success is rarely a solo story.","Think of one early break you got. Who could you give a similar one to?"]
+["Outliers","Malcolm Gladwell",2008,"work","Small early edges snowball","Slight advantages, like a birth month or early access to a computer, compound into big gaps. Success is rarely a solo story.","Think of one early break you got. Who could you give a similar one to?"],
+["Atomic Habits","James Clear",2018,"habits","Stack new habits on old ones","A new habit is easier to remember when it is tied to something you already do every day. The existing routine becomes the reminder, so you stop relying on motivation.","Finish this: After I pour my morning tea, I will… Pick something under a minute."],
+["Atomic Habits","James Clear",2018,"habits","Never miss twice","Missing one day barely matters. Missing two starts a new pattern. Top performers slip like everyone else, but they get back on track fast instead of waiting for a fresh Monday.","If you skipped a habit yesterday, do the smallest version of it today."],
+["Tiny Habits","BJ Fogg",2019,"habits","Behavior needs a prompt","Any action happens when motivation, ability and a prompt show up at the same moment. Motivation is unreliable, so make the action easier and the prompt clearer instead.","Find one habit you keep forgetting and attach a clear prompt to it."],
+["Tiny Habits","BJ Fogg",2019,"habits","Celebrate to wire it in","Habits form through emotion, not repetition alone. A quick moment of feeling good right after the action tells your brain it is worth repeating.","Next time you finish a small good habit, give yourself a real fist-pump or a quiet yes."],
+["Tiny Habits","BJ Fogg",2019,"habits","Start ridiculously small","Floss one tooth. Do two push-ups. A behavior that small never feels like effort, and once it becomes automatic it tends to grow on its own.","Shrink a habit you have failed at until it feels almost silly. Do that today."],
+["The Power of Habit","Charles Duhigg",2012,"habits","Every habit is a loop","Habits run on cue, routine and reward. Once you can name the cue and the reward, you can see what the habit is really doing for you.","Pick one habit you dislike and write down its cue and the reward it gives."],
+["The Power of Habit","Charles Duhigg",2012,"habits","Keep the cue, swap the routine","You rarely erase a bad habit. You replace it. Keep the same trigger and the same reward, and plug a better routine into the middle.","When the urge for a bad habit hits, try a different action that delivers the same reward."],
+["The Power of Habit","Charles Duhigg",2012,"habits","Find your keystone habit","Some habits pull others along with them. Regular exercise, for instance, often leads to better eating and focus. Change one keystone and many things shift.","Ask which single habit, if you kept it, would make three others easier."],
+["Peak","Anders Ericsson",2016,"habits","Experts see in chunks","Experts don't just know more. They hold rich mental pictures that let them spot patterns instantly. Deliberate practice is mostly the building of those pictures.","Study one expert's work closely and try to explain why each choice was made."],
+["Make It Stick","Brown, Roediger & McDaniel",2014,"habits","Mix your practice","Practicing one type of problem in a block feels smooth but fades. Mixing types forces you to choose the right approach each time, which builds real skill.","Next time you study, shuffle different kinds of questions together."],
+["Make It Stick","Brown, Roediger & McDaniel",2014,"habits","Struggle is part of learning","Learning that feels easy is often shallow. Effortful recall and a bit of difficulty slow you down now but make memories far more durable.","Before rereading notes, try to write down everything you remember first."],
+["The War of Art","Steven Pressfield",2002,"habits","Turn pro","Amateurs wait for inspiration. Professionals show up on schedule, do the work, and accept that some days will be bad. The decision to turn pro is a mindset, not a job title.","Set a fixed daily time for your most important creative work and keep it for a week."],
+["Ultralearning","Scott Young",2019,"habits","Learn by doing the real thing","The fastest way to learn a skill is to practice it in the situation where you will use it. Classes and theory help, but directness beats them.","If you want to learn a language, have one real conversation in it this week."],
+["Ultralearning","Scott Young",2019,"habits","Drill your weakest link","Find the one sub-skill that holds the rest back and isolate it. Practice that piece alone until it stops being the bottleneck.","Name the weakest part of a skill you are building and give it a focused 15 minutes."],
+["Indistractable","Nir Eyal",2019,"habits","Distraction starts inside","Most distraction is an escape from boredom, stress or uncertainty. The phone is just the exit. Managing the uncomfortable feeling matters more than blocking apps.","Next time you reach for your phone, name the feeling you are trying to escape."],
+["Indistractable","Nir Eyal",2019,"habits","Timebox your values","You can't call something a distraction unless you know what it distracted you from. Plan your day as time blocks for what you care about, including fun.","Make tomorrow's calendar a full set of blocks, including rest and family time."],
+["Indistractable","Nir Eyal",2019,"habits","Make a pact with your future self","Commitments made in advance, like a focus app, a study partner or money on the line, protect you from your weaker moments.","Set up one advance commitment for a habit you keep breaking."],
+["Digital Minimalism","Cal Newport",2019,"habits","Declutter your digital life","Take a break from optional apps and services for a few weeks, then add back only those that strongly support something you value.","Delete one app from your phone for seven days and notice what you miss."],
+["Mastery","Robert Greene",2012,"habits","Embrace the apprenticeship","Masters across history went through a long, humble stretch of learning before their best work. Treat early years as training, not a stage to rush through.","Ask a senior person you admire what they wish they had practiced more early on."],
+["Thinking, Fast and Slow","Daniel Kahneman",2011,"mind","Losses hurt twice as much","Losing something feels much stronger than gaining the same thing. That makes people cling to bad positions and avoid good risks.","Look at one decision you are avoiding. Is fear of a small loss blocking a bigger gain?"],
+["Thinking, Fast and Slow","Daniel Kahneman",2011,"mind","Plans are always optimistic","People underestimate time and cost even when they know similar projects ran late. Looking at how long comparable projects actually took is far more accurate.","For your next estimate, check how long the last three similar jobs really took."],
+["Thinking, Fast and Slow","Daniel Kahneman",2011,"mind","Endings shape memories","We remember experiences mainly by their peak moment and how they ended, not by their total length. A good ending can redeem a long, average experience.","End your next meeting or family outing on a deliberately good note."],
+["Predictably Irrational","Dan Ariely",2008,"mind","Free makes us foolish","A zero price tag triggers a special excitement that makes people pick worse options. We often choose the free thing even when paying a little gets us much more.","Next time free tempts you, ask whether you would pay a small amount for it."],
+["Predictably Irrational","Dan Ariely",2008,"mind","We judge by comparison","People rarely know what they want in absolute terms. A third, clearly worse option can make one of the others look like an obvious winner.","When choosing, remove the option you would never pick and see if your preference changes."],
+["The Scout Mindset","Julia Galef",2021,"mind","Be a scout, not a soldier","A soldier defends beliefs against attack. A scout wants an accurate map, even when it is unwelcome. Scouts make better decisions because they can see clearly.","Pick one belief you hold strongly and list the best evidence against it."],
+["The Scout Mindset","Julia Galef",2021,"mind","Put a number on your confidence","Saying you are pretty sure hides a lot. Estimating a percentage makes you notice how certain you really are, and lets you check later whether you were right.","Write down three predictions this week with a confidence percentage for each."],
+["Thinking in Bets","Annie Duke",2018,"mind","Wanna bet?","Asking yourself whether you would bet money on a belief exposes how unsure you actually are. It shifts you from defending a view to estimating odds.","Next time you state something firmly, ask how much you would bet on it."],
+["Superforecasting","Philip Tetlock",2015,"mind","Look through many eyes","Good forecasters combine many viewpoints, like a dragonfly with thousands of lenses, rather than trusting one big theory. Diverse angles cancel out each other's blind spots.","For a tricky question, write down how three very different people would see it."],
+["The Black Swan","Nassim Nicholas Taleb",2007,"mind","We invent neat stories","After the fact, we turn random events into tidy causes and effects. The story feels like understanding but often hides how much luck was involved.","For one recent success, list the parts that came down to luck."],
+["The Black Swan","Nassim Nicholas Taleb",2007,"mind","Remember the silent evidence","We study the winners and forget the many who did the same thing and failed. The graveyard is invisible, so the lesson looks stronger than it is.","When you hear a success tip, ask how many people tried it and didn't make it."],
+["Fooled by Randomness","Nassim Nicholas Taleb",2001,"mind","Judge by the paths not taken","A risky bet that paid off can still have been a bad idea. Picture the other ways things could have gone before you praise a result.","Think of a bold move someone made. How often would it have gone badly?"],
+["The Great Mental Models","Shane Parrish",2019,"mind","The map is not the territory","Models, reports and metrics simplify reality. They are useful, but when the ground changes, the map lags behind. Check reality, not just the dashboard.","Pick a metric you trust and go see the real thing it is supposed to measure."],
+["The Great Mental Models","Shane Parrish",2019,"mind","Know your circle of competence","You make good calls inside areas you truly understand. The danger is not having limits but not knowing where they are.","Write down three topics you know deeply and three you only think you know."],
+["The Great Mental Models","Shane Parrish",2019,"mind","Ask and then what?","First-order thinking stops at the immediate result. Second-order thinking follows the consequences a step or two further, where many surprises live.","For a decision this week, ask and then what? three times in a row."],
+["Range","David Epstein",2019,"mind","Kind and wicked environments","Some fields give fast, clear feedback, so practice builds intuition. Others give slow, noisy feedback, where experience can mislead you. Know which one you are in.","Ask whether your work gives quick, honest feedback. If not, where could you get some?"],
+["Factfulness","Hans Rosling",2018,"mind","The world is not split in two","We like to divide things into rich and poor, us and them. In reality, most people sit in the middle, and the gap is a myth created by looking at extremes.","When you see a stark divide in the news, look for the middle group."],
+["Factfulness","Hans Rosling",2018,"mind","Bad news travels further","Things can be bad and getting better at the same time. Gradual improvements rarely make headlines, so we feel the world is worse than it is.","Look up one long-term trend you assume is getting worse and check the data."],
+["Factfulness","Hans Rosling",2018,"mind","Always compare numbers","A lonely number looks huge or tiny without context. Comparing it, or dividing it per person, reveals what it actually means.","Next big number you read, ask: compared to what, and per how many?"],
+["Noise","Kahneman, Sibony & Sunstein",2021,"mind","Noise is as costly as bias","Different experts, or the same expert on different days, make wildly different calls on the same case. That random scatter does as much damage as systematic bias.","Ask a colleague to judge a case independently and compare your answers."],
+["Noise","Kahneman, Sibony & Sunstein",2021,"mind","Break judgments into parts","Rating a few separate factors, then combining them, gives steadier decisions than one overall gut call. Save intuition for the end.","For your next hiring or buying decision, score four criteria separately first."],
+["Think Again","Adam Grant",2021,"mind","Think like a scientist","We often slip into preaching our views, prosecuting others, or campaigning for approval. Treating opinions as hypotheses to test keeps you open to learning.","Pick a belief and design a small test that could prove it wrong."],
+["Think Again","Adam Grant",2021,"mind","Confidence is not competence","The less people know about a subject, the more confident they often feel. Real expertise tends to come with a clearer sense of what you don't know.","Notice one area where you feel very sure. What would an expert question?"],
+["The Art of Thinking Clearly","Rolf Dobelli",2011,"mind","Ignore the sunk cost","Money, time or effort already spent can't be recovered. Continuing just because you have invested so much only adds to the loss.","Name one thing you continue only because you have already invested in it."],
+["The Happiness Hypothesis","Jonathan Haidt",2006,"mind","The elephant and the rider","Your conscious mind is a small rider on a large emotional elephant. You change behavior by working with the elephant, not by lecturing it.","Make one good habit more pleasant instead of relying on willpower."],
+["Stumbling on Happiness","Daniel Gilbert",2006,"mind","We misjudge future feelings","People predict that events will affect them more strongly and for longer than they actually do. We adapt to both good and bad faster than we expect.","Before a big decision, ask someone who has already lived it how it felt."],
+["Mindset","Carol Dweck",2006,"mind","Praise the effort, not the talent","Calling someone smart can make them avoid hard tasks to protect the label. Praising effort and strategy encourages them to take on challenges.","Next time you praise someone, name what they did, not what they are."],
+["Algorithms to Live By","Christian & Griffiths",2016,"strategy","Explore early, exploit later","When you have lots of time ahead, try new things. As time runs short, enjoy the favorites you know. Your best mix depends on how long you will stay.","New to a city or role? Try something new this week rather than the safe choice."],
+["Algorithms to Live By","Christian & Griffiths",2016,"strategy","Look, then leap","When choosing from options that appear one by one, spend the first part just looking to set a standard, then pick the first option that beats it.","For your next search, set a viewing-only phase before you allow yourself to choose."],
+["Influence","Robert Cialdini",1984,"people","Small yeses lead to big ones","Once people commit to something, especially in public or in writing, they feel pressure to stay consistent with it. Small agreements pave the way for larger ones.","Ask for a small, easy commitment before your bigger request."],
+["Influence","Robert Cialdini",1984,"people","Scarcity makes things shine","We want things more when they seem rare or about to disappear. Being aware of this helps you resist fake deadlines and limited offers.","Next time an offer says only today, ask if you would want it next month too."],
+["Influence","Robert Cialdini",1984,"people","We defer to authority","Titles, uniforms and confident tone make people comply, sometimes against their judgment. Real expertise deserves respect, but the symbols alone don't prove it.","Ask what evidence backs an authority's claim, not just who said it."],
+["The Psychology of Money","Morgan Housel",2020,"money","Wealth is what you don't see","Wealth is the car not bought and the money not spent. Spending shows off income, but it often hides a lack of savings.","Look at one recent purchase meant to impress. Would you buy it again?"],
+["The Psychology of Money","Morgan Housel",2020,"money","A few wins drive everything","In investing and careers, a small number of outcomes produce most of the results. You can be wrong often and still do very well if you stay in the game.","Stop judging your portfolio by its worst picks. Look at what drives most of the gain."],
+["The Psychology of Money","Morgan Housel",2020,"money","Reasonable beats rational","A plan you can stick with through bad times beats a perfect plan you will abandon. Money is personal, and peace of mind is a real return.","Ask whether your investing plan would let you sleep during a big crash."],
+["The Richest Man in Babylon","George S. Clason",1926,"money","Pay yourself first","Set aside a fixed share of everything you earn before spending on anything else. Live on the rest, and the saved part grows quietly.","Set up an automatic transfer to savings on the day your salary arrives."],
+["The Richest Man in Babylon","George S. Clason",1926,"money","Make your money work","Saved coins sitting idle stay the same. Put them where they earn more coins, and those coins earn too. The habit matters more than the amount.","Check one account where money sits idle and look for a sensible place to invest it."],
+["Rich Dad Poor Dad","Robert Kiyosaki",1997,"money","Assets feed you, liabilities eat","An asset puts money in your pocket. A liability takes money out, even if it is called an investment. Many people buy liabilities thinking they are assets.","List what you own and mark which items earn money and which cost money."],
+["The Intelligent Investor","Benjamin Graham",1949,"money","Mr. Market is moody","Picture the market as a partner who offers wildly different prices each day based on mood. You can ignore him, or buy when he panics. You never have to follow him.","Next time markets swing, write down what you plan to do before checking prices again."],
+["The Intelligent Investor","Benjamin Graham",1949,"money","Insist on a margin of safety","Buy only when the price is well below what something is worth. That cushion protects you when your estimate is wrong, which it sometimes will be.","Before your next purchase, ask how wrong you could be and still be fine."],
+["A Random Walk Down Wall Street","Burton Malkiel",1973,"money","Most experts don't beat the index","Over long periods, most professional fund managers underperform a simple, low-cost index fund after fees. Owning the whole market is hard to beat.","Compare the fees and long-term returns of your funds with a plain index fund."],
+["The Little Book of Common Sense Investing","John C. Bogle",2007,"money","Costs compound too","Fees look small each year but compound against you for decades. Keeping costs low is one of the few sure ways to keep more of your returns.","Find the expense ratio of every fund you own."],
+["Your Money or Your Life","Vicki Robin & Joe Dominguez",1992,"money","Money is life energy","Each rupee you spend cost you a slice of your working life. Seeing prices in hours worked changes which purchases feel worth it.","Convert your biggest monthly expense into the hours of work it takes."],
+["The Millionaire Next Door","Thomas Stanley & William Danko",1996,"money","Wealth looks ordinary","Many wealthy people live modestly, in ordinary homes with ordinary cars. Those who look rich often have high income but little net worth.","Ask yourself whether your spending aims at looking wealthy or being wealthy."],
+["I Will Teach You to Be Rich","Ramit Sethi",2009,"money","Spend big on what you love","Cut costs mercilessly on things you don't care about, so you can spend freely on the things you truly love. Guilt-free spending comes from clear priorities.","Name two things you love spending on and two you could cut without missing."],
+["I Will Teach You to Be Rich","Ramit Sethi",2009,"money","Automate your money","Set up transfers for saving, investing and bills so the right things happen without willpower. The best system works even when you forget about it.","Automate one money task you currently do by hand."],
+["Die With Zero","Bill Perkins",2020,"money","Collect memory dividends","Experiences keep paying out in memories and stories long after they happen. Delaying them too long can mean you are no longer able to enjoy them.","Plan one experience this year that you would regret postponing."],
+["Die With Zero","Bill Perkins",2020,"money","Some joys have expiry dates","Certain adventures fit certain ages: trekking, travelling with young kids, late nights. Map your life into time windows and plan experiences for each.","List three experiences you want before your next big birthday."],
+["The Almanack of Naval Ravikant","Eric Jorgenson",2020,"money","Build specific knowledge","The most valuable skills feel like play to you and look like work to others. They are hard to teach in a classroom, which is exactly why they pay.","Write down what friends come to you for that comes naturally to you."],
+["The Almanack of Naval Ravikant","Eric Jorgenson",2020,"money","Play long-term games","Trust, reputation and compound returns all come from long-term games with long-term people. Switching often resets your progress to zero.","Identify one relationship or skill you will commit to for the next ten years."],
+["Deep Work","Cal Newport",2016,"work","End the day with a shutdown","A short ritual that reviews tasks and plans tomorrow lets your mind fully let go of work. Without it, unfinished loops follow you home.","Tonight, write tomorrow's top three tasks and say a closing phrase as you shut the laptop."],
+["Essentialism","Greg McKeown",2014,"work","You can't have it all","Every yes is a no to something else. Pretending otherwise leads to spreading effort thin. Asking which problem you want instead of how to do it all frees you.","Name one trade-off you have been avoiding and make the choice."],
+["Essentialism","Greg McKeown",2014,"work","Protect the asset","You are the main tool for your work. Sleep, rest and play are not breaks from productivity. They are what make it possible.","Schedule your sleep time tonight and treat it as a meeting."],
+["Getting Things Done","David Allen",2001,"work","The two-minute rule","If a task takes less than two minutes, do it now. Tracking it would cost more effort than finishing it.","Clear five tiny tasks from your inbox right after this card."],
+["Getting Things Done","David Allen",2001,"work","Review your week","A weekly review of lists, calendar and projects keeps your system trustworthy. Without it, the lists go stale and your mind starts holding everything again.","Block 30 minutes this Friday for a weekly review."],
+["The ONE Thing","Gary Keller & Jay Papasan",2013,"work","Ask the focusing question","What is the one thing I can do such that, by doing it, everything else becomes easier or unnecessary? Asking this daily cuts through busy work.","Answer the focusing question for tomorrow and do that task first."],
+["Eat That Frog!","Brian Tracy",2001,"work","Do the hardest task first","The task you dread most is usually the one that matters most. Tackle it first thing and the rest of the day feels lighter.","Choose tomorrow's frog tonight and put it at the top of your list."],
+["So Good They Can't Ignore You","Cal Newport",2012,"work","Skill comes before passion","Passion often follows getting good at something, not the other way round. Focus on building rare skills and the love for the work tends to grow.","Pick one skill in your current job to become noticeably better at this quarter."],
+["So Good They Can't Ignore You","Cal Newport",2012,"work","Collect career capital","Rare and valuable skills are a currency. Spend them on autonomy, interesting projects and better roles. Without capital, bold career moves rarely work.","List the rare skills you have and what you could trade them for."],
+["Rework","Jason Fried & David Heinemeier Hansson",2010,"work","Meetings are expensive","An hour-long meeting with ten people costs ten hours of work. Most could be shorter, smaller, or a written note.","Cancel or shorten one recurring meeting this week."],
+["Rework","Jason Fried & David Heinemeier Hansson",2010,"work","Good enough is fine","Chasing perfection delays shipping and learning. Launch something good enough, then improve it with real feedback.","Ship one piece of work you have been polishing too long."],
+["The Effective Executive","Peter Drucker",1967,"work","Know where your time goes","People are surprisingly wrong about how they spend their time. Logging it honestly is the first step toward managing it.","Track your time in 30-minute blocks for one day."],
+["The Effective Executive","Peter Drucker",1967,"work","Ask what you can contribute","Effective people focus on outward results, not on effort or position. Asking what difference you can make shifts attention to what matters.","At your next meeting, ask: what is the one contribution I can make here?"],
+["High Output Management","Andrew Grove",1983,"work","One-on-ones are high leverage","A regular, report-led meeting with each team member surfaces problems early and transfers know-how. A small time investment pays off for weeks.","Ask your next one-on-one what is getting in their way."],
+["High Output Management","Andrew Grove",1983,"work","Watch the leading indicators","By the time a final result is in, it is too late to fix. Track the early signals that predict trouble so you can act ahead of time.","Name one early signal that would warn you your project is slipping."],
+["Make Time","Jake Knapp & John Zeratsky",2018,"work","Pick a daily highlight","Choose one thing each day you want to look back on with satisfaction. It could be urgent, satisfying or joyful. Then protect time for it.","Write tomorrow's highlight on a sticky note."],
+["Radical Candor","Kim Scott",2017,"people","Care and challenge together","The best feedback shows you care personally while challenging directly. Care without challenge is ruinous empathy. Challenge without care feels aggressive.","Give one piece of honest feedback today that shows you are on their side."],
+["Show Your Work!","Austin Kleon",2014,"work","Share the process","You don't have to be a genius to share. Showing small pieces of what you are learning and making builds an audience and invites help.","Post one small thing you learned this week."],
+["Steal Like an Artist","Austin Kleon",2012,"work","Copy your heroes to find yourself","All creative work builds on earlier work. Studying and copying the people you admire, then mixing them, is how your own voice develops.","Pick a hero in your field and recreate one of their pieces for practice."],
+["Measure What Matters","John Doerr",2018,"work","Set objectives and key results","A clear objective says where you want to go. A few measurable key results say how you will know you got there. Together they align teams.","Write one objective for this quarter with three measurable results."],
+["Drive","Daniel Pink",2009,"work","Mastery is never finished","Getting better at something is like approaching a line you never quite reach. That endless climb is part of what keeps people engaged for years.","Pick a skill you enjoy and set a practice goal for the month."],
+["Slow Productivity","Cal Newport",2024,"work","Do fewer things","Juggling too many projects means each one moves slowly and stress rises. Doing fewer things at once lets each get real attention.","Pause or hand off one active project this week."],
+["Four Thousand Weeks","Oliver Burkeman",2021,"meaning","Pay yourself first in time","Give the first and best hours to what matters most before the day's demands claim them. Otherwise important things wait for a free moment that never comes.","Spend the first 30 minutes of tomorrow on your most meaningful project."],
+["Four Thousand Weeks","Oliver Burkeman",2021,"meaning","Limit work in progress","Keep a short list of active tasks and only start new ones when old ones finish. Saying not now is a kindness to your future self.","Cap your active list at three items for one week."],
+["Extreme Ownership","Jocko Willink & Leif Babin",2015,"work","Own everything in your world","Leaders who take full responsibility for failures, even ones partly caused by others, earn trust and fix problems faster than those who blame.","Take ownership of one problem you have been blaming on someone else."],
+["The Hard Thing About Hard Things","Ben Horowitz",2014,"strategy","Peacetime and wartime","When things are calm, leaders can be broad and consensual. In a crisis, they need focus and fast decisions. Knowing which mode you are in matters.","Ask whether your team is in peacetime or wartime right now."],
+["How to Win Friends and Influence People","Dale Carnegie",1936,"people","Don't criticize, understand","Criticism makes people defensive and rarely changes behavior. Trying to understand why they acted as they did is more useful and far more persuasive.","Next time you want to criticize, first ask what led them to that choice."],
+["How to Win Friends and Influence People","Dale Carnegie",1936,"people","Let the other person talk","People warm to those who let them speak about themselves. Good listeners are remembered as good company, even when they said very little.","In your next chat, aim for them to speak twice as much as you."],
+["Crucial Conversations","Patterson, Grenny, McMillan & Switzler",2002,"people","Make it safe to talk","When people feel unsafe in a conversation, they go silent or turn aggressive. Restoring safety, by showing respect and shared purpose, gets the dialogue back.","When a talk turns tense, say what you do and don't intend before continuing."],
+["Crucial Conversations","Patterson, Grenny, McMillan & Switzler",2002,"people","Separate facts from your story","We see an event, tell ourselves a story about why it happened, then feel and act on the story. Checking the facts first often softens the reaction.","Before reacting, write the bare facts on one line and your story on another."],
+["Never Split the Difference","Chris Voss",2016,"people","Aim for that's right","When the other side says that's right, they feel truly understood. Summarizing their view so well that they agree is the turning point in many negotiations.","Summarize someone's position back to them until they say that's right."],
+["Never Split the Difference","Chris Voss",2016,"people","Say the worst first","Listing the negative things the other side might think about you, before they say them, takes the sting out and makes them more open.","Before a hard request, name the objection you expect them to have."],
+["Getting to Yes","Roger Fisher & William Ury",1981,"people","Know your walk-away option","Your best alternative if talks fail sets your real power. Improving that fallback is often worth more than any clever tactic at the table.","Before your next negotiation, write down your best option if there is no deal."],
+["Getting to Yes","Roger Fisher & William Ury",1981,"people","Be soft on people, hard on problems","Treat the relationship and the issue separately. You can be warm and respectful while still holding firm on what matters.","In your next disagreement, open by naming what you value about the other person."],
+["Nonviolent Communication","Marshall Rosenberg",1999,"people","Observe without judging","Saying you are always late is a judgment. Saying you arrived 20 minutes after 9 is an observation. Observations invite talk, judgments invite defense.","Rewrite one complaint about someone as a plain observation."],
+["Nonviolent Communication","Marshall Rosenberg",1999,"people","Name the need, then ask","Behind most frustration is an unmet need. Stating the feeling, the need behind it, and a clear request makes it much easier for others to respond well.","Try this frame once: I feel… because I need… Would you be willing to…?"],
+["Give and Take","Adam Grant",2013,"people","Givers rise, carefully","Generous people can end up both at the bottom and at the top of success. The ones who thrive give freely but protect their time and avoid being exploited.","Do one five-minute favor this week, such as an introduction or a quick tip."],
+["Daring Greatly","Brené Brown",2012,"people","Vulnerability is courage","Showing uncertainty, asking for help or admitting a mistake feels risky. Yet it is often what builds trust, creativity and real connection.","Share one honest struggle with someone you trust this week."],
+["Leaders Eat Last","Simon Sinek",2014,"people","Build a circle of safety","Teams perform best when people feel protected by their leaders rather than threatened by them. Safety frees energy for the real work.","Ask your team what makes them hesitate to raise problems."],
+["The Culture Code","Daniel Coyle",2018,"people","Send belonging cues","Small signals like eye contact, thanks and full attention tell people they are safe and valued. Strong cultures are built from many of these tiny moments.","Thank someone specifically today for something small they did."],
+["Supercommunicators","Charles Duhigg",2024,"people","Match the conversation","Every conversation is about practical matters, feelings, or identity. Misunderstandings happen when people are having different kinds of conversation at once.","In your next tense talk, ask whether they want solutions, support, or to be heard."],
+["The Courage to Be Disliked","Kishimi & Koga",2013,"people","Stop seeking approval","Living to meet others' expectations means living their life, not yours. Freedom includes accepting that some people will not like you.","Make one choice this week based only on what you think is right."],
+["The Five Dysfunctions of a Team","Patrick Lencioni",2002,"people","Trust comes first","Without trust, people avoid conflict, fake commitment and dodge accountability. Teams that can admit weaknesses to each other can argue well and deliver.","Share one of your own weaknesses with your team to open the door."],
+["Emotional Intelligence","Daniel Goleman",1995,"people","Pause before you react","Strong emotions can hijack your thinking in an instant. Learning to notice the surge and pause gives your reasoning time to catch up.","Next time you feel a spike of anger, take three slow breaths before replying."],
+["Start With Why","Simon Sinek",2009,"strategy","Start with why","People are moved by why you do something before what you do. Leaders and brands that lead with purpose inspire more loyalty than those that lead with features.","Write one sentence on why your team's work matters, then open your next pitch with it."],
+["Meditations","Marcus Aurelius",180,"meaning","Remember you will die","Reminding yourself that life is short is not gloomy. It sharpens focus on what matters and makes petty irritations feel small.","Ask yourself: if this were my last year, what would I stop doing?"],
+["Meditations","Marcus Aurelius",180,"meaning","Do the task in front of you","Do each job as if it were the most important thing, without rushing or showing off. Doing the present duty well is enough for today.","Give your next task full attention, as if nothing else were waiting."],
+["Letters from a Stoic","Seneca",65,"meaning","Life is long if you use it","Life feels short because we waste so much of it. Guard your time as carefully as your money, since it can never be earned back.","Notice one activity today that steals time without giving anything back."],
+["Letters from a Stoic","Seneca",65,"meaning","Rehearse misfortune","Picturing a loss in advance, such as a plain meal or a cancelled plan, takes the fear out of it and makes you grateful for what you have.","Spend one day this week living a little more simply, on purpose."],
+["Enchiridion","Epictetus",125,"meaning","Some things are up to us","Our judgments, choices and actions are ours. Other people, the weather and the past are not. Peace comes from focusing effort on the first and letting go of the second.","Sort today's worries into two lists: mine to control, and not mine."],
+["The Obstacle Is the Way","Ryan Holiday",2014,"meaning","Focus on what you can do next","When stuck, stop waiting for the obstacle to vanish. Break it down and act on the next small piece. Momentum dissolves many barriers.","Write the very next physical step on a problem you are stuck on."],
+["Ego Is the Enemy","Ryan Holiday",2016,"meaning","Stay a student","Ego tells you that you have arrived. A student mindset keeps you learning, open to criticism and humble about how much more there is to know.","Find someone who knows more than you and ask them one sincere question."],
+["Ikigai","Héctor García & Francesc Miralles",2016,"meaning","Find your reason to get up","People in long-lived communities often have a clear purpose that gets them out of bed each morning. It can be work, family, craft or community.","Write down what gives you a reason to get up tomorrow."],
+["Flow","Mihaly Csikszentmihalyi",1990,"meaning","Balance challenge and skill","Flow happens when a task stretches your abilities just enough. Too easy and you are bored. Too hard and you are anxious.","Make a boring task slightly harder, or a scary one slightly simpler."],
+["Flow","Mihaly Csikszentmihalyi",1990,"meaning","Happiness is an absorbed mind","The best moments of life usually come when you are fully absorbed in something worthwhile, not when you are relaxing passively.","Notice when you last lost track of time. Plan more of that activity."],
+["The Top Five Regrets of the Dying","Bronnie Ware",2011,"meaning","Live true to yourself","A palliative nurse heard one regret more than any other: wishing they had lived the life they wanted, not the one others expected.","Name one choice you have been making mainly to please others."],
+["The Power of Now","Eckhart Tolle",1997,"meaning","Step out of your thoughts","Much suffering comes from replaying the past or rehearsing the future. Bringing attention to this moment quiets the mental noise.","For one minute, focus only on the sensations of your breath."],
+["Siddhartha","Hermann Hesse",1922,"meaning","Wisdom can't be handed over","Knowledge can be taught, but wisdom must be lived. Siddhartha finds his path not from teachers but through his own experiences and by listening to a river.","Reflect on one lesson you only learned by living through it."],
+["Tao Te Ching","Laozi",-400,"meaning","Be like water","Water is soft and yielding, yet it wears down stone. Gentle persistence often wins where force fails.","Try a softer, more patient approach on one stubborn problem."],
+["Bhagavad Gita","Vyasa",-200,"meaning","Act without clinging to results","Krishna tells Arjuna to do his duty fully while letting go of attachment to the outcome. Effort is yours. Results depend on much more than you.","Put full effort into one task today, then let go of how it turns out."],
+["When Breath Becomes Air","Paul Kalanithi",2016,"meaning","Meaning matters more than time","A young neurosurgeon facing a terminal illness asked not how long he had, but what made the remaining time worth living. The answer was relationships and purpose.","Ask yourself what would make the next month meaningful, not just busy."],
+["Tuesdays with Morrie","Mitch Albom",1997,"meaning","Invest in people, not things","A dying professor tells his former student that love and relationships are what remain at the end. Possessions and status fade.","Call someone you have been meaning to reconnect with."],
+["Wherever You Go, There You Are","Jon Kabat-Zinn",1994,"meaning","Mindfulness is paying attention","Mindfulness simply means noticing the present moment on purpose, without judging it. It can be practiced while eating, walking or washing dishes.","Do one routine task today with full, curious attention."],
+["The Art of War","Sun Tzu",-500,"strategy","Win without fighting","The best victory comes from making conflict unnecessary, through preparation, positioning and alliances. Battle is the costliest way to win.","Before a confrontation, look for a way to make the fight unnecessary."],
+["The Art of War","Sun Tzu",-500,"strategy","Know yourself and your opponent","If you understand both your own strengths and the other side's, you need not fear the outcome. Ignorance of either side invites defeat.","Write three strengths and three weaknesses for yourself and for a competitor."],
+["Good Strategy Bad Strategy","Richard Rumelt",2011,"strategy","Strategy starts with a diagnosis","Good strategy names the real challenge, chooses a guiding approach, and lists coherent actions. Lofty goals without a diagnosis are not strategy.","Write one sentence that names the real problem your team faces."],
+["Good Strategy Bad Strategy","Richard Rumelt",2011,"strategy","Beware fluff","Vague buzzwords and long lists of goals can pass for strategy. If it doesn't tell you what not to do, it probably isn't a strategy.","Read your team's plan and highlight anything that doesn't guide a decision."],
+["Blue Ocean Strategy","W. Chan Kim & Renée Mauborgne",2005,"strategy","Make the competition irrelevant","Rather than fighting rivals in a crowded market, create new demand by rethinking which features to cut, reduce, raise or invent.","List one feature in your field that everyone offers but few customers need."],
+["The Innovator's Dilemma","Clayton Christensen",1997,"strategy","Good management can cause failure","Leading companies listen to their best customers and improve their products. That very focus can make them miss cheaper, simpler technologies that later take over.","Ask what cheaper, simpler alternative could replace your product in five years."],
+["Crossing the Chasm","Geoffrey Moore",1991,"strategy","Early fans aren't the mainstream","Enthusiasts love new technology, but most buyers want proven, complete solutions. Winning one focused niche first helps a product cross that gap.","Name the single customer niche you would win first."],
+["Thinking in Systems","Donella Meadows",2008,"strategy","Delays cause overshoots","When feedback arrives late, people overreact, like adjusting a slow shower. Recognizing delays helps you act more gently and wait for results.","Think of a change you made recently. Have you given it enough time to show results?"],
+["The Lean Startup","Eric Ries",2011,"strategy","Pivot or persevere","When experiments show your idea isn't working, change direction while keeping what you have learned. A pivot is a structured correction, not a failure.","Set a date to decide whether one project should pivot or continue."],
+["Zero to One","Peter Thiel",2014,"strategy","Find the hidden truths","Great companies are built on truths others haven't noticed yet. Asking which important truth few people agree with you on can reveal opportunities.","Write down one important truth about your industry that few people believe."],
+["Antifragile","Nassim Nicholas Taleb",2012,"strategy","Use a barbell","Keep most of your resources very safe and a small part in bold, high-upside bets. Avoid the middle, where risks hide without big rewards.","Look at your time or money. Is there a small bold bet you could add safely?"],
+["Skin in the Game","Nassim Nicholas Taleb",2018,"strategy","Trust those who share the risk","Advice from people who suffer when they are wrong tends to be better. Be wary of those who gain from upside but escape the downside.","Before taking advice, ask what the adviser loses if it goes badly."],
+["The Goal","Eliyahu Goldratt",1984,"strategy","Fix the bottleneck","A system moves only as fast as its slowest step. Improving anything else just builds up a queue in front of the bottleneck.","Find the slowest step in a process you run and focus improvement there."],
+["7 Powers","Hamilton Helmer",2016,"strategy","Strategy needs lasting power","Lasting advantage comes from a few sources, such as network effects, scale economies, switching costs or a strong brand. Without one, profits get competed away.","Ask which lasting advantage your work or business has, if any."],
+["The Personal MBA","Josh Kaufman",2010,"strategy","Every business is five parts","Every business creates value, markets it, sells it, delivers it and handles the money. Weakness in any one part can break the whole.","Score your work or side project out of ten on each of the five parts."],
+["Sapiens","Yuval Noah Harari",2011,"strategy","The farming trap","Agriculture let populations grow, but individual lives often got harder, with longer work and poorer diets. Progress for a species is not always progress for a person.","Think of one modern convenience that made life busier, not easier."],
+["Why We Sleep","Matthew Walker",2017,"health","Sleep is when learning sets","During sleep, the brain replays and stores what you learned during the day. Cutting sleep cuts the memory gains from your study and practice.","Protect a full night's sleep before your next big learning day."],
+["Why We Sleep","Matthew Walker",2017,"health","Keep a steady sleep schedule","Going to bed and waking at the same time every day, weekends included, is one of the most effective ways to improve sleep quality.","Set a fixed wake-up time and keep it for a week."],
+["Outlive","Peter Attia",2023,"health","Train for your later decades","Think about what you want to be able to do at eighty, like carrying grandchildren or climbing stairs. Then train now for strength, stamina and balance.","List three physical things you want to do in old age."],
+["Outlive","Peter Attia",2023,"health","Exercise is the strongest lever","Among everyday habits, regular exercise has one of the largest effects on how long and how well people live. Fitness pays dividends across the body and brain.","Schedule three movement sessions on your calendar this week."],
+["Breath","James Nestor",2020,"health","How you breathe matters","Slow, calm breathing through the nose tends to relax the body, while fast, shallow breathing can keep it stressed. Breathing is a habit you can change.","Try two minutes of slow breathing through your nose right now."],
+["Spark","John Ratey",2008,"health","Exercise feeds the brain","Physical activity boosts mood, focus and learning by changing brain chemistry. A workout before hard thinking can make the thinking easier.","Take a brisk 10-minute walk before your next demanding task."],
+["Burnout","Emily & Amelia Nagoski",2019,"health","Complete the stress cycle","Solving the cause of stress isn't the same as releasing stress from the body. Movement, deep breaths, laughter or a good cry help the body feel safe again.","After a stressful day, do 20 minutes of something physical."],
+["The Blue Zones","Dan Buettner",2008,"health","Move naturally every day","People in the world's longest-lived communities rarely go to gyms. They walk, garden and do manual tasks throughout the day as part of normal life.","Add one natural movement to your routine, like walking to a nearby errand."],
+["Stolen Focus","Johann Hari",2022,"health","Attention is being taken","Constant notifications, poor sleep and information overload make sustained focus harder for everyone. It is not just personal weakness; the environment matters.","Turn off all non-essential notifications for one week."],
+["Dopamine Nation","Anna Lembke",2021,"health","Pleasure and pain are linked","The brain balances pleasure with pain. Constant easy rewards tip the balance, leaving you less satisfied. A break from a habit can reset your enjoyment.","Take a 7-day break from one easy pleasure and notice how you feel."],
+["Rest","Alex Soojung-Kim Pang",2016,"health","Rest is a skill","Many great thinkers worked hard for about four focused hours, then walked, napped or played. Deliberate rest supports creativity instead of competing with it.","Plan one real break today with no screens."]
 ];
+const APP_URL="https://rajatchatterjee.github.io/Qshelf/";
 const $=s=>document.querySelector(s), root=document.documentElement;
 const feed=$("#feed"),chipsEl=$("#chips"),countEl=$("#count"),timeEl=$("#time"),ring=$("#ring"),clock=$("#clock"),toast=$("#toast"),segs=$("#segs"),mini=$("#mini");
 const store={get(k,d){try{const v=localStorage.getItem("qs:"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("qs:"+k,JSON.stringify(v))}catch(e){}}};
 const ids=IDEAS.map((_,i)=>i);
-let saved=new Set(store.get("saved",[])),doneDays=store.get("days",[]);
-const today=new Date().toISOString().slice(0,10);
-const set=Object.assign({skin:"auto",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true},store.get("set",{}));
+const keyOf=i=>IDEAS[i][0]+"|"+IDEAS[i][4];           // stable id that survives adding new ideas
+const idxOf={};ids.forEach(i=>idxOf[keyOf(i)]=i);
+const loadKeys=(k)=>new Set(store.get(k,[]).map(x=>typeof x==="number"?keyOf(x):x).filter(x=>x in idxOf));
+let saved=loadKeys("saved2").size?loadKeys("saved2"):loadKeys("saved");
+let notes=store.get("notes",{}),hist=store.get("hist",{}),doneDays=store.get("days",[]);
+const pad2=n=>String(n).padStart(2,"0");
+const now=new Date(),today=`${now.getFullYear()}-${pad2(now.getMonth()+1)}-${pad2(now.getDate())}`;
+const set=Object.assign({skin:"auto",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true,voice:"",rate:1,rem:"07:30"},store.get("set",{}));
 const SIZES=[.9,1,1.12,1.26,1.4];
+
+/* ---------- usage counting (live site only, anonymous) ---------- */
+const GC_CODE="tidycorners",GC_PREFIX="/qshelf",GC_ON=/\.github\.io$/.test(location.hostname);
+if(GC_ON){const sc=document.createElement("script");sc.async=true;sc.src="https://gc.zgo.at/count.js";sc.dataset.goatcounter=`https://${GC_CODE}.goatcounter.com/count`;sc.dataset.goatcounterSettings='{"no_onload":true}';
+  sc.onload=()=>{try{window.goatcounter.count({path:GC_PREFIX+"/",title:"Qshelf"})}catch(e){}};document.head.appendChild(sc)}
+function track(name){if(!GC_ON)return;const go=()=>{try{window.goatcounter.count({path:`${GC_PREFIX}-${name}`,title:`Qshelf: ${name}`,event:true})}catch(e){}};
+  if(window.goatcounter&&window.goatcounter.count)go();else{let n=0;const iv=setInterval(()=>{if(window.goatcounter&&window.goatcounter.count){clearInterval(iv);go()}else if(++n>20)clearInterval(iv)},500)}}
+if(matchMedia("(display-mode: standalone)").matches||navigator.standalone)track("opened-installed");
+addEventListener("appinstalled",()=>track("installed"));
+const tracked=new Set();const once=n=>{if(!tracked.has(n)){tracked.add(n);track(n)}};
 
 /* ---------- settings ---------- */
 const SKINS=[["auto","Auto",["#fbfcfd","#161d25"],"#15212c"],["paper","Paper",["#fbfcfd"],"#15212c"],["sepia","Sepia",["#f7efdd"],"#3a2a1a"],["night","Night",["#161d25"],"#e7edf2"],["midnight","Midnight",["#101b3b"],"#e6bc62"],["forest","Forest",["#13241d"],"#8fd6a8"]];
@@ -294,18 +521,39 @@ function applySet(){
   mark("#skins",set.skin);mark("#fonts",set.font);mark("#spacing",set.lh);mark("#amb",set.amb);
   document.querySelectorAll("#sizeDots i").forEach((d,i)=>d.classList.toggle("on",i<=set.size));
   $("#tTry").setAttribute("aria-checked",set.tryOn);$("#tAuto").setAttribute("aria-checked",set.auto);
+  $("#rate").value=set.rate;$("#rateV").textContent=(+set.rate).toFixed(2)+"×";$("#remTime").value=set.rem;reminderLinks();
   const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=getComputedStyle(document.body).backgroundColor;
   store.set("set",set);
 }
-const pick=(sel,key,after)=>$(sel).addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b)return;set[key]=b.dataset.v;applySet();after&&after()});
-pick("#skins","skin");pick("#fonts","font");pick("#spacing","lh");pick("#amb","amb",()=>ambience(set.amb));
+const pick=(sel,key,after)=>$(sel).addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b)return;set[key]=b.dataset.v;applySet();after&&after(b.dataset.v)});
+pick("#skins","skin",v=>track("theme-"+v));pick("#fonts","font");pick("#spacing","lh");pick("#amb","amb",v=>{ambience(v);if(v!=="off")track("ambience-"+v)});
 $("#smaller").onclick=()=>{set.size=Math.max(0,set.size-1);applySet()};
 $("#bigger").onclick=()=>{set.size=Math.min(SIZES.length-1,set.size+1);applySet()};
 $("#tTry").onclick=()=>{set.tryOn=!set.tryOn;applySet()};
 $("#tAuto").onclick=()=>{set.auto=!set.auto;applySet()};
-const sheet=$("#sheet"),scrim=$("#scrim");
-function openSheet(o){sheet.hidden=!o;scrim.hidden=!o;if(o)$("#closeSet").focus()}
-$("#openSet").onclick=()=>openSheet(true);$("#closeSet").onclick=()=>openSheet(false);scrim.onclick=()=>openSheet(false);
+$("#rate").oninput=e=>{set.rate=+e.target.value;applySet()};
+$("#remTime").onchange=e=>{set.rem=e.target.value||"07:30";applySet()};
+
+/* sheets */
+const scrim=$("#scrim");let openSh=null;
+function sheetOpen(el){if(openSh)openSh.hidden=true;openSh=el;el.hidden=false;scrim.hidden=false;setTimeout(()=>(el.querySelector("textarea")||el.querySelector("[data-close]")).focus(),60)}
+function sheetClose(){if(openSh)openSh.hidden=true;openSh=null;scrim.hidden=true}
+$("#openSet").onclick=()=>sheetOpen($("#sheet"));scrim.onclick=sheetClose;
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=sheetClose);
+
+/* ---------- daily reminder (calendar event) ---------- */
+function reminderLinks(){
+  const [h,m]=(set.rem||"07:30").split(":").map(Number),d=new Date();d.setHours(h,m,0,0);if(d<new Date())d.setDate(d.getDate()+1);
+  const e=new Date(d.getTime()+5*60000);
+  const f=x=>`${x.getFullYear()}${pad2(x.getMonth()+1)}${pad2(x.getDate())}T${pad2(x.getHours())}${pad2(x.getMinutes())}00`;
+  const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"Asia/Kolkata";
+  const title="Qshelf: your 5 minutes",desc=`Twelve ideas from great books are waiting. ${APP_URL}`;
+  $("#gcal").href=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent(desc)}&dates=${f(d)}/${f(e)}&ctz=${encodeURIComponent(tz)}&recur=${encodeURIComponent("RRULE:FREQ=DAILY")}`;
+  const stamp=new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Qshelf//EN","BEGIN:VEVENT",`UID:qshelf-daily-${Date.now()}@qshelf`,`DTSTAMP:${stamp}`,`DTSTART:${f(d)}`,`DTEND:${f(e)}`,"RRULE:FREQ=DAILY",`SUMMARY:${title}`,`DESCRIPTION:${desc}`,`URL:${APP_URL}`,"BEGIN:VALARM","TRIGGER:PT0M","ACTION:DISPLAY",`DESCRIPTION:${title}`,"END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
+  const a=$("#ics");if(a._u)URL.revokeObjectURL(a._u);a._u=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));a.href=a._u;
+}
+$("#gcal").addEventListener("click",()=>track("reminder-google"));$("#ics").addEventListener("click",()=>track("reminder-ics"));
 
 /* ---------- ambience (generated sound, no files) ---------- */
 let ac,amb=null;
@@ -325,61 +573,116 @@ function ambience(kind){
   if(kind==="hearth"){f.type="lowpass";f.frequency.value=900}
   s.connect(f).connect(g).connect(ac.destination);s.start();
   g.gain.setTargetAtTime(kind==="ocean"?.22:kind==="rain"?.28:.3,ac.currentTime,.8);
-  if(kind==="hearth"){const crack=()=>{if(!amb||amb.kind!=="hearth")return;const o=ac.createBufferSource(),len=ac.sampleRate*.02,b=ac.createBuffer(1,len,ac.sampleRate),c=b.getChannelData(0);for(let i=0;i<len;i++)c[i]=(Math.random()*2-1)*Math.pow(1-i/len,4);o.buffer=b;const cg=ac.createGain();cg.gain.value=.06+Math.random()*.1;o.connect(cg).connect(ac.destination);o.start();setTimeout(crack,120+Math.random()*900)};setTimeout(crack,500)}
   amb={s,g,lfo,kind};
+  if(kind==="hearth"){const crack=()=>{if(!amb||amb.kind!=="hearth")return;const o=ac.createBufferSource(),len=ac.sampleRate*.02,b=ac.createBuffer(1,len,ac.sampleRate),c=b.getChannelData(0);for(let i=0;i<len;i++)c[i]=(Math.random()*2-1)*Math.pow(1-i/len,4);o.buffer=b;const cg=ac.createGain();cg.gain.value=.06+Math.random()*.1;o.connect(cg).connect(ac.destination);o.start();setTimeout(crack,120+Math.random()*900)};setTimeout(crack,500)}
 }
+
+/* ---------- voices ---------- */
+const synth=window.speechSynthesis;let voices=[];
+function scoreVoice(v){let s=0;const n=v.name;if(/natural|neural|premium|enhanced/i.test(n))s+=6;if(/google/i.test(n))s+=3;if(/siri/i.test(n))s+=4;if(/compact|espeak/i.test(n))s-=4;
+  if(/^en-IN/i.test(v.lang))s+=2;else if(/^en-(GB|US|AU)/i.test(v.lang))s+=1;if(v.localService===false)s+=1;return s}
+function loadVoices(){if(!synth)return;const all=synth.getVoices();if(!all.length)return;
+  const en=all.filter(v=>/^en/i.test(v.lang));voices=(en.length?en:all).slice().sort((a,b)=>scoreVoice(b)-scoreVoice(a)||a.name.localeCompare(b.name));
+  if(!set.voice||!voices.some(v=>v.voiceURI===set.voice))set.voice=voices[0].voiceURI;
+  $("#voice").innerHTML=voices.map(v=>`<option value="${esc(v.voiceURI)}"${v.voiceURI===set.voice?" selected":""}>${esc(v.name)} · ${esc(v.lang)}${scoreVoice(v)>=6?" ★":""}</option>`).join("")}
+if(!synth){$("#voice").innerHTML="<option>Read-aloud isn't available in this browser</option>";$("#voice").disabled=true}
+$("#voice").onchange=e=>{set.voice=e.target.value;store.set("set",set);testVoice()};
+function utter(text){const u=new SpeechSynthesisUtterance(text);const v=voices.find(v=>v.voiceURI===set.voice);if(v){u.voice=v;u.lang=v.lang}u.rate=+set.rate||1;return u}
+function testVoice(){if(!synth)return;stopSpeech();synth.speak(utter("Getting a little better each day looks like nothing for weeks. Then the curve bends."))}
+$("#testVoice").onclick=testVoice;
 
 /* ---------- deck ---------- */
 function rng(seed){let s=0;for(const c of seed)s=(s*31+c.charCodeAt(0))>>>0;return()=>{s^=s<<13;s>>>=0;s^=s>>17;s^=s<<5;s>>>=0;return s/4294967296}}
 function shuffle(a,seed){const r=rng(seed),b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
-function todaysDeck(){const seen=new Set(),out=[];for(const i of shuffle(ids,today)){if(seen.has(IDEAS[i][0]))continue;seen.add(IDEAS[i][0]);out.push(i);if(out.length===12)break}return out}
-const SHELVES=[["today","Today"],["all","All 50"],...Object.entries(THEMES),["saved","Saved"]];
+function todaysDeck(){ // 12 cards from different books, preferring ideas not seen recently
+  const order=shuffle(ids,today);const fresh=order.filter(i=>!hist[keyOf(i)]),pool=fresh.length>=12?fresh.concat(order.filter(i=>hist[keyOf(i)])):order;
+  const seen=new Set(),out=[];for(const i of pool){if(seen.has(IDEAS[i][0]))continue;seen.add(IDEAS[i][0]);out.push(i);if(out.length===12)break}return out}
+const BOOKS=[];{const m=new Map();ids.forEach(i=>{const b=IDEAS[i][0];if(!m.has(b)){m.set(b,{name:b,author:IDEAS[i][1],year:IDEAS[i][2],theme:IDEAS[i][3],ids:[]});BOOKS.push(m.get(b))}m.get(b).ids.push(i)});BOOKS.sort((a,b)=>a.name.replace(/^The /,"").localeCompare(b.name.replace(/^The /,"")))}
+const bookOf=n=>BOOKS.find(b=>b.name===n);
+const SHELVES=[["today","Today"],["all",`All ${IDEAS.length}`],["books",`Books · ${BOOKS.length}`],...Object.entries(THEMES),["saved","Saved"],["notes","Notes"]];
 let shelf="today";
-chipsEl.innerHTML=SHELVES.map(([k,n])=>`<button class="chip" data-k="${k}" aria-pressed="${k===shelf}">${n}</button>`).join("");
-chipsEl.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;shelf=b.dataset.k;
-  chipsEl.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b));render();feed.scrollTop=0});
-function streak(){let n=0,d=new Date();const s=new Set(doneDays);for(;;){const k=d.toISOString().slice(0,10);if(s.has(k)){n++;d.setDate(d.getDate()-1)}else if(n===0&&k===today){d.setDate(d.getDate()-1)}else break}return n}
+chipsEl.innerHTML=SHELVES.map(([k,n])=>`<button class="chip" data-k="${k}">${n}</button>`).join("");
+function setShelf(k){shelf=k;const chip=k.startsWith("book:")?"books":k;chipsEl.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.k===chip));render();feed.scrollTop=0;
+  const c=chipsEl.querySelector(`[data-k="${chip}"]`);c&&c.scrollIntoView({inline:"nearest",block:"nearest"})}
+chipsEl.addEventListener("click",e=>{const b=e.target.closest(".chip");if(b)setShelf(b.dataset.k)});
+function streak(){let n=0;const d=new Date(),s=new Set(doneDays);for(;;){const k=`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;if(s.has(k)){n++;d.setDate(d.getDate()-1)}else if(n===0&&k===today){d.setDate(d.getDate()-1)}else break}return n}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const I={save:'<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>',
-  copy:'<svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>',
-  play:'<svg viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>'};
-const yr=y=>y<1000?`c. ${y} AD`:y;
+  play:'<svg viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+  note:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
+  share:'<svg viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>'};
+const yr=y=>y<0?`c. ${-y} BC`:y<1000?`c. ${y} AD`:y;
 const secs=i=>{const w=(IDEAS[i][5]+" "+IDEAS[i][6]+" "+IDEAS[i][4]).split(/\s+/).length;return Math.max(15,Math.round(w/230*60/5)*5)};
+const dateStr=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+
+function ideaCard(i,n,len){const [b,a,y,t,idea,body,tr]=IDEAS[i],k=keyOf(i),nt=notes[k]||"";
+  return `<section class="slot" data-i="${i}"><article class="card" style="--hue:var(--h-${t})">
+    <span class="glyph" aria-hidden="true">${esc(b[0])}</span>
+    <p class="meta"><span class="tag">${THEMES[t]}</span><span>${pad2(n+1)} / ${pad2(len)} · ${secs(i)} sec</span></p>
+    <h2 class="idea">${esc(idea)}</h2>
+    <p class="body">${esc(body)}</p>
+    <p class="try"><b>Try this</b>${esc(tr)}</p>
+    <p class="note" data-note-for="${i}"${nt?"":" hidden"}>${esc(nt)}</p>
+    <div class="foot"><button class="book booklink" data-book="${esc(b)}" aria-label="All ideas from ${esc(b)}"><span class="t">${esc(b)}</span><span class="a">${esc(a)} · ${yr(y)}</span></button>
+      <button class="icon" data-listen="${i}" aria-pressed="false" aria-label="Listen">${I.play}</button>
+      <button class="icon" data-note="${i}" aria-label="Add a note">${I.note}</button>
+      <button class="icon" data-share="${i}" aria-label="Share as image">${I.share}</button>
+      <button class="icon" data-save="${i}" aria-pressed="${saved.has(k)}" aria-label="Save idea">${I.save}</button></div>
+  </article></section>`}
+
+function quizCards(deck){
+  const past=Object.entries(hist).filter(([k,d])=>d<today&&k in idxOf).map(([k])=>idxOf[k]).filter(i=>!deck.includes(i));
+  if(past.length<3)return "";
+  const r=rng(today+"quiz"),qs=shuffle(past,today+"q").slice(0,2);
+  return qs.map((i,n)=>{const t=IDEAS[i][3];
+    const wrong=shuffle(ids.filter(j=>j!==i&&IDEAS[j][3]===t),today+i).slice(0,2);
+    const opts=shuffle([i,...wrong],today+"o"+i);
+    return `<section class="slot" data-quiz="${i}"><div class="card" style="--hue:var(--h-${t})">
+      <span class="glyph" aria-hidden="true">?</span>
+      <p class="meta"><span class="tag">Quick recall</span><span>${n+1} of ${qs.length}</span></p>
+      <h2 class="qq">Which idea is this?</h2>
+      <p class="body">${esc(IDEAS[i][5])}</p>
+      <div class="opts">${opts.map(j=>`<button class="opt" data-ans="${j===i?1:0}">${esc(IDEAS[j][4])}</button>`).join("")}</div>
+      <p class="qres" hidden>From <b>${esc(IDEAS[i][0])}</b> by ${esc(IDEAS[i][1])}. You read it on ${new Date(hist[keyOf(i)]+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})}.</p>
+    </div></section>`}).join("")}
 
 let list=[];
 function render(){
-  stopSpeech();
+  stopSpeech();let h="";
+  if(shelf==="books"){list=[];
+    h=`<section class="slot"><div class="card"><p class="meta"><span>The shelf</span><span>${BOOKS.length} books</span></p>
+      <h2 class="big" style="font-size:clamp(2.2rem,9vw,3.6rem)">Pick a <em>book</em>.</h2>
+      <p class="lede">Each book opens as a short deep-dive with all its ideas in order.</p>
+      <div class="blist">${BOOKS.map(b=>`<button class="bk" style="--hue:var(--h-${b.theme})" data-book="${esc(b.name)}"><b>${esc(b.name)}</b><span>${esc(b.author)}</span><span>${b.ids.length} idea${b.ids.length>1?"s":""}</span></button>`).join("")}</div>
+    </div></section>`;
+    feed.innerHTML=h;segs.innerHTML="";current=0;observe();updateProgress();return}
   if(shelf==="today")list=todaysDeck();
   else if(shelf==="all")list=shuffle(ids,today+"all");
-  else if(shelf==="saved")list=ids.filter(i=>saved.has(i));
+  else if(shelf==="saved")list=ids.filter(i=>saved.has(keyOf(i)));
+  else if(shelf==="notes")list=ids.filter(i=>notes[keyOf(i)]);
+  else if(shelf.startsWith("book:"))list=(bookOf(shelf.slice(5))||{ids:[]}).ids.slice();
   else list=ids.filter(i=>IDEAS[i][3]===shelf);
-  let h="";
   if(shelf==="today")h+=`<section class="slot"><div class="card intro">
-      <p class="meta"><span>${new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})}</span><span>${streak()?streak()+"-day streak":"Day one"}</span></p>
+      <p class="meta"><span>${dateStr}</span><span>${streak()?streak()+"-day streak":"Day one"}</span></p>
       <h2 class="big">Five minutes, <em>twelve</em> ideas.</h2>
       <p class="lede">Each card holds one idea from a different great book, about 25 seconds a card.</p>
-      <ul class="tips"><li><kbd>Swipe up</kbd>Next idea</li><li><kbd>Tap card</kbd>Focus mode, hides everything else</li><li><kbd>Double-tap</kbd>Save an idea</li><li><kbd>Speaker</kbd>Listen instead of read</li></ul>
+      <ul class="tips"><li><kbd>Swipe up</kbd>Next idea</li><li><kbd>Tap card</kbd>Focus mode, hides everything else</li><li><kbd>Double-tap</kbd>Save an idea</li><li><kbd>Book name</kbd>Open that book's deep-dive</li></ul>
       <div class="row"><button class="go" id="go">Start reading</button><button class="go ghost" data-listen-all>Listen to today</button></div>
-    </div></section>`;
-  if(!list.length)h+=`<section class="slot"><div class="card intro"><h2 class="big">Nothing <em>saved</em> yet</h2><p class="lede">Double-tap any card, or tap its bookmark, to keep it here for rereading.</p></div></section>`;
-  list.forEach((i,n)=>{const [b,a,y,t,idea,body,tr]=IDEAS[i];
-    h+=`<section class="slot" data-i="${i}"><article class="card" style="--hue:var(--h-${t})">
-      <span class="glyph" aria-hidden="true">${esc(b[0])}</span>
-      <p class="meta"><span class="tag">${THEMES[t]}</span><span>${String(n+1).padStart(2,"0")} / ${String(list.length).padStart(2,"0")} · ${secs(i)} sec</span></p>
-      <h2 class="idea">${esc(idea)}</h2>
-      <p class="body">${esc(body)}</p>
-      <p class="try"><b>Try this</b>${esc(tr)}</p>
-      <div class="foot"><div class="book"><p class="t">${esc(b)}</p><p class="a">${esc(a)} · ${yr(y)}</p></div>
-        <button class="icon" data-listen="${i}" aria-pressed="false" aria-label="Listen">${I.play}</button>
-        <button class="icon" data-copy="${i}" aria-label="Copy idea">${I.copy}</button>
-        <button class="icon" data-save="${i}" aria-pressed="${saved.has(i)}" aria-label="Save idea">${I.save}</button></div>
-    </article></section>`});
-  if(list.length&&shelf!=="saved")h+=`<section class="slot" data-end><div class="card intro">
+    </div></section>`+quizCards(list);
+  if(shelf.startsWith("book:")){const b=bookOf(shelf.slice(5));if(b){const mins=Math.max(1,Math.round(b.ids.reduce((s,i)=>s+secs(i),0)/60));
+    h+=`<section class="slot"><div class="card intro" style="--hue:var(--h-${b.theme})"><span class="glyph" aria-hidden="true">${esc(b.name[0])}</span>
+      <p class="meta"><span class="tag">Book deep-dive</span><span>${b.ids.length} idea${b.ids.length>1?"s":""} · about ${mins} min</span></p>
+      <h2 class="big">${esc(b.name)}</h2><p class="lede">${esc(b.author)} · ${yr(b.year)}</p>
+      <div class="row"><button class="go" id="go">Start</button><button class="go ghost" data-listen-all>Listen</button><button class="go ghost" data-goto="books">All books</button></div></div></section>`;once("book-open")}}
+  if(!list.length){const e=shelf==="notes"?["Nothing <em>noted</em> yet","Tap the pencil on any card to write what the idea means for you."]:["Nothing <em>saved</em> yet","Double-tap any card, or tap its bookmark, to keep it here for rereading."];
+    h+=`<section class="slot"><div class="card intro"><h2 class="big">${e[0]}</h2><p class="lede">${e[1]}</p></div></section>`}
+  list.forEach((i,n)=>h+=ideaCard(i,n,list.length));
+  if(list.length&&shelf!=="saved"&&shelf!=="notes")h+=`<section class="slot" data-end><div class="card intro">
       <p class="meta"><span>Session</span><span id="endTime"></span></p>
       <h2 class="big">That's the <em>shelf</em>.</h2>
       <p class="lede" id="endLede"></p>
       <ul class="readlist" id="endList"></ul>
-      <div class="row"><button class="go" data-goto="all">Browse all 50</button><button class="go ghost" data-goto="saved">Saved ideas</button></div></div></section>`;
+      <div class="row"><button class="go" data-goto="books">Explore a book</button><button class="go ghost" data-goto="all">Browse all ${IDEAS.length}</button></div></div></section>`;
   feed.innerHTML=h;
   segs.className="segs"+(list.length>16?" bar1":"");
   segs.innerHTML=list.length>16?"<i></i>":list.map(()=>"<i></i>").join("");
@@ -390,12 +693,12 @@ function render(){
 const read=new Set();let current=0,activeSlot=null,io;
 function observe(){io&&io.disconnect();io=new IntersectionObserver(es=>{es.forEach(e=>{if(!e.isIntersecting)return;const s=e.target;
     feed.querySelectorAll(".card.on").forEach(c=>c!==s.firstElementChild&&c.classList.remove("on"));s.firstElementChild.classList.add("on");activeSlot=s;
-    if(s.dataset.i!==undefined){const i=+s.dataset.i;read.add(i);current=list.indexOf(i)+1;startTimer();if(listening)speak(i)}
+    if(s.dataset.i!==undefined){const i=+s.dataset.i;read.add(i);hist[keyOf(i)]=today;store.set("hist",hist);current=list.indexOf(i)+1;startTimer();if(listening)speak(i)}
     else if(s.dataset.end!==undefined){current=list.length;fillEnd();if(listening)stopSpeech()}
-    else current=0;
+    else{current=0;if(s.dataset.quiz!==undefined)startTimer()}
     updateProgress()})},{root:feed,threshold:.55});
   feed.querySelectorAll(".slot").forEach(s=>io.observe(s))}
-function updateProgress(){countEl.textContent=`${current} / ${list.length}`;
+function updateProgress(){countEl.textContent=list.length?`${current} / ${list.length}`:"";
   if(list.length>16)segs.firstElementChild&&segs.firstElementChild.style.setProperty("--p",(current/list.length*100)+"%");
   else segs.querySelectorAll("i").forEach((s,k)=>s.classList.toggle("on",k<current))}
 function fillEnd(){const r=[...read];$("#endLede").textContent=r.length?`You read ${r.length} idea${r.length>1?"s":""} in ${fmt(SESSION-left)}. Here they are, for a quick recall.`:"Swipe back up to start reading.";
@@ -403,58 +706,106 @@ function fillEnd(){const r=[...read];$("#endLede").textContent=r.length?`You rea
   $("#endList").innerHTML=r.map(i=>`<li style="--c:var(--h-${IDEAS[i][3]})">${esc(IDEAS[i][4])}</li>`).join("")}
 
 /* ---------- session clock ---------- */
-const SESSION=300,C=50.27;let left=SESSION,tick=null,finished=false,lock=null;
-const fmt=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+const SESSION=300,C=50.27;let left=SESSION,tick=null,finished=false;
+const fmt=s=>`${Math.floor(s/60)}:${pad2(s%60)}`;
 function paint(){timeEl.textContent=mini.textContent=finished?"Done":fmt(left);ring.style.strokeDashoffset=C*(1-left/SESSION)}
-function startTimer(){if(tick||finished)return;keepAwake();tick=setInterval(()=>{if(document.hidden)return;left--;paint();if(left<=0)finish()},1000)}
+function startTimer(){if(tick||finished)return;keepAwake();once("session-start");tick=setInterval(()=>{if(document.hidden)return;left--;paint();if(left<=0)finish()},1000)}
 function finish(){clearInterval(tick);tick=null;finished=true;clock.classList.add("done");paint();
   if(!doneDays.includes(today)){doneDays.push(today);doneDays=doneDays.slice(-400);store.set("days",doneDays)}
-  buzz([20,60,20]);show(`Five minutes done · ${read.size} ideas read`)}
+  buzz([20,60,20]);show(`Five minutes done · ${read.size} ideas read`);once("session-complete")}
 clock.onclick=()=>{if(finished){finished=false;left=SESSION;clock.classList.remove("done");paint();startTimer();show("New 5-minute session")}};
-async function keepAwake(){try{lock=await navigator.wakeLock.request("screen")}catch(e){}}
+async function keepAwake(){try{await navigator.wakeLock.request("screen")}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&tick)keepAwake()});
 paint();
 
 /* ---------- read aloud ---------- */
-let listening=false,speakingI=null;const synth=window.speechSynthesis;
+let listening=false,speakingI=null;
 function speak(i){if(!synth)return;if(speakingI===i)return;synth.cancel();speakingI=i;
-  const [b,a,,,idea,body,tr]=IDEAS[i];const u=new SpeechSynthesisUtterance(`${idea}. ${body} ${set.tryOn?"Try this. "+tr:""} From ${b}, by ${a}.`);
-  u.rate=.98;u.onend=()=>{if(speakingI!==i)return;speakingI=null;markSpeaking();if(listening&&set.auto)setTimeout(()=>listening&&step(1),700);else{listening=false;markSpeaking()}};
+  const [b,a,,,idea,body,tr]=IDEAS[i];const u=utter(`${idea}. ${body} ${set.tryOn?"Try this. "+tr:""} From ${b}, by ${a}.`);
+  u.onend=()=>{if(speakingI!==i)return;speakingI=null;markSpeaking();if(listening&&set.auto)setTimeout(()=>listening&&step(1),700);else{listening=false;markSpeaking()}};
   synth.speak(u);markSpeaking()}
 function stopSpeech(){listening=false;speakingI=null;try{synth&&synth.cancel()}catch(e){}markSpeaking()}
 function markSpeaking(){feed.querySelectorAll("[data-listen]").forEach(b=>{const on=listening&&+b.dataset.listen===speakingI;b.setAttribute("aria-pressed",on);b.closest(".card").classList.toggle("speaking",on)})}
 
+/* ---------- notes ---------- */
+let noteI=null;
+function openNote(i){noteI=i;$("#noteIdea").textContent=`${IDEAS[i][4]} · ${IDEAS[i][0]}`;$("#noteText").value=notes[keyOf(i)]||"";$("#noteDel").hidden=!notes[keyOf(i)];sheetOpen($("#noteSheet"))}
+function saveNote(text){const k=keyOf(noteI);text=text.trim();if(text)notes[k]=text;else delete notes[k];store.set("notes",notes);
+  feed.querySelectorAll(`[data-note-for="${noteI}"]`).forEach(p=>{p.textContent=text;p.hidden=!text});sheetClose();show(text?"Note saved":"Note deleted");if(text)track("note")}
+$("#noteSave").onclick=()=>saveNote($("#noteText").value);$("#noteDel").onclick=()=>saveNote("");
+
+/* ---------- share as image ---------- */
+let shareBlob=null,shareI=null;
+function wrap(ctx,text,w){const words=text.split(" "),lines=[];let line="";for(const wd of words){const t=line?line+" "+wd:wd;if(ctx.measureText(t).width>w&&line){lines.push(line);line=wd}else line=t}if(line)lines.push(line);return lines}
+function rgba(hex,a){hex=hex.trim();if(!/^#[0-9a-f]{6}$/i.test(hex))return `rgba(127,127,127,${a})`;const n=parseInt(hex.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
+async function makeImage(i){
+  const [b,a,y,t,idea,body]=IDEAS[i],cs=getComputedStyle(root),v=n=>cs.getPropertyValue(n).trim();
+  const hue=v("--h-"+t),surf=v("--surface"),ink=v("--ink"),muted=v("--muted");
+  try{await Promise.all(['800 80px "Bricolage Grotesque"','700 36px "Bricolage Grotesque"','400 40px "Literata"','500 28px "JetBrains Mono"'].map(f=>document.fonts.load(f)))}catch(e){}
+  const W=1080,H=1350,P=96,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+  x.fillStyle=surf;x.fillRect(0,0,W,H);
+  let g=x.createRadialGradient(W,0,0,W,0,1100);g.addColorStop(0,rgba(hue,.34));g.addColorStop(1,rgba(hue,0));x.fillStyle=g;x.fillRect(0,0,W,H);
+  g=x.createRadialGradient(0,H,0,0,H,800);g.addColorStop(0,rgba(hue,.16));g.addColorStop(1,rgba(hue,0));x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.fillStyle=rgba(hue,.09);x.font='800 900px "Bricolage Grotesque", sans-serif';x.textAlign="right";x.textBaseline="alphabetic";x.fillText(b[0],W+30,H+150);x.textAlign="left";
+  x.fillStyle=hue;x.fillRect(P,P+4,18,18);x.font='500 28px "JetBrains Mono", monospace';x.fillText(THEMES[t].toUpperCase(),P+34,P+22);
+  // fit title + body into the space above the footer
+  let ts=88,bs=42,tl,bl;const avail=H-P-140-(P+80);
+  for(let k=0;k<12;k++){x.font=`800 ${ts}px "Bricolage Grotesque", sans-serif`;tl=wrap(x,idea,W-2*P);x.font=`400 ${bs}px "Literata", serif`;bl=wrap(x,body,W-2*P);
+    if(tl.length*ts*1.06+40+bl.length*bs*1.5<=avail)break;ts*=.93;bs*=.94}
+  let yy=P+80+ts;x.fillStyle=ink;x.font=`800 ${ts}px "Bricolage Grotesque", sans-serif`;tl.forEach(l=>{x.fillText(l,P,yy);yy+=ts*1.06});
+  yy+=40-ts*.06+bs*.4;x.font=`400 ${bs}px "Literata", serif`;bl.forEach(l=>{x.fillText(l,P,yy);yy+=bs*1.5});
+  x.fillStyle=rgba(hue,.35);x.fillRect(P,H-P-108,W-2*P,2);
+  x.fillStyle=ink;x.font='700 38px "Bricolage Grotesque", sans-serif';x.fillText(b.length>38?b.slice(0,36)+"…":b,P,H-P-50);
+  x.fillStyle=muted;x.font='400 30px "Literata", serif';x.fillText(`${a} · ${yr(y)}`,P,H-P-6);
+  x.textAlign="right";x.fillStyle=hue;x.font='800 40px "Bricolage Grotesque", sans-serif';x.fillText("Qshelf",W-P,H-P-6);
+  return new Promise(r=>c.toBlob(r,"image/png"))}
+async function openShare(i){shareI=i;const img=$("#shareImg");img.removeAttribute("src");sheetOpen($("#shareSheet"));
+  shareBlob=await makeImage(i);if(!shareBlob)return show("Couldn't make the image");const u=URL.createObjectURL(shareBlob);
+  if(img._u)URL.revokeObjectURL(img._u);img._u=u;img.src=u;$("#shareSave").href=u;$("#shareSave").download=`qshelf-${IDEAS[i][4].toLowerCase().replace(/[^a-z0-9]+/g,"-")}.png`;
+  const f=new File([shareBlob],"qshelf-idea.png",{type:"image/png"});$("#shareNative").hidden=!(navigator.canShare&&navigator.canShare({files:[f]}));track("share-open")}
+$("#shareNative").onclick=async()=>{try{await navigator.share({files:[new File([shareBlob],"qshelf-idea.png",{type:"image/png"})],title:IDEAS[shareI][4],text:`${IDEAS[shareI][4]}, from ${IDEAS[shareI][0]}. ${APP_URL}`});track("share-sent")}catch(e){}};
+$("#shareSave").addEventListener("click",()=>track("share-saved"));
+$("#shareCopy").onclick=()=>{const [b,a,,,idea,body]=IDEAS[shareI];const p=navigator.clipboard&&navigator.clipboard.writeText(`${idea}\n${body}\n— ${b}, ${a}\n${APP_URL}`);p?p.then(()=>show("Copied"),()=>show("Copy isn't allowed here")):show("Copy isn't allowed here")};
+
 /* ---------- interactions ---------- */
 let tt;function show(m){toast.textContent=m;toast.hidden=false;clearTimeout(tt);tt=setTimeout(()=>toast.hidden=true,2400)}
 function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
-function toggleSave(i,btn){saved.has(i)?saved.delete(i):saved.add(i);store.set("saved",[...saved]);(btn||feed.querySelector(`[data-save="${i}"]`))?.setAttribute("aria-pressed",saved.has(i));buzz(12);show(saved.has(i)?"Saved":"Removed from saved")}
+function toggleSave(i){const k=keyOf(i);saved.has(k)?saved.delete(k):saved.add(k);store.set("saved2",[...saved]);
+  feed.querySelectorAll(`[data-save="${i}"]`).forEach(b=>b.setAttribute("aria-pressed",saved.has(k)));buzz(12);show(saved.has(k)?"Saved":"Removed from saved");if(saved.has(k))track("save")}
 function setFocus(on){document.body.classList.toggle("focus",on);setTimeout(()=>activeSlot&&activeSlot.scrollIntoView({block:"start"}),380)}
 let tapT=null;
 feed.addEventListener("click",e=>{
-  const sv=e.target.closest("[data-save]"),cp=e.target.closest("[data-copy]"),ls=e.target.closest("[data-listen]"),go=e.target.closest("#go"),la=e.target.closest("[data-listen-all]"),to=e.target.closest("[data-goto]");
-  if(sv)return toggleSave(+sv.dataset.save,sv);
-  if(cp){const [b,a,,,idea,body]=IDEAS[+cp.dataset.copy];const p=navigator.clipboard&&navigator.clipboard.writeText(`${idea}\n${body}\n— ${b}, ${a}`);p?p.then(()=>show("Copied"),()=>show("Copy isn't allowed here")):show("Copy isn't allowed here");return}
-  if(ls){if(!synth)return show("Read-aloud isn't available here");const i=+ls.dataset.listen;if(listening&&speakingI===i)return stopSpeech();listening=true;speakingI=null;speak(i);return}
-  if(go){step(1);return}
-  if(la){if(!synth)return show("Read-aloud isn't available here");listening=true;step(1);return}
-  if(to){chipsEl.querySelector(`[data-k="${to.dataset.goto}"]`).click();return}
-  if(e.target.closest("button,a,ul.readlist"))return;
-  const slot=e.target.closest(".slot[data-i]");
-  if(tapT){clearTimeout(tapT);tapT=null;if(slot){const i=+slot.dataset.i;if(!saved.has(i))toggleSave(i);const card=slot.firstElementChild,bu=document.createElement("span");bu.className="burst";bu.innerHTML=I.save;card.appendChild(bu);setTimeout(()=>bu.remove(),750)}return}
+  const q=(sel)=>e.target.closest(sel);let el;
+  if(el=q("[data-save]"))return toggleSave(+el.dataset.save);
+  if(el=q("[data-note]"))return openNote(+el.dataset.note);
+  if(el=q("[data-share]"))return openShare(+el.dataset.share);
+  if(el=q("[data-book]"))return setShelf("book:"+el.dataset.book);
+  if(el=q("[data-listen]")){if(!synth)return show("Read-aloud isn't available here");const i=+el.dataset.listen;if(listening&&speakingI===i)return stopSpeech();listening=true;speakingI=null;speak(i);once("listen");return}
+  if(el=q(".opt")){const card=el.closest(".card");if(card.dataset.done)return;card.dataset.done=1;const ok=el.dataset.ans==="1";
+    card.querySelectorAll(".opt").forEach(o=>{o.disabled=true;if(o.dataset.ans==="1")o.classList.add("right")});if(!ok)el.classList.add("wrong");
+    card.querySelector(".qres").hidden=false;buzz(ok?12:[10,40,10]);show(ok?"Nice recall":"Now you'll remember it");track(ok?"quiz-right":"quiz-wrong");return}
+  if(q("#go")){step(1);return}
+  if(q("[data-listen-all]")){if(!synth)return show("Read-aloud isn't available here");listening=true;once("listen");const first=feed.querySelector(".slot[data-i]");first&&first.scrollIntoView({behavior:"smooth",block:"start"});return}
+  if(el=q("[data-goto]")){setShelf(el.dataset.goto);return}
+  if(q("button,a,ul.readlist,.opts"))return;
+  const slot=q(".slot[data-i]");
+  if(tapT){clearTimeout(tapT);tapT=null;if(slot){const i=+slot.dataset.i;if(!saved.has(keyOf(i)))toggleSave(i);const card=slot.firstElementChild,bu=document.createElement("span");bu.className="burst";bu.innerHTML=I.save;card.appendChild(bu);setTimeout(()=>bu.remove(),750)}return}
   tapT=setTimeout(()=>{tapT=null;setFocus(!document.body.classList.contains("focus"))},280);
 });
 function step(d){const slots=[...feed.querySelectorAll(".slot")];const k=Math.max(0,Math.min(slots.length-1,slots.indexOf(activeSlot)+d));
   slots[k]&&slots[k].scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})}
-addEventListener("keydown",e=>{if(!sheet.hidden){if(e.key==="Escape")openSheet(false);return}
+addEventListener("keydown",e=>{if(openSh){if(e.key==="Escape")sheetClose();return}
+  if(e.target.closest&&e.target.closest("input,select,textarea"))return;
   if(["ArrowDown","j","PageDown"," "].includes(e.key)){e.preventDefault();step(1)}
   else if(["ArrowUp","k","PageUp"].includes(e.key)){e.preventDefault();step(-1)}
   else if(e.key==="s"&&activeSlot&&activeSlot.dataset.i)toggleSave(+activeSlot.dataset.i);
   else if(e.key==="f")setFocus(!document.body.classList.contains("focus"));
   else if(e.key==="Escape")setFocus(false)});
-// sound may only start after a tap, so resume a saved ambience on the first one
 if(set.amb!=="off")addEventListener("pointerdown",()=>ambience(set.amb),{once:true});
-applySet();render();
+if(synth){loadVoices();synth.onvoiceschanged=loadVoices}
+applySet();setShelf("today");
 if("serviceWorker" in navigator&&location.protocol==="https:"&&!/claude|anthropic/.test(location.host))navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
+
 
 </body></html>
