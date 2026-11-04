@@ -3,7 +3,10 @@
 Five minutes a day of big ideas from great books. Swipe through one idea per card, each paraphrased from a well-known book and ending with a small "try this" action.
 
 - **Today**: twelve ideas a day, each from a different book, reshuffled daily
-- **208 ideas from 118 books**, across Habits, Thinking, Money, Work, People, Meaning, Strategy and Health
+- **326 ideas from 195 books**: 248 in English, 28 in Hindi, 26 in Bangla and 24 in Marathi, across Habits, Thinking, Money, Work, People, Meaning, Strategy and Health
+- **Languages**: choose English, हिन्दी, বাংলা and मराठी in any mix. Hindi, Bangla and Marathi books appear in their own language
+- **Choose your books**: tick which books go in your daily deck on the Books shelf
+- **Translate on demand**: the ••• menu on a card translates it on the phone where supported, otherwise opens Google Translate
 - **Recall quiz**: two quick questions on ideas from earlier days, before today's deck
 - **Book deep-dives**: tap a book's name, or open Books, to read all its ideas in order
 - **Notes**: write what an idea means for you; find them all under Notes
@@ -28,7 +31,7 @@ It opens full screen and works offline after the first load.
 
 ## Adding ideas
 
-Ideas live in the `IDEAS` array in `index.html`, one line each: book, author, year (negative for BC), theme, idea, explanation, try-this.
+Ideas live in the `IDEAS` array in `index.html`, one line each: book, author, year (negative for BC), theme, idea, explanation, try-this, and an optional language code (`hi`, `bn`, `mr`; English when left out).
 
 ## Usage counts
 

@@ -12,17 +12,17 @@
 <title>Qshelf</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=Atkinson+Hyperlegible:wght@400;700&family=Figtree:wght@400;500&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=Atkinson+Hyperlegible:wght@400;700&family=Figtree:wght@400;500&family=JetBrains+Mono:wght@500&family=Noto+Sans+Devanagari:wght@500;700&family=Noto+Serif+Devanagari:wght@400;500&family=Noto+Sans+Bengali:wght@500;700&family=Noto+Serif+Bengali:wght@400;500&display=swap">
 <style>
 /* Layout: one immersive card per screen, snapped vertically; story-style segments on top, a chrome bar that hides in focus mode, and a bottom sheet for reading settings */
 :root{
   --bg:#e9edf1; --surface:#fbfcfd; --ink:#15212c; --muted:#5b6977; --line:#cfd7df; --accent:#2b5c8a; --scrim:rgba(10,16,22,.45);
   --h-habits:#3f8a5c; --h-mind:#5a5fc4; --h-money:#b07f22; --h-work:#2f78b5; --h-people:#c2557a; --h-meaning:#8a5bb8; --h-strategy:#278a8a; --h-health:#c4602f;
-  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
-  --f-serif:"Literata",Georgia,"Times New Roman",serif;
-  --f-sans:"Figtree",ui-sans-serif,system-ui,sans-serif;
-  --f-readable:"Atkinson Hyperlegible",Verdana,ui-sans-serif,sans-serif;
-  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --f-display:"Bricolage Grotesque","Noto Sans Devanagari","Noto Sans Bengali",ui-sans-serif,system-ui,sans-serif;
+  --f-serif:"Literata","Noto Serif Devanagari","Noto Serif Bengali",Georgia,"Times New Roman",serif;
+  --f-sans:"Figtree","Noto Sans Devanagari","Noto Sans Bengali",ui-sans-serif,system-ui,sans-serif;
+  --f-readable:"Atkinson Hyperlegible","Noto Sans Devanagari","Noto Sans Bengali",Verdana,ui-sans-serif,sans-serif;
+  --f-mono:"JetBrains Mono","Noto Sans Devanagari","Noto Sans Bengali",ui-monospace,Menlo,monospace;
   --f-read:var(--f-serif); --scale:1; --lh:1.62;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
@@ -200,6 +200,24 @@ body.focus .mini{opacity:1}
 .hintp{font-family:var(--f-sans);font-size:.84rem;color:var(--muted);margin:0;line-height:1.5}
 .rangerow{display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:.8rem;font-variant-numeric:tabular-nums}
 .rangerow input{flex:1;accent-color:var(--accent)}
+/* Indian scripts need taller lines so vowel marks don't clip */
+.card[lang="hi"] .idea,.card[lang="bn"] .idea,.card[lang="mr"] .idea,.card[lang="hi"] .big,.card[lang="bn"] .big,.card[lang="mr"] .big{line-height:1.28;letter-spacing:0}
+.card[lang="hi"] .qq,.card[lang="bn"] .qq,.card[lang="mr"] .qq{line-height:1.3;letter-spacing:0}
+.card[lang="hi"] .meta,.card[lang="bn"] .meta,.card[lang="mr"] .meta,.card[lang="hi"] .try b,.card[lang="bn"] .try b,.card[lang="mr"] .try b{text-transform:none;letter-spacing:.02em}
+.card[lang="hi"] .body,.card[lang="bn"] .body,.card[lang="mr"] .body{line-height:calc(var(--lh) + .12)}
+.bk{padding:0;display:flex;align-items:stretch}
+.bk-open{flex:1;min-width:0;text-align:left;padding:12px;display:grid;gap:4px;align-content:start}
+.bk-tog{width:40px;flex:none;display:grid;place-items:center;border-left:1px solid color-mix(in oklab,var(--hue) 22%,var(--line));color:var(--muted)}
+.bk-tog svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.25}
+.bk-tog[aria-pressed="true"]{color:var(--hue)}
+.bk-tog[aria-pressed="true"] svg{opacity:1}
+.bk:has(.bk-tog[aria-pressed="false"]) .bk-open{opacity:.55}
+.tnote{font-family:var(--f-sans);font-size:.82rem;color:var(--muted);margin:0}
+.linkbtn{color:var(--accent);text-decoration:underline;text-underline-offset:3px;font:inherit}
+.mlist{display:grid;gap:8px}
+.mitem{display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;border:1px solid var(--line);font-family:var(--f-sans);font-size:1rem;text-align:left}
+.mitem svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sheet .chips{flex-wrap:wrap}
 @media (min-width:760px){.slot{padding-inline:max(0px,calc((100% - 720px)/2))}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -228,6 +246,7 @@ body.focus .mini{opacity:1}
   <div class="in">
     <div class="grab"></div>
     <h2 id="setT">Reading settings <button class="round" id="closeSet" data-close aria-label="Close settings"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
+    <div class="grp"><span class="lab">Languages</span><div class="chips" id="langSet"></div><p class="hintp">Hindi, Bangla and Marathi books appear in their own language. Any card can be translated from its ••• menu.</p></div>
     <div class="grp"><span class="lab">Theme</span><div class="swatches" id="skins"></div></div>
     <div class="grp"><span class="lab">Text size</span>
       <div class="sizer"><button id="smaller" aria-label="Smaller text" style="font-size:.85rem">A</button><div class="dots" id="sizeDots"></div><button id="bigger" aria-label="Larger text" style="font-size:1.25rem">A</button></div>
@@ -241,7 +260,7 @@ body.focus .mini{opacity:1}
       <select class="field" id="voice" aria-label="Voice"></select>
       <div class="rangerow"><span>Speed</span><input type="range" id="rate" min="0.7" max="1.3" step="0.05" aria-label="Speech speed"><span id="rateV">1.00×</span></div>
       <div class="btns"><button class="btn ghost" id="testVoice">Test voice</button></div>
-      <p class="hintp">Sounds robotic? Download a better voice on your phone. Android: Settings → Text-to-speech → Speech Services by Google → Install voice data. iPhone: Settings → Accessibility → Spoken Content → Voices, then pick one marked Enhanced or Premium. Then choose it here.</p></div>
+      <p class="hintp">Sounds robotic? Download a better voice on your phone. Android: Settings → Text-to-speech → Speech Services by Google → Install voice data. iPhone: Settings → Accessibility → Spoken Content → Voices, then pick one marked Enhanced or Premium. Then choose it here. Hindi, Bangla and Marathi cards use a matching voice automatically when your phone has one: install it the same way.</p></div>
     <div class="grp"><span class="lab">Ambience</span><div class="seg" id="amb">
       <button data-v="off">Off</button><button data-v="rain">Rain</button><button data-v="ocean">Ocean</button><button data-v="hearth">Hearth</button></div></div>
     <div class="grp"><span class="lab">Daily reminder</span>
@@ -262,6 +281,19 @@ body.focus .mini{opacity:1}
     <textarea class="ta" id="noteText" placeholder="What does this mean for you? Where will you use it?"></textarea>
     <div class="btns"><button class="btn" id="noteSave">Save note</button><button class="btn ghost" id="noteDel">Delete note</button></div>
   </div></section>
+<section class="sheet" id="moreSheet" role="dialog" aria-modal="true" aria-labelledby="moreT" hidden>
+  <div class="in"><div class="grab"></div>
+    <h2 id="moreT">This idea <button class="round" data-close aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
+    <p class="hintp" id="moreIdea"></p>
+    <div class="mlist">
+      <button class="mitem" id="mNote"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>Add or edit a note</button>
+      <button class="mitem" id="mShare"><svg viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>Share as image</button>
+      <button class="mitem" id="mCopy"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>Copy text</button>
+    </div>
+    <div class="grp"><span class="lab">Translate to</span><div class="chips" id="tlBtns"></div>
+      <a class="btn" id="tlOpen" target="_blank" rel="noopener" hidden>Open in Google Translate</a>
+      <p class="hintp">Translates on your phone when the browser supports it, otherwise opens Google Translate.</p></div>
+  </div></section>
 <section class="sheet" id="shareSheet" role="dialog" aria-modal="true" aria-labelledby="shareT" hidden>
   <div class="in"><div class="grab"></div>
     <h2 id="shareT">Share this idea <button class="round" data-close aria-label="Close share"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2>
@@ -273,6 +305,12 @@ body.focus .mini{opacity:1}
 
 <script>
 const THEMES={habits:"Habits",mind:"Thinking",money:"Money",work:"Work",people:"People",meaning:"Meaning",strategy:"Strategy",health:"Health"};
+const LANGS={en:{name:"English",try:"Try this",sec:"sec",q:"Which idea is this?",from:(b,a)=>`From ${b}, by ${a}.`,v:"en"},
+  hi:{name:"हिन्दी",try:"आज़माएँ",sec:"सेकंड",q:"यह कौन-सा विचार है?",from:(b,a)=>`${b}, ${a}।`,v:"hi",themes:{habits:"आदतें",mind:"सोच",money:"पैसा",work:"काम",people:"लोग",meaning:"अर्थ",strategy:"रणनीति",health:"सेहत"}},
+  bn:{name:"বাংলা",try:"চেষ্টা করুন",sec:"সেকেন্ড",q:"এটা কোন ভাবনা?",from:(b,a)=>`${b}, ${a}।`,v:"bn",themes:{habits:"অভ্যাস",mind:"চিন্তা",money:"টাকা",work:"কাজ",people:"মানুষ",meaning:"অর্থ",strategy:"কৌশল",health:"স্বাস্থ্য"}},
+  mr:{name:"मराठी",try:"करून पहा",sec:"सेकंद",q:"हा कोणता विचार आहे?",from:(b,a)=>`${b}, ${a}.`,v:"mr",themes:{habits:"सवयी",mind:"विचार",money:"पैसा",work:"काम",people:"माणसे",meaning:"अर्थ",strategy:"रणनीती",health:"आरोग्य"}}};
+const langOf=i=>IDEAS[i][7]||"en";
+const themeName=(t,l)=>(LANGS[l].themes||THEMES)[t];
 const IDEAS=[
 ["Atomic Habits","James Clear",2018,"habits","Small gains compound quietly","Getting a little better each day looks like nothing for weeks. Then the curve bends. Most people quit in the flat stretch, right before the payoff shows up.","Pick one habit and shrink it until it takes under two minutes. Do that version today."],
 ["Atomic Habits","James Clear",2018,"habits","Become the person, not the goal","Goals describe an outcome. Habits stick when they describe who you are. Every repetition is a vote for an identity, and enough votes change how you see yourself.","Finish this sentence: I am the kind of person who… Then do one thing that proves it."],
@@ -481,7 +519,125 @@ const IDEAS=[
 ["The Blue Zones","Dan Buettner",2008,"health","Move naturally every day","People in the world's longest-lived communities rarely go to gyms. They walk, garden and do manual tasks throughout the day as part of normal life.","Add one natural movement to your routine, like walking to a nearby errand."],
 ["Stolen Focus","Johann Hari",2022,"health","Attention is being taken","Constant notifications, poor sleep and information overload make sustained focus harder for everyone. It is not just personal weakness; the environment matters.","Turn off all non-essential notifications for one week."],
 ["Dopamine Nation","Anna Lembke",2021,"health","Pleasure and pain are linked","The brain balances pleasure with pain. Constant easy rewards tip the balance, leaving you less satisfied. A break from a habit can reset your enjoyment.","Take a 7-day break from one easy pleasure and notice how you feel."],
-["Rest","Alex Soojung-Kim Pang",2016,"health","Rest is a skill","Many great thinkers worked hard for about four focused hours, then walked, napped or played. Deliberate rest supports creativity instead of competing with it.","Plan one real break today with no screens."]
+["Rest","Alex Soojung-Kim Pang",2016,"health","Rest is a skill","Many great thinkers worked hard for about four focused hours, then walked, napped or played. Deliberate rest supports creativity instead of competing with it.","Plan one real break today with no screens."],
+["Wings of Fire","A. P. J. Abdul Kalam",1999,"meaning","Dream, then work for it","Kalam grew up in a small town in Rameswaram selling newspapers as a boy. He believed big dreams only matter when paired with patient, disciplined work over many years.","Write down one big dream and the first small step you can take this week."],
+["Wings of Fire","A. P. J. Abdul Kalam",1999,"work","Leaders take the blame, share the credit","When an early rocket launch failed, Kalam's boss faced the press himself. When the next launch succeeded, he sent Kalam to announce it. Kalam never forgot that lesson.","Next time your team wins, let someone else present the result."],
+["The Monk Who Sold His Ferrari","Robin Sharma",1997,"habits","Guard the gate of your mind","Thoughts are like a garden. If you let worry and negativity grow unchecked, they crowd out everything good. Choosing what you dwell on is a daily practice.","Each time a negative thought loops today, replace it with one useful question."],
+["The Alchemist","Paulo Coelho",1988,"meaning","The journey teaches you","A shepherd boy travels across the desert searching for treasure, only to learn that what he found along the way mattered as much as the goal.","Think of a goal you are chasing. What has the journey taught you so far?"],
+["The Subtle Art of Not Giving a F*ck","Mark Manson",2016,"meaning","Choose what to care about","You only have so much energy for caring. Spending it on everything leaves nothing for what matters. Happiness comes from choosing better problems.","Name one thing you will stop worrying about this week."],
+["Grit","Angela Duckworth",2016,"habits","Passion plus persistence","Talent matters less than people think. Sustained interest and steady effort over years predict achievement better than raw ability.","Pick one long-term goal and commit to practicing it for the next 30 days."],
+["Can't Hurt Me","David Goggins",2018,"habits","You have more left than you think","When your mind says you are done, you have usually used only part of what you can give. Pushing a little past that first limit builds mental toughness.","Next time you want to stop a hard task, do five more minutes."],
+["The Tipping Point","Malcolm Gladwell",2000,"strategy","Small changes can tip big","Ideas and behaviors spread like epidemics. A few connected people, a sticky message and the right setting can turn a small trend into a sudden wave.","Who are the three most connected people for an idea you want to spread?"],
+["Quiet","Susan Cain",2012,"people","Introverts are an asset","Workplaces often reward the loudest voice. Yet introverts bring careful thinking, deep focus and good listening. Teams do best with both styles.","In your next meeting, invite the quietest person to share first."],
+["Hooked","Nir Eyal",2014,"strategy","Products build habits in loops","Habit-forming products move users through a trigger, an action, a variable reward and an investment. Knowing the loop helps you build products and resist them.","Map the loop of one app you open too often."],
+["Made to Stick","Chip & Dan Heath",2007,"people","Make ideas concrete","Abstract messages slide off the mind. Concrete images, stories and surprises make ideas memorable and easy to repeat.","Rewrite your next key message using one vivid, concrete example."],
+["Switch","Chip & Dan Heath",2010,"habits","Shape the path","To change behavior, give the logical mind a clear direction, motivate the emotional side, and make the path easier. Change the environment and people follow.","Make one good behavior easier by changing your surroundings today."],
+["Decisive","Chip & Dan Heath",2013,"mind","Widen your options","Many bad decisions come from framing choices as this or that. Asking what else you could do often reveals a better option you hadn't considered.","For your next yes-or-no decision, find a third option."],
+["The Power of Moments","Chip & Dan Heath",2017,"people","Create defining moments","People remember a few peak moments, not the average. You can design them on purpose: celebrations, surprises and milestones that make experiences meaningful.","Plan one small, memorable moment for someone this week."],
+["Freakonomics","Steven Levitt & Stephen Dubner",2005,"mind","Follow the incentives","To understand why people behave as they do, look at the incentives they face. Often, behavior that seems strange makes perfect sense once you see the reward.","Pick one puzzling behavior at work and ask what incentive drives it."],
+["Shoe Dog","Phil Knight",2016,"work","Just keep going","Nike's founder faced near-bankruptcy many times. What carried the company was a stubborn refusal to stop, and a crew who believed in the mission.","Write down why your current project matters to you, for the hard days."],
+["The Infinite Game","Simon Sinek",2019,"strategy","Play to keep playing","Business is not a game you win once. Organizations that focus on a lasting cause outlast those obsessed with beating rivals this quarter.","Ask whether your current goals are about winning now or lasting long."],
+["Creativity, Inc.","Ed Catmull",2014,"work","Early work is always ugly","At Pixar, every film starts out bad. Candid feedback from trusted peers is what turns a rough idea into something great.","Share an unfinished draft with a trusted colleague and ask for candid notes."],
+["Originals","Adam Grant",2016,"work","Quantity breeds quality","Creative people don't have better hit rates. They simply produce more ideas, so more good ones appear. Volume is the path to originality.","Write ten ideas for a problem you face, even if most are bad."],
+["Hidden Potential","Adam Grant",2023,"habits","Character skills drive growth","How far you go depends less on where you start and more on skills like being proactive, embracing discomfort and learning from mistakes.","Do one thing today that makes you slightly uncomfortable but helps you learn."],
+["The Laws of Human Nature","Robert Greene",2018,"people","See past the mask","People present a polished image. Watching their actions over time, especially under stress, shows you who they really are.","Notice how someone treats people who can do nothing for them."],
+["The Daily Stoic","Ryan Holiday & Stephen Hanselman",2016,"meaning","Review your day","Stoics ended each day by asking what they did well, where they fell short, and what to do differently. A short reflection turns days into lessons.","Tonight, answer three questions: what went well, what didn't, what next."],
+["Stillness Is the Key","Ryan Holiday",2019,"meaning","Stillness clears the mind","In a noisy world, the ability to be calm and focused is a competitive edge. Walks, solitude and journaling create space for clear thinking.","Take a 15-minute walk without your phone today."],
+["Feel-Good Productivity","Ali Abdaal",2023,"work","Feeling good fuels doing","People get more done when work feels playful, empowering and connected, not when they force themselves through it.","Add one element of play or company to a task you dread."],
+["Building a Second Brain","Tiago Forte",2022,"work","Capture what resonates","Save ideas, quotes and notes in one trusted place, organized by project. Your memory then has a backup, and ideas compound over time.","Pick one notes app and save three ideas from today in it."],
+["The Bullet Journal Method","Ryder Carroll",2018,"habits","Write it down to slow down","A simple notebook of tasks, events and notes forces you to choose what matters. Copying tasks forward reveals which ones you can drop.","Write tomorrow's tasks by hand and cross off one that doesn't matter."],
+["The Compound Effect","Darren Hardy",2010,"habits","Small choices add up","Daily choices that seem trivial, like a snack or a skipped workout, add up over years into big differences in health, wealth and skill.","Track one small daily choice for a week and see the pattern."],
+["Who Moved My Cheese?","Spencer Johnson",1998,"work","Adapt when change comes","Change happens whether we like it or not. Those who notice early and adapt quickly do better than those who wait for the old ways to return.","Name one change at work you have been resisting. What would adapting look like?"],
+["The Gifts of Imperfection","Brené Brown",2010,"meaning","Let go of perfect","Perfectionism is a shield against judgment, but it blocks joy and connection. Accepting yourself as you are makes it easier to grow.","Share one piece of imperfect work today without apologizing for it."],
+["The Wealth of Nations","Adam Smith",1776,"money","Specialization multiplies output","Smith described a pin factory where splitting work into small steps let ten workers make thousands of pins a day. Division of labor drives productivity.","Look at one process you run alone. Could splitting it help?"],
+["Thinking, Fast and Slow","Daniel Kahneman",2011,"mind","Beware the halo effect","Liking one trait of a person makes us rate their other traits higher too. A strong first impression colors everything that follows.","Rate a candidate or idea on separate criteria before forming an overall view."],
+["The Psychology of Money","Morgan Housel",2020,"money","Nothing is free, including returns","Market gains come with a fee paid in volatility and fear. Investors who see that fee as a fair price, not a fine, stay invested.","Remind yourself before the next market dip: this is the price of returns."],
+["Atomic Habits","James Clear",2018,"habits","Make it satisfying","Behavior that is immediately rewarded gets repeated. Adding a small, instant reward to a good habit helps it stick.","Track a habit with a simple tick mark and enjoy filling in the chain."],
+["Deep Work","Cal Newport",2016,"work","Schedule every minute","Giving every part of your workday a plan, even if you revise it, beats reacting to whatever comes in. The plan is a tool, not a cage.","Tomorrow morning, sketch the day in blocks before opening email."],
+["Range","David Epstein",2019,"work","Find your match quality","People who switch fields often do so because they found a better fit. Trying things is how you learn what suits you.","Try one new kind of task this month to test a possible fit."],
+["Man's Search for Meaning","Viktor Frankl",1946,"meaning","Life asks you the question","Instead of asking what you expect from life, ask what life expects from you. Meaning is found by responding to each situation.","Ask yourself: what does today ask of me?"],
+["The Effective Executive","Peter Drucker",1967,"work","First things first, one at a time","Effective people concentrate. They do the most important thing first and only one thing at a time, finishing before starting the next.","Do your most important task tomorrow before anything else."],
+["Influence","Robert Cialdini",1984,"people","People say yes to those they like","We agree more easily with people who are similar to us, who compliment us, and who cooperate with us. Liking builds influence.","Find something you genuinely have in common with a colleague."],
+["The Black Swan","Nassim Nicholas Taleb",2007,"strategy","Prepare, don't predict","Rare, huge events can't be forecast. Instead of predicting them, build resilience so you can survive surprises and benefit from good ones.","List one way you could survive a shock to your income."],
+["Getting Things Done","David Allen",2001,"work","Define the next action","Projects stall when the next step is vague. Writing the very next physical action makes it easy to start.","Pick one stalled project and write its next physical action."],
+["भगवद् गीता","वेदव्यास",-200,"meaning","कर्म करो, फल की चिंता छोड़ो","कृष्ण अर्जुन से कहते हैं कि तुम्हारा अधिकार केवल कर्म पर है, उसके फल पर नहीं। पूरी लगन से काम करो, पर नतीजे से चिपको मत, क्योंकि वह बहुत-सी बातों पर निर्भर है।","आज एक काम पूरे मन से करें, और फिर नतीजे की चिंता छोड़ दें।","hi"],
+["भगवद् गीता","वेदव्यास",-200,"mind","मन ही मित्र, मन ही शत्रु","गीता कहती है कि मनुष्य स्वयं अपना मित्र है और स्वयं अपना शत्रु। जिसने मन को साध लिया, उसके लिए मन सबसे बड़ा सहायक बन जाता है।","आज जब मन भटके, तो तीन गहरी साँसें लेकर उसे वापस काम पर लाएँ।","hi"],
+["भगवद् गीता","वेदव्यास",-200,"work","अपना धर्म निभाओ","दूसरे का काम अच्छे से करने से बेहतर है अपना काम करना, भले ही उसमें कमियाँ हों। अपनी भूमिका को पहचानना और उसे निभाना ही सच्ची सफलता है।","लिखें कि इस समय आपकी सबसे ज़रूरी ज़िम्मेदारी क्या है।","hi"],
+["कबीर के दोहे","कबीरदास",1450,"habits","कल का काम आज करो","कबीर कहते हैं कि जो कल करना है, उसे आज करो, और जो आज करना है, उसे अभी। पल भर में सब बदल सकता है, फिर काम कब होगा?","जिस काम को आप टाल रहे हैं, उसे अभी पाँच मिनट दें।","hi"],
+["कबीर के दोहे","कबीरदास",1450,"people","बुराई ढूँढने निकला तो","कबीर दूसरों में बुराई ढूँढने निकले, पर कोई बुरा नहीं मिला। जब अपने भीतर झाँका, तो पाया कि सबसे बड़ा बुरा वे स्वयं थे।","किसी की आलोचना करने से पहले, अपनी एक कमी पहचानें।","hi"],
+["कबीर के दोहे","कबीरदास",1450,"habits","धीरे-धीरे सब होता है","माली सौ घड़े पानी डाले, फिर भी फल ऋतु आने पर ही लगता है। हर अच्छे काम को समय चाहिए, जल्दबाज़ी से कुछ नहीं होता।","किसी लंबे लक्ष्य पर आज छोटा-सा काम करें और धैर्य रखें।","hi"],
+["कबीर के दोहे","कबीरदास",1450,"people","मीठी वाणी बोलो","ऐसी बोली बोलो जो दूसरों को शीतल करे और ख़ुद को भी सुकून दे। कड़वे शब्द रिश्ते तोड़ते हैं, मीठे शब्द जोड़ते हैं।","आज किसी से बात करते समय एक कठोर बात को नरम शब्दों में कहें।","hi"],
+["रहीम के दोहे","अब्दुल रहीम ख़ानख़ाना",1600,"people","प्रेम का धागा मत तोड़ो","रहीम कहते हैं कि प्रेम का धागा झटके से मत तोड़ो। टूटने पर वह फिर जुड़ता नहीं, और जुड़ भी जाए तो गाँठ पड़ जाती है।","किसी रिश्ते में चल रही नाराज़गी को आज एक छोटे संदेश से सुलझाएँ।","hi"],
+["रहीम के दोहे","अब्दुल रहीम ख़ानख़ाना",1600,"people","छोटे को कम मत आँको","बड़ी चीज़ देखकर छोटी को मत छोड़ो। जहाँ सुई काम आती है, वहाँ तलवार क्या करेगी? हर व्यक्ति और हर साधन का अपना महत्व है।","टीम में किसी ऐसे व्यक्ति की तारीफ़ करें जिसका काम अक्सर दिखता नहीं।","hi"],
+["चाणक्य नीति","चाणक्य",-300,"strategy","शुरू करने से पहले तीन सवाल","कोई भी काम शुरू करने से पहले ख़ुद से पूछो: मैं यह क्यों कर रहा हूँ, इसका परिणाम क्या होगा, और क्या मैं सफल होऊँगा? सोचकर किया काम ही टिकता है।","अपने अगले बड़े फ़ैसले से पहले ये तीन सवाल लिखकर जवाब दें।","hi"],
+["चाणक्य नीति","चाणक्य",-300,"strategy","अपनी योजना गुप्त रखो","चाणक्य कहते हैं कि जो सोचा है, उसे किसी से न कहो। चुपचाप काम में लगे रहो। अधूरी योजना बताने से बाधाएँ बढ़ती हैं।","अगले प्रोजेक्ट का पहला चरण पूरा होने तक उसे अपने तक रखें।","hi"],
+["चाणक्य नीति","चाणक्य",-300,"money","धन बुरे समय के लिए बचाओ","संकट के समय के लिए धन बचाकर रखो। अच्छे दिन हमेशा नहीं रहते, और बचत ही मुश्किल समय में सहारा बनती है।","इस महीने एक छोटी राशि आपातकालीन बचत में डालें।","hi"],
+["पंचतंत्र","विष्णु शर्मा",-300,"strategy","बुद्धि बल से बड़ी","एक छोटे खरगोश ने ताक़तवर शेर को कुएँ में उसकी परछाईं दिखाकर हरा दिया। सोच-समझकर बनाई योजना ताक़त से अधिक काम आती है।","किसी कठिन समस्या का ऐसा हल सोचें जिसमें ज़ोर नहीं, समझ लगे।","hi"],
+["पंचतंत्र","विष्णु शर्मा",-300,"people","मीठी बातों से सावधान","कौए के मुँह में रोटी देखकर लोमड़ी ने उसकी तारीफ़ की। कौए ने गाना गाया और रोटी गिर गई। चापलूसी अक्सर किसी स्वार्थ के लिए होती है।","अगली बार ज़्यादा तारीफ़ मिले, तो सोचें कि सामने वाला क्या चाहता है।","hi"],
+["हितोपदेश","नारायण पंडित",1150,"people","एकता में शक्ति","जाल में फँसे कबूतर अकेले नहीं उड़ सके, पर सबने मिलकर ज़ोर लगाया तो जाल समेत उड़ गए। मिलकर किया प्रयास असंभव को संभव बना देता है।","किसी अटके काम में आज एक साथी की मदद माँगें।","hi"],
+["विदुर नीति","विदुर",-400,"mind","छह दोष छोड़ो","विदुर कहते हैं कि उन्नति चाहने वाले को अधिक नींद, आलस्य, डर, क्रोध, सुस्ती और टालमटोल छोड़ देनी चाहिए। यही प्रगति के सबसे बड़े दुश्मन हैं।","इन छह में से एक आदत चुनें और आज उस पर ध्यान दें।","hi"],
+["रामचरितमानस","तुलसीदास",1574,"meaning","धीरज, धर्म, मित्र और नारी","तुलसीदास कहते हैं कि धीरज, धर्म, मित्र और जीवनसाथी की असली परख मुसीबत के समय होती है। अच्छे समय में तो सब साथ होते हैं।","किसी ऐसे व्यक्ति को धन्यवाद दें जो आपके कठिन समय में साथ रहा।","hi"],
+["रामचरितमानस","तुलसीदास",1574,"work","कर्म ही प्रधान है","यह संसार कर्म पर टिका है। जो जैसा करता है, वैसा पाता है। भाग्य से ज़्यादा भरोसा अपने प्रयास पर रखो।","आज एक ऐसा काम करें जिसका फल आपको महीनों बाद मिलेगा।","hi"],
+["गोदान","मुंशी प्रेमचंद",1936,"meaning","सपनों और सच का संघर्ष","होरी एक गाय का सपना जीवन भर देखता है, पर कर्ज़ और समाज के दबाव में वह कभी पूरा नहीं होता। प्रेमचंद दिखाते हैं कि ग़रीबी कैसे इंसान की इच्छाओं को कुचल देती है।","अपने आसपास किसी की एक छोटी ज़रूरत पहचानें और मदद करें।","hi"],
+["ईदगाह","मुंशी प्रेमचंद",1933,"people","सबसे सुंदर उपहार","मेले में दोस्त खिलौने और मिठाई खरीदते हैं, पर छोटा हामिद अपनी दादी के लिए चिमटा लाता है ताकि उसके हाथ न जलें। प्रेम का मूल्य कीमत से नहीं, सोच से होता है।","किसी अपने के लिए ऐसा उपहार सोचें जो उनकी रोज़ की तकलीफ़ कम करे।","hi"],
+["पंच परमेश्वर","मुंशी प्रेमचंद",1916,"people","न्याय की कुर्सी पर दोस्ती नहीं","पंच बनने पर अलगू चौधरी ने अपने पुराने दोस्त के ख़िलाफ़ सच्चा फ़ैसला सुनाया। प्रेमचंद कहते हैं कि न्याय करते समय इंसान से ऊपर उठना पड़ता है।","किसी फ़ैसले में अपनी पसंद-नापसंद को अलग रखकर सोचें।","hi"],
+["रश्मिरथी","रामधारी सिंह दिनकर",1952,"meaning","पहचान जन्म से नहीं, कर्म से","कर्ण को उसके कुल के कारण बार-बार अपमानित किया गया, फिर भी वह अपने गुणों से महान बना। दिनकर बताते हैं कि मनुष्य का मूल्य उसके कर्म तय करते हैं।","किसी व्यक्ति को उसकी पृष्ठभूमि नहीं, उसके काम से आँकें।","hi"],
+["मधुशाला","हरिवंश राय बच्चन",1935,"meaning","अपना रास्ता ख़ुद चुनो","बच्चन लिखते हैं कि मधुशाला तक जाने के रास्ते अनेक हैं और हर कोई उलझा है कि किस राह जाए। उनकी सलाह है कि एक राह चुनो और उस पर चलते रहो।","किसी उलझे फ़ैसले में एक रास्ता चुनें और एक हफ़्ते उस पर टिके रहें।","hi"],
+["गबन","मुंशी प्रेमचंद",1931,"money","दिखावे का बोझ","रमानाथ पत्नी को ख़ुश करने और समाज में अमीर दिखने के लिए उधार लेता है, फिर ग़बन करता है। झूठी शान का बोझ अंत में सब छीन लेता है।","अपनी किसी एक ख़रीद को देखें जो केवल दूसरों को दिखाने के लिए थी।","hi"],
+["नमक का दारोगा","मुंशी प्रेमचंद",1914,"work","ईमानदारी की कीमत","दारोगा वंशीधर ने भारी रिश्वत ठुकरा दी और नौकरी खो दी। अंत में वही सेठ उनकी ईमानदारी देखकर उन्हें बड़े पद पर रख लेता है।","आज एक छोटी-सी बात में भी पूरी ईमानदारी बरतें।","hi"],
+["कबीर के दोहे","कबीरदास",1450,"mind","पोथी पढ़ि-पढ़ि जग मुआ","कबीर कहते हैं कि किताबें पढ़-पढ़कर बहुत लोग चले गए, पर ज्ञानी कोई नहीं बना। सच्चा ज्ञान प्रेम और अनुभव से आता है, रटने से नहीं।","आज जो पढ़ा, उसमें से एक बात को अपने जीवन में आज़माएँ।","hi"],
+["चाणक्य नीति","चाणक्य",-300,"mind","दूसरों की ग़लतियों से सीखो","जीवन इतना लंबा नहीं कि हर ग़लती ख़ुद करके सीखा जाए। समझदार व्यक्ति दूसरों के अनुभव से सीख लेता है।","किसी अनुभवी व्यक्ति से उनकी सबसे बड़ी सीख पूछें।","hi"],
+["भगवद् गीता","वेदव्यास",-200,"health","संतुलन ही योग है","गीता कहती है कि योग उसके लिए नहीं जो बहुत ज़्यादा खाता या बिल्कुल नहीं खाता, बहुत सोता या जागता रहता है। खान-पान, नींद और काम में संतुलन ही योग है।","आज खाने, सोने और काम में से किसी एक में संतुलन लाएँ।","hi"],
+["গীতাঞ্জলি","রবীন্দ্রনাথ ঠাকুর",1910,"meaning","ছোট্ট জীবনে বড় আনন্দ","গীতাঞ্জলির গানে রবীন্দ্রনাথ বারবার বলেন, প্রতিদিনের সাধারণ মুহূর্তেই আনন্দ লুকিয়ে আছে। আলো, গান, প্রকৃতি আর মানুষের মধ্যে সেই আনন্দকে খুঁজে নিতে হয়।","আজ পাঁচ মিনিট শুধু চারপাশের শব্দ আর আলো লক্ষ্য করুন।","bn"],
+["গীতাঞ্জলি","রবীন্দ্রনাথ ঠাকুর",1910,"meaning","ভয়হীন মন","রবীন্দ্রনাথ এমন এক দেশের স্বপ্ন দেখেছিলেন যেখানে মন ভয়হীন, মাথা উঁচু, আর জ্ঞান মুক্ত। সংকীর্ণ দেওয়াল ভেঙে সত্যের দিকে এগোনোই আসল স্বাধীনতা।","এমন একটা ভয় লিখুন যা আপনাকে আটকে রেখেছে, আর তার বিরুদ্ধে একটা ছোট পদক্ষেপ নিন।","bn"],
+["ঘরে বাইরে","রবীন্দ্রনাথ ঠাকুর",1916,"people","উত্তেজনা আর সত্য আলাদা","বিমলা জোরালো বক্তৃতায় মুগ্ধ হয়ে সন্দীপের পেছনে ছোটে, পরে বোঝে চটকদার কথার আড়ালে স্বার্থ ছিল। নিখিলেশের শান্ত সততাই শেষে টিকে থাকে।","পরের বার কোনো উত্তেজক কথায় মন নাচলে, কাজ দেখে বিচার করুন।","bn"],
+["ঘরে বাইরে","রবীন্দ্রনাথ ঠাকুর",1916,"strategy","লক্ষ্য মহৎ, উপায়ও সৎ হোক","রবীন্দ্রনাথ দেখান, ভালো উদ্দেশ্যের নামে অন্যায় পথ নিলে শেষে উদ্দেশ্যটাই নষ্ট হয়ে যায়। কীভাবে পৌঁছচ্ছি, সেটাও গন্তব্যের মতোই জরুরি।","আপনার একটি লক্ষ্যের জন্য বেছে নেওয়া পথটা কতটা ন্যায্য, ভেবে দেখুন।","bn"],
+["একলা চলো রে","রবীন্দ্রনাথ ঠাকুর",1905,"habits","কেউ না এলে একাই চলো","রবীন্দ্রনাথের এই গান বলে, তোমার ডাকে কেউ সাড়া না দিলেও থেমো না। বিশ্বাস থাকলে একা পথ চলাও সাহসের কাজ।","যে কাজ সবাই সমর্থন না করায় শুরু করেননি, আজ তার প্রথম ধাপ নিন।","bn"],
+["কর্মযোগ","স্বামী বিবেকানন্দ",1896,"work","কাজই উপাসনা","বিবেকানন্দ বলেন, যে কাজই করো, পূর্ণ মনোযোগ আর নিষ্ঠা দিয়ে করো। ফলের লোভ ছেড়ে কাজ করলে মন শক্ত হয় এবং শান্তি আসে।","আজকের একটা সাধারণ কাজ পূর্ণ মনোযোগ দিয়ে করুন।","bn"],
+["স্বামী বিবেকানন্দের বাণী","স্বামী বিবেকানন্দ",1900,"habits","ওঠো, জাগো, থেমো না","বিবেকানন্দ যুবকদের বলতেন, ওঠো, জাগো, আর লক্ষ্যে না পৌঁছনো পর্যন্ত থেমো না। নিজের শক্তিতে বিশ্বাসই সব বড় কাজের শুরু।","একটা লক্ষ্য লিখুন আর আজ তার দিকে একটা কাজ করুন।","bn"],
+["স্বামী বিবেকানন্দের বাণী","স্বামী বিবেকানন্দ",1900,"mind","একটা ভাবনাকে জীবন বানাও","একটা ভাবনা বেছে নাও, সেটাকেই জীবন করে তোলো। সেটা নিয়ে ভাবো, স্বপ্ন দেখো, তার জন্য বাঁচো। এভাবেই সাফল্য আসে বলে বিবেকানন্দ বিশ্বাস করতেন।","আপনার জীবনের একটা মূল ভাবনা এক বাক্যে লিখুন।","bn"],
+["বর্তমান ভারত","স্বামী বিবেকানন্দ",1899,"people","সাধারণ মানুষই শক্তি","বিবেকানন্দ লিখেছিলেন, দেশের আসল শক্তি কৃষক, শ্রমিক আর সাধারণ মানুষ। তাদের অবহেলা করে কোনো জাতি বড় হতে পারে না।","যাঁরা আপনার জীবন সহজ করেন, এমন একজন কর্মীকে আজ ধন্যবাদ দিন।","bn"],
+["শ্রীশ্রীরামকৃষ্ণ কথামৃত","শ্রীম",1902,"meaning","যত মত, তত পথ","রামকৃষ্ণ বলতেন, এক ছাদে ওঠার যেমন সিঁড়ি, দড়ি, বাঁশ অনেক উপায় আছে, তেমনই সত্যে পৌঁছনোর পথও অনেক। অন্যের পথকে সম্মান করো।","এমন কারো দৃষ্টিভঙ্গি বোঝার চেষ্টা করুন যিনি আপনার থেকে আলাদা ভাবেন।","bn"],
+["শ্রীশ্রীরামকৃষ্ণ কথামৃত","শ্রীম",1902,"mind","মন হল দুধের মতো","দুধ জলে মিশে যায়, কিন্তু মাখন তুলে নিলে সে জলে ভাসে। রামকৃষ্ণ বলতেন, আগে নির্জনে মনকে তৈরি করো, তারপর সংসারে থাকলেও মন হারাবে না।","দিনের শুরুতে দশ মিনিট নিজের সঙ্গে চুপ করে কাটান।","bn"],
+["আনন্দমঠ","বঙ্কিমচন্দ্র চট্টোপাধ্যায়",1882,"meaning","দেশ মানে মা","আনন্দমঠে সন্তানরা দেশকে মায়ের মতো দেখে, তার জন্য নিজের সুখ ত্যাগ করে। বঙ্কিম দেখান, বড় কোনো উদ্দেশ্যের জন্য নিবেদন মানুষকে অসাধারণ করে তোলে।","নিজের পাড়া বা সমাজের জন্য এই মাসে একটা ছোট কাজ করুন।","bn"],
+["পথের পাঁচালী","বিভূতিভূষণ বন্দ্যোপাধ্যায়",1929,"meaning","ছোট জিনিসে বিস্ময়","অপু আর দুর্গা দারিদ্র্যের মধ্যেও রেলগাড়ি দেখা, বৃষ্টিতে ভেজা আর বনে ঘোরাতে অপার আনন্দ পায়। বিস্ময়ের চোখ থাকলে জীবন অনেক বড় মনে হয়।","আজ এমন একটা জিনিস খুঁজুন যা আপনাকে ছোটবেলার মতো অবাক করে।","bn"],
+["পথের পাঁচালী","বিভূতিভূষণ বন্দ্যোপাধ্যায়",1929,"people","হারানোর আগে ভালোবাসো","দুর্গার অকাল মৃত্যু অপুকে শেখায় যে প্রিয় মানুষ চিরকাল থাকে না। যাঁরা আছেন, তাঁদের সময় দেওয়া আর ভালোবাসা জানানোই জরুরি।","আজ একজন প্রিয় মানুষকে ফোন করে বলুন তিনি আপনার কাছে কতটা জরুরি।","bn"],
+["শ্রীকান্ত","শরৎচন্দ্র চট্টোপাধ্যায়",1917,"people","মানুষকে বাইরে দেখে বিচার নয়","শ্রীকান্ত সমাজের চোখে অবহেলিত মানুষের মধ্যে গভীর মমতা আর মর্যাদা খুঁজে পায়। শরৎচন্দ্র শেখান, বাইরের পরিচয় দিয়ে কাউকে বিচার করা অন্যায়।","এমন একজনের সঙ্গে কথা বলুন যাঁকে আপনি সাধারণত এড়িয়ে চলেন।","bn"],
+["দেবদাস","শরৎচন্দ্র চট্টোপাধ্যায়",1917,"health","দুঃখে ডুবে যেও না","পারোকে হারিয়ে দেবদাস নিজেকে নেশায় ডুবিয়ে শেষ করে ফেলে। শরৎচন্দ্রের গল্প মনে করায়, কষ্ট এড়াতে নিজেকে ধ্বংস করলে কষ্ট আরও বাড়ে।","মন খারাপ হলে একজন বিশ্বস্ত মানুষের সঙ্গে কথা বলুন, একা বয়ে বেড়াবেন না।","bn"],
+["অগ্নিবীণা","কাজী নজরুল ইসলাম",1922,"meaning","অন্যায়ের সামনে মাথা নত নয়","নজরুলের বিদ্রোহী কবিতা ঘোষণা করে, অন্যায় আর অত্যাচারের সামনে কখনো মাথা নোয়াবে না। নিজের বিবেকের কাছে সৎ থাকাই সাহস।","কাজে বা বাড়িতে একটা অন্যায় দেখলে আজ শান্তভাবে সেটা নিয়ে কথা বলুন।","bn"],
+["আবোল তাবোল","সুকুমার রায়",1923,"mind","খেয়ালি ভাবনার শক্তি","সুকুমার রায়ের অদ্ভুত জন্তু আর মজার ছড়া দেখায়, যুক্তি ছাড়িয়ে খেলার মতো ভাবনাও মনকে নতুন দিকে খুলে দেয়। হাসি আর কল্পনা চিন্তাকে তাজা রাখে।","আজ একটা সমস্যার সবচেয়ে আজব সমাধান ভাবুন, তারপর দেখুন তার মধ্যে কিছু কাজের আছে কিনা।","bn"],
+["বর্ণপরিচয়","ঈশ্বরচন্দ্র বিদ্যাসাগর",1855,"habits","শেখা শুরু হয় সহজ থেকে","বিদ্যাসাগর বাংলা অক্ষর শেখাকে সহজ, ধাপে ধাপে সাজিয়েছিলেন। যেকোনো বড় দক্ষতাই ছোট, পরিষ্কার ধাপে ভেঙে নিলে শেখা সহজ হয়।","যে দক্ষতা শিখতে চান, তার প্রথম তিনটি ছোট ধাপ লিখুন।","bn"],
+["বর্ণপরিচয়","ঈশ্বরচন্দ্র বিদ্যাসাগর",1855,"people","সৎ ছেলে গোপাল","বর্ণপরিচয়ের গোপাল সবসময় সত্যি বলে আর বড়দের কথা শোনে। বিদ্যাসাগর শিশুদের শেখাতে চেয়েছিলেন, চরিত্রই শিক্ষার আসল ভিত।","আজ একটা ছোট বিষয়েও পুরো সত্যি বলুন, যদিও সহজ মিথ্যা হাতের কাছে ছিল।","bn"],
+["রূপসী বাংলা","জীবনানন্দ দাশ",1957,"meaning","মাটির টান","জীবনানন্দ বাংলার নদী, মাঠ আর পাখির মধ্যে এত গভীর টান অনুভব করতেন যে আবার এখানেই ফিরে আসতে চাইতেন। নিজের শিকড়কে ভালোবাসা মনকে স্থির রাখে।","আপনার বড় হওয়ার জায়গার একটা প্রিয় স্মৃতি লিখে রাখুন।","bn"],
+["অবরোধবাসিনী","বেগম রোকেয়া সাখাওয়াত হোসেন",1931,"people","শিক্ষাই মুক্তি","বেগম রোকেয়া পর্দার আড়ালে বন্দি নারীদের কষ্টের কাহিনি লিখেছিলেন। তিনি বিশ্বাস করতেন, মেয়েদের শিক্ষা ছাড়া সমাজের উন্নতি অসম্ভব।","এমন কোনো মেয়ের পড়াশোনায় সাহায্য করার একটা উপায় ভাবুন।","bn"],
+["গোরা","রবীন্দ্রনাথ ঠাকুর",1910,"mind","পরিচয় জন্মে নয়, মানুষে","গোরা কঠোর গোঁড়ামি নিয়ে বাঁচে, পরে জানতে পারে সে জন্মসূত্রে ভারতীয়ই নয়। তখন সে বোঝে, মানুষকে ভালোবাসাই আসল পরিচয়, জাত-ধর্ম নয়।","যে বিশ্বাস আপনি কখনো প্রশ্ন করেননি, আজ তার পক্ষে আর বিপক্ষে একটা করে যুক্তি লিখুন।","bn"],
+["শেষের কবিতা","রবীন্দ্রনাথ ঠাকুর",1929,"people","ভালোবাসায় স্বাধীনতা","অমিত আর লাবণ্য বোঝে, ভালোবাসা মানে একে অপরকে আঁকড়ে ধরা নয়। একে অপরকে নিজের মতো বাঁচতে দেওয়াই সম্পর্কের গভীরতা।","প্রিয় মানুষের একটা নিজস্ব শখের জন্য আজ জায়গা করে দিন।","bn"],
+["কাবুলিওয়ালা","রবীন্দ্রনাথ ঠাকুর",1892,"people","স্নেহের কোনো দেশ নেই","দূর দেশের কাবুলিওয়ালা রহমত ছোট্ট মিনির মধ্যে নিজের মেয়েকে দেখে। রবীন্দ্রনাথ দেখান, ভাষা আর দেশ আলাদা হলেও ভালোবাসার টান এক।","আজ ভিন্ন পটভূমির একজনের সঙ্গে আন্তরিকভাবে কথা বলুন।","bn"],
+["স্বামী বিবেকানন্দের বাণী","স্বামী বিবেকানন্দ",1900,"health","দুর্বলতাই সবচেয়ে বড় পাপ","বিবেকানন্দ বলতেন, শরীর আর মনের দুর্বলতা মানুষকে পিছিয়ে দেয়। নিয়মিত পরিশ্রম, খেলাধুলা আর আত্মবিশ্বাস দিয়ে নিজেকে শক্ত করো।","আজ কুড়ি মিনিট শরীরচর্চা বা হাঁটার জন্য রাখুন।","bn"],
+["ज्ञानेश्वरी","संत ज्ञानेश्वर",1290,"meaning","सर्वांचे भले व्हावे","ज्ञानेश्वरांनी गीतेवर भाष्य संपवताना जगासाठी प्रार्थना केली: दुष्टांची दुष्टबुद्धी जावी आणि प्रत्येकाला जे हवे ते मिळावे. स्वतःपुरते नव्हे, तर सर्वांसाठी चांगले मागणे हीच खरी भक्ती.","आज कोणाच्या तरी भल्यासाठी एक छोटे काम करा.","mr"],
+["ज्ञानेश्वरी","संत ज्ञानेश्वर",1290,"work","कर्तव्य हीच पूजा","ज्ञानेश्वर सांगतात की आपले नेमून दिलेले काम मनापासून करणे हीच ईश्वराची पूजा आहे. वेगळे काही करण्याची गरज नाही, रोजचे काम उत्तम करा.","आजचे एक नेहमीचे काम पूर्ण लक्ष देऊन करा.","mr"],
+["तुकाराम गाथा","संत तुकाराम",1640,"habits","प्रयत्नाने वाळूतूनही तेल","तुकाराम म्हणतात की चिकाटीने प्रयत्न केला तर अशक्य वाटणारेही शक्य होते. हार न मानणे हेच यशाचे खरे रहस्य आहे.","सोडून दिलेल्या एका कामाला आज पुन्हा दहा मिनिटे द्या.","mr"],
+["तुकाराम गाथा","संत तुकाराम",1640,"meaning","वृक्ष हेच सोबती","तुकारामांनी झाडे, वेली आणि पक्ष्यांना आपले सगे-सोयरे म्हटले. निसर्गाशी नाते जोडले की मन शांत आणि समृद्ध होते.","आज एखाद्या झाडाखाली किंवा बागेत दहा मिनिटे शांत बसा.","mr"],
+["तुकाराम गाथा","संत तुकाराम",1640,"people","बोलल्याप्रमाणे वागा","तुकाराम म्हणतात की जो बोलतो तसे वागतो, त्याच्या पायाशी नतमस्तक व्हावे. शब्द आणि कृती एक असणे हीच माणसाची खरी ओळख.","आज दिलेले एक छोटे वचन वेळेत पूर्ण करा.","mr"],
+["दासबोध","समर्थ रामदास",1654,"work","सावधपणे काम करा","रामदास स्वामी सांगतात की प्रत्येक काम नीट विचार करून, सावधपणे आणि वेळेवर करावे. आळस आणि घाई दोन्ही अपयशाला कारणीभूत ठरतात.","उद्याच्या सर्वात महत्त्वाच्या कामाची आजच तयारी करून ठेवा.","mr"],
+["दासबोध","समर्थ रामदास",1654,"habits","रोज थोडे लिहा, थोडे वाचा","समर्थ रामदास सांगतात की दररोज काहीतरी लिहावे आणि काहीतरी वाचावे. हळूहळू ज्ञान वाढते आणि विचार स्पष्ट होतात.","आज झोपण्यापूर्वी आजच्या दिवसाबद्दल तीन ओळी लिहा.","mr"],
+["दासबोध","समर्थ रामदास",1654,"people","माणसे जोडा","रामदासांनी सांगितले की जो माणसे जोडतो, त्याचे काम मोठे होते. चांगली माणसे सोबत असतील तर कोणतेही कार्य पूर्ण होते.","आज एखाद्या जुन्या मित्राला किंवा सहकाऱ्याला संपर्क करा.","mr"],
+["मनाचे श्लोक","समर्थ रामदास",1650,"mind","मना, चांगल्या मार्गाने चाल","रामदास स्वामी स्वतःच्या मनालाच उपदेश करतात: सज्जनांच्या मार्गाने चाल, वाईट विचार सोड. मनाशी असा संवाद साधला की मन ताब्यात राहते.","नकारात्मक विचार आला की स्वतःला मनातल्या मनात एक चांगली सूचना द्या.","mr"],
+["मनाचे श्लोक","समर्थ रामदास",1650,"meaning","सर्वसुखी कोणी नाही","रामदास विचारतात की जगात पूर्ण सुखी कोण आहे, ते शोध. प्रत्येकाला काही ना काही दुःख आहे, हे जाणल्यावर स्वतःचे दुःख हलके वाटते.","आज तुमच्याकडे असलेल्या तीन चांगल्या गोष्टी लिहा.","mr"],
+["श्यामची आई","साने गुरुजी",1935,"people","आईचे संस्कार","श्यामची आई गरिबीतही त्याला प्रामाणिकपणा, दया आणि स्वाभिमान शिकवते. साने गुरुजी दाखवतात की आयुष्यभर पुरणारी शिकवण घरातूनच मिळते.","तुम्हाला मिळालेला एक चांगला संस्कार आठवा आणि तो कोणाला तरी सांगा.","mr"],
+["श्यामची आई","साने गुरुजी",1935,"mind","मनालाही स्वच्छ ठेव","एकदा श्याम पाय धुताना म्हणतो की पायाला घाण लागू नये. आई म्हणते, तसेच मनालाही वाईट विचारांची घाण लागू देऊ नकोस.","आज मनात आलेला एक कडवट विचार ओळखा आणि तो सोडून द्या.","mr"],
+["ययाति","वि. स. खांडेकर",1959,"health","भोगाला अंत नाही","राजा ययाति सुख आणि भोगांच्या मागे धावत राहतो, पण त्याची तृष्णा कधीच शमत नाही. खांडेकर दाखवतात की इच्छा पुरवल्याने संपत नाहीत, संयमानेच मन शांत होते.","आज एका सवयीवर थोडा संयम ठेवून पहा आणि मनात काय होते ते लक्षात घ्या.","mr"],
+["मृत्युंजय","शिवाजी सावंत",1967,"meaning","दानशूर कर्ण","कर्णाने आयुष्यभर अपमान सोसला, तरी आलेल्या कोणालाही रिकाम्या हाती परत पाठवले नाही. सावंत दाखवतात की परिस्थितीपेक्षा माणसाचे मन मोठे असू शकते.","आज कोणालाही काही मागितल्याशिवाय मदत करा.","mr"],
+["स्वामी","रणजित देसाई",1962,"work","कर्तव्य आणि आरोग्य","तरुण माधवराव पेशवे राज्याचा भार उचलताना स्वतःच्या आरोग्याकडे दुर्लक्ष करतात. मोठी जबाबदारी पेलताना स्वतःलाही जपावे लागते, हा या कादंबरीचा धडा.","कामाच्या धावपळीत आज स्वतःसाठी अर्धा तास विश्रांती ठेवा.","mr"],
+["श्रीमान योगी","रणजित देसाई",1968,"strategy","धैर्य आणि दूरदृष्टी","शिवाजी महाराजांनी कमी साधनांतून स्वराज्य उभे केले. योग्य माणसे, किल्ल्यांचे जाळे आणि धैर्यवान योजना यांनी मोठ्या शत्रूवर मात केली.","तुमच्या एका ध्येयासाठी तुमच्याकडे असलेली तीन बलस्थाने लिहा.","mr"],
+["राजा शिवछत्रपती","बाबासाहेब पुरंदरे",1958,"people","सर्वांना सोबत घ्या","शिवाजी महाराजांनी सर्व जाती-धर्मांच्या लोकांना आपल्या स्वराज्यात सामील केले. सर्वांचा विश्वास जिंकणारा नेताच मोठे कार्य करू शकतो.","तुमच्या टीममधील एका नव्या सदस्याला आज आवर्जून सामील करून घ्या.","mr"],
+["बटाट्याची चाळ","पु. ल. देशपांडे",1958,"health","हसत जगा","पु. ल. चाळीतल्या साध्या माणसांच्या गमतीजमती सांगत आयुष्यातील विनोद शोधतात. रोजच्या धावपळीत हसणे विसरू नये, तेच मन हलके ठेवते.","आज घरच्यांसोबत एखादी जुनी गमतीशीर आठवण सांगा.","mr"],
+["व्यक्ती आणि वल्ली","पु. ल. देशपांडे",1966,"people","प्रत्येक माणूस एक कथा","पु. लं.नी आजूबाजूच्या साध्या माणसांची अफलातून व्यक्तिचित्रे रेखाटली. नीट पाहिले तर प्रत्येक माणसात काहीतरी खास असते.","आज भेटणाऱ्या एका व्यक्तीबद्दल एक नवी गोष्ट जाणून घ्या.","mr"],
+["एकच प्याला","राम गणेश गडकरी",1919,"health","एक प्याला, अनेक संकटे","सुधाकर फक्त एक प्याला म्हणून दारूला सुरुवात करतो आणि त्याचे सगळे आयुष्य उद्ध्वस्त होते. लहान वाटणारी वाईट सवय मोठा विनाश करू शकते.","एखाद्या छोट्या वाईट सवयीला सुरुवात होण्याआधीच आज थांबवा.","mr"],
+["ज्ञानेश्वरी","संत ज्ञानेश्वर",1290,"mind","अहंकार सोडा","ज्ञानेश्वर सांगतात की मीच कर्ता, हा अहंकार माणसाला बांधून ठेवतो. काम करताना नम्र राहिले की मन मोकळे आणि आनंदी राहते.","आज एखाद्या यशाचे श्रेय तुमच्या मदतनीसांनाही द्या.","mr"],
+["तुकाराम गाथा","संत तुकाराम",1640,"mind","मन करा रे प्रसन्न","तुकाराम म्हणतात की मन प्रसन्न असेल तर सगळ्या सिद्धी आपोआप मिळतात. आनंदी मनानेच चांगले विचार आणि चांगली कामे होतात.","आज दिवसाची सुरुवात एका आवडत्या गोष्टीने करा.","mr"],
+["गीताई","विनोबा भावे",1932,"meaning","गीता सोप्या मराठीत","विनोबांनी आईला समजावी म्हणून गीतेचे सोप्या मराठी ओव्यांत रूपांतर केले. मोठे ज्ञानही साध्या भाषेत मांडले तर सर्वांपर्यंत पोहोचते.","तुम्हाला माहीत असलेली एक कठीण गोष्ट आज कोणाला तरी सोप्या शब्दांत समजावा.","mr"],
+["दासबोध","समर्थ रामदास",1654,"money","आधी कष्ट, मग फळ","रामदास स्वामी सांगतात की आधी मेहनत करावी, मग फळाची अपेक्षा ठेवावी. कष्टाशिवाय मिळालेले सुख टिकत नाही.","आज पुढच्या महिन्यासाठी एक छोटी बचत किंवा गुंतवणूक करा.","mr"]
 ];
 const APP_URL="https://rajatchatterjee.github.io/Qshelf/";
 const $=s=>document.querySelector(s), root=document.documentElement;
@@ -495,8 +651,9 @@ let saved=loadKeys("saved2").size?loadKeys("saved2"):loadKeys("saved");
 let notes=store.get("notes",{}),hist=store.get("hist",{}),doneDays=store.get("days",[]);
 const pad2=n=>String(n).padStart(2,"0");
 const now=new Date(),today=`${now.getFullYear()}-${pad2(now.getMonth()+1)}-${pad2(now.getDate())}`;
-const set=Object.assign({skin:"sepia",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true,voice:"",rate:1,rem:"07:30"},store.get("set",{}));
+const set=Object.assign({skin:"sepia",langs:null,off:[],tl:"",size:1,font:"serif",lh:"1.62",amb:"off",tryOn:true,auto:true,voice:"",rate:1,rem:"07:30"},store.get("set",{}));
 if(!set.v){set.skin="sepia";set.v=2}   // Sepia became the default; earlier installs had saved Auto without choosing it
+if(!Array.isArray(set.langs)||!set.langs.length){const d=(navigator.language||"").slice(0,2);set.langs=["en"];if(["hi","bn","mr"].includes(d))set.langs.push(d)}
 const SIZES=[.9,1,1.12,1.26,1.4];
 
 /* ---------- usage counting (live site only, anonymous) ---------- */
@@ -528,6 +685,10 @@ function applySet(){
 }
 const pick=(sel,key,after)=>$(sel).addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b)return;set[key]=b.dataset.v;applySet();after&&after(b.dataset.v)});
 pick("#skins","skin",v=>track("theme-"+v));pick("#fonts","font");pick("#spacing","lh");pick("#amb","amb",v=>{ambience(v);if(v!=="off")track("ambience-"+v)});
+function langChips(){return Object.entries(LANGS).map(([k,v])=>`<button class="chip" data-lang="${k}" aria-pressed="${set.langs.includes(k)}">${v.name}</button>`).join("")}
+function toggleLang(k){const on=set.langs.includes(k);if(on&&set.langs.length===1)return show("Keep at least one language");set.langs=on?set.langs.filter(x=>x!==k):[...set.langs,k];store.set("set",set);
+  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",set.langs.includes(b.dataset.lang)));if(!on)track("lang-"+k);render()}
+$("#langSet").innerHTML=langChips();$("#langSet").addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(b)toggleLang(b.dataset.lang)});
 $("#smaller").onclick=()=>{set.size=Math.max(0,set.size-1);applySet()};
 $("#bigger").onclick=()=>{set.size=Math.min(SIZES.length-1,set.size+1);applySet()};
 $("#tTry").onclick=()=>{set.tryOn=!set.tryOn;applySet()};
@@ -579,28 +740,35 @@ function ambience(kind){
 }
 
 /* ---------- voices ---------- */
-const synth=window.speechSynthesis;let voices=[];
+const synth=window.speechSynthesis;let voices=[],allVoices=[];
 function scoreVoice(v){let s=0;const n=v.name;if(/natural|neural|premium|enhanced/i.test(n))s+=6;if(/google/i.test(n))s+=3;if(/siri/i.test(n))s+=4;if(/compact|espeak/i.test(n))s-=4;
   if(/^en-IN/i.test(v.lang))s+=2;else if(/^en-(GB|US|AU)/i.test(v.lang))s+=1;if(v.localService===false)s+=1;return s}
 function loadVoices(){if(!synth)return;const all=synth.getVoices();if(!all.length)return;
-  const en=all.filter(v=>/^en/i.test(v.lang));voices=(en.length?en:all).slice().sort((a,b)=>scoreVoice(b)-scoreVoice(a)||a.name.localeCompare(b.name));
+  allVoices=all.slice().sort((a,b)=>scoreVoice(b)-scoreVoice(a)||a.name.localeCompare(b.name));
+  const en=allVoices.filter(v=>/^en/i.test(v.lang));voices=en.length?en:allVoices;
   if(!set.voice||!voices.some(v=>v.voiceURI===set.voice))set.voice=voices[0].voiceURI;
   $("#voice").innerHTML=voices.map(v=>`<option value="${esc(v.voiceURI)}"${v.voiceURI===set.voice?" selected":""}>${esc(v.name)} · ${esc(v.lang)}${scoreVoice(v)>=6?" ★":""}</option>`).join("")}
 if(!synth){$("#voice").innerHTML="<option>Read-aloud isn't available in this browser</option>";$("#voice").disabled=true}
 $("#voice").onchange=e=>{set.voice=e.target.value;store.set("set",set);testVoice()};
-function utter(text){const u=new SpeechSynthesisUtterance(text);const v=voices.find(v=>v.voiceURI===set.voice);if(v){u.voice=v;u.lang=v.lang}u.rate=+set.rate||1;return u}
+function utter(text,lang){const u=new SpeechSynthesisUtterance(text);let v;
+  if(lang&&lang!=="en"){v=allVoices.find(x=>x.lang.toLowerCase().startsWith(lang));u.lang=v?v.lang:lang+"-IN"}else v=voices.find(v=>v.voiceURI===set.voice);
+  if(v){u.voice=v;u.lang=v.lang}u.rate=+set.rate||1;return u}
 function testVoice(){if(!synth)return;stopSpeech();synth.speak(utter("Getting a little better each day looks like nothing for weeks. Then the curve bends."))}
 $("#testVoice").onclick=testVoice;
 
 /* ---------- deck ---------- */
 function rng(seed){let s=0;for(const c of seed)s=(s*31+c.charCodeAt(0))>>>0;return()=>{s^=s<<13;s>>>=0;s^=s>>17;s^=s<<5;s>>>=0;return s/4294967296}}
 function shuffle(a,seed){const r=rng(seed),b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+const offSet=()=>new Set(set.off);
+const inLang=i=>set.langs.includes(langOf(i));
+const deckPool=()=>{const off=offSet();return ids.filter(i=>inLang(i)&&!off.has(IDEAS[i][0]))};
 function todaysDeck(){ // 12 cards from different books, preferring ideas not seen recently
-  const order=shuffle(ids,today);const fresh=order.filter(i=>!hist[keyOf(i)]),pool=fresh.length>=12?fresh.concat(order.filter(i=>hist[keyOf(i)])):order;
-  const seen=new Set(),out=[];for(const i of pool){if(seen.has(IDEAS[i][0]))continue;seen.add(IDEAS[i][0]);out.push(i);if(out.length===12)break}return out}
-const BOOKS=[];{const m=new Map();ids.forEach(i=>{const b=IDEAS[i][0];if(!m.has(b)){m.set(b,{name:b,author:IDEAS[i][1],year:IDEAS[i][2],theme:IDEAS[i][3],ids:[]});BOOKS.push(m.get(b))}m.get(b).ids.push(i)});BOOKS.sort((a,b)=>a.name.replace(/^The /,"").localeCompare(b.name.replace(/^The /,"")))}
+  const order=shuffle(deckPool(),today+set.langs.join()+set.off.length);const fresh=order.filter(i=>!hist[keyOf(i)]),pool=fresh.length>=12?fresh.concat(order.filter(i=>hist[keyOf(i)])):order;
+  const seen=new Set(),out=[];for(const i of pool){if(seen.has(IDEAS[i][0]))continue;seen.add(IDEAS[i][0]);out.push(i);if(out.length===12)break}
+  for(const i of pool){if(out.length>=12)break;if(!out.includes(i))out.push(i)}return out}
+const BOOKS=[];{const m=new Map();ids.forEach(i=>{const b=IDEAS[i][0];if(!m.has(b)){m.set(b,{name:b,author:IDEAS[i][1],year:IDEAS[i][2],theme:IDEAS[i][3],ids:[]});BOOKS.push(m.get(b))}m.get(b).lang=langOf(i);m.get(b).ids.push(i)});BOOKS.sort((a,b)=>a.name.replace(/^The /,"").localeCompare(b.name.replace(/^The /,"")))}
 const bookOf=n=>BOOKS.find(b=>b.name===n);
-const SHELVES=[["today","Today"],["all",`All ${IDEAS.length}`],["books",`Books · ${BOOKS.length}`],...Object.entries(THEMES),["saved","Saved"],["notes","Notes"]];
+const SHELVES=[["today","Today"],["books","Books"],...Object.entries(THEMES),["saved","Saved"],["notes","Notes"]];
 let shelf="today";
 chipsEl.innerHTML=SHELVES.map(([k,n])=>`<button class="chip" data-k="${k}">${n}</button>`).join("");
 function setShelf(k){shelf=k;const chip=k.startsWith("book:")?"books":k;chipsEl.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.k===chip));render();feed.scrollTop=0;
@@ -611,37 +779,39 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const I={save:'<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>',
   play:'<svg viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
   note:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
+  more:'<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
   share:'<svg viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>'};
 const yr=y=>y<0?`c. ${-y} BC`:y<1000?`c. ${y} AD`:y;
 const secs=i=>{const w=(IDEAS[i][5]+" "+IDEAS[i][6]+" "+IDEAS[i][4]).split(/\s+/).length;return Math.max(15,Math.round(w/230*60/5)*5)};
 const dateStr=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
 
-function ideaCard(i,n,len){const [b,a,y,t,idea,body,tr]=IDEAS[i],k=keyOf(i),nt=notes[k]||"";
-  return `<section class="slot" data-i="${i}"><article class="card" style="--hue:var(--h-${t})">
+function ideaCard(i,n,len){const [b,a,y,t,idea,body,tr]=IDEAS[i],k=keyOf(i),nt=notes[k]||"",l=langOf(i),L=LANGS[l];
+  return `<section class="slot" data-i="${i}"><article class="card" style="--hue:var(--h-${t})" lang="${l}">
     <span class="glyph" aria-hidden="true">${esc(b[0])}</span>
-    <p class="meta"><span class="tag">${THEMES[t]}</span><span>${pad2(n+1)} / ${pad2(len)} · ${secs(i)} sec</span></p>
+    <p class="meta"><span class="tag">${themeName(t,l)}</span><span>${pad2(n+1)} / ${pad2(len)} · ${secs(i)} ${L.sec}</span></p>
     <h2 class="idea">${esc(idea)}</h2>
     <p class="body">${esc(body)}</p>
-    <p class="try"><b>Try this</b>${esc(tr)}</p>
+    <p class="try"><b>${L.try}</b><span>${esc(tr)}</span></p>
+    <p class="tnote" hidden></p>
     <p class="note" data-note-for="${i}"${nt?"":" hidden"}>${esc(nt)}</p>
     <div class="foot"><button class="book booklink" data-book="${esc(b)}" aria-label="All ideas from ${esc(b)}"><span class="t">${esc(b)}</span><span class="a">${esc(a)} · ${yr(y)}</span></button>
       <button class="icon" data-listen="${i}" aria-pressed="false" aria-label="Listen">${I.play}</button>
-      <button class="icon" data-note="${i}" aria-label="Add a note">${I.note}</button>
-      <button class="icon" data-share="${i}" aria-label="Share as image">${I.share}</button>
-      <button class="icon" data-save="${i}" aria-pressed="${saved.has(k)}" aria-label="Save idea">${I.save}</button></div>
+      <button class="icon" data-save="${i}" aria-pressed="${saved.has(k)}" aria-label="Save idea">${I.save}</button>
+      <button class="icon" data-more="${i}" aria-label="More: note, share, translate">${I.more}</button></div>
   </article></section>`}
 
 function quizCards(deck){
-  const past=Object.entries(hist).filter(([k,d])=>d<today&&k in idxOf).map(([k])=>idxOf[k]).filter(i=>!deck.includes(i));
+  const past=Object.entries(hist).filter(([k,d])=>d<today&&k in idxOf).map(([k])=>idxOf[k]).filter(i=>!deck.includes(i)&&inLang(i));
   if(past.length<3)return "";
   const r=rng(today+"quiz"),qs=shuffle(past,today+"q").slice(0,2);
-  return qs.map((i,n)=>{const t=IDEAS[i][3];
-    const wrong=shuffle(ids.filter(j=>j!==i&&IDEAS[j][3]===t),today+i).slice(0,2);
+  return qs.map((i,n)=>{const t=IDEAS[i][3],l=langOf(i);
+    let same=ids.filter(j=>j!==i&&langOf(j)===l&&IDEAS[j][3]===t);if(same.length<2)same=ids.filter(j=>j!==i&&langOf(j)===l);
+    const wrong=shuffle(same,today+i).slice(0,2);
     const opts=shuffle([i,...wrong],today+"o"+i);
-    return `<section class="slot" data-quiz="${i}"><div class="card" style="--hue:var(--h-${t})">
+    return `<section class="slot" data-quiz="${i}"><div class="card" style="--hue:var(--h-${t})" lang="${l}">
       <span class="glyph" aria-hidden="true">?</span>
       <p class="meta"><span class="tag">Quick recall</span><span>${n+1} of ${qs.length}</span></p>
-      <h2 class="qq">Which idea is this?</h2>
+      <h2 class="qq">${LANGS[l].q}</h2>
       <p class="body">${esc(IDEAS[i][5])}</p>
       <div class="opts">${opts.map(j=>`<button class="opt" data-ans="${j===i?1:0}">${esc(IDEAS[j][4])}</button>`).join("")}</div>
       <p class="qres" hidden>From <b>${esc(IDEAS[i][0])}</b> by ${esc(IDEAS[i][1])}. You read it on ${new Date(hist[keyOf(i)]+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})}.</p>
@@ -650,29 +820,32 @@ function quizCards(deck){
 let list=[];
 function render(){
   stopSpeech();let h="";
-  if(shelf==="books"){list=[];
-    h=`<section class="slot"><div class="card"><p class="meta"><span>The shelf</span><span>${BOOKS.length} books</span></p>
-      <h2 class="big" style="font-size:clamp(2.2rem,9vw,3.6rem)">Pick a <em>book</em>.</h2>
-      <p class="lede">Each book opens as a short deep-dive with all its ideas in order.</p>
-      <div class="blist">${BOOKS.map(b=>`<button class="bk" style="--hue:var(--h-${b.theme})" data-book="${esc(b.name)}"><b>${esc(b.name)}</b><span>${esc(b.author)}</span><span>${b.ids.length} idea${b.ids.length>1?"s":""}</span></button>`).join("")}</div>
+  if(shelf==="books"){list=[];const off=offSet(),shown=BOOKS.filter(b=>set.langs.includes(b.lang)),onN=shown.filter(b=>!off.has(b.name)).length;
+    const groups=Object.keys(LANGS).filter(l=>set.langs.includes(l)).map(l=>[l,shown.filter(b=>b.lang===l)]).filter(g=>g[1].length);
+    h=`<section class="slot"><div class="card"><p class="meta"><span>Your shelf</span><span id="bkCount">${onN} of ${shown.length} in your deck</span></p>
+      <h2 class="big" style="font-size:clamp(2.2rem,9vw,3.6rem)">Choose your <em>books</em>.</h2>
+      <p class="lede">Tick the books you want in your daily deck. Tap a book's name to read all its ideas.</p>
+      <div class="row"><span class="lab" style="align-self:center">Languages</span><div class="chips" style="flex-wrap:wrap">${langChips()}</div></div>
+      <div class="row"><button class="go ghost" data-allbooks="1">Include all</button><button class="go ghost" data-allbooks="0">Clear all</button></div>
+      ${groups.map(([l,bs])=>`${groups.length>1?`<p class="lab">${LANGS[l].name} · ${bs.length} books</p>`:""}<div class="blist">${bs.map(b=>`<div class="bk" style="--hue:var(--h-${b.theme})"><button class="bk-open" data-book="${esc(b.name)}"><b>${esc(b.name)}</b><span>${esc(b.author)}</span><span>${b.ids.length} idea${b.ids.length>1?"s":""}</span></button><button class="bk-tog" data-tog="${esc(b.name)}" aria-pressed="${!off.has(b.name)}" aria-label="Include ${esc(b.name)} in my deck"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></button></div>`).join("")}</div>`).join("")}
     </div></section>`;
     feed.innerHTML=h;segs.innerHTML="";current=0;observe();updateProgress();return}
   if(shelf==="today")list=todaysDeck();
-  else if(shelf==="all")list=shuffle(ids,today+"all");
   else if(shelf==="saved")list=ids.filter(i=>saved.has(keyOf(i)));
   else if(shelf==="notes")list=ids.filter(i=>notes[keyOf(i)]);
   else if(shelf.startsWith("book:"))list=(bookOf(shelf.slice(5))||{ids:[]}).ids.slice();
-  else list=ids.filter(i=>IDEAS[i][3]===shelf);
+  else list=ids.filter(i=>IDEAS[i][3]===shelf&&inLang(i));
   if(shelf==="today")h+=`<section class="slot"><div class="card intro">
       <p class="meta"><span>${dateStr}</span><span>${streak()?streak()+"-day streak":"Day one"}</span></p>
-      <h2 class="big">Five minutes, <em>twelve</em> ideas.</h2>
-      <p class="lede">Each card holds one idea from a different great book, about 25 seconds a card.</p>
-      <ul class="tips"><li><kbd>Swipe up</kbd>Next idea</li><li><kbd>Tap card</kbd>Focus mode, hides everything else</li><li><kbd>Double-tap</kbd>Save an idea</li><li><kbd>Book name</kbd>Open that book's deep-dive</li></ul>
+      <h2 class="big">Five minutes, <em>${list.length===12?"twelve":list.length}</em> idea${list.length===1?"":"s"}.</h2>
+      <p class="lede">${list.length?"Each card holds one idea from a different great book, about 25 seconds a card.":"Your deck is empty. Choose some books or add a language."}</p>
+      <div class="chips" style="flex-wrap:wrap">${langChips()}<button class="chip" data-goto="books">Choose books</button></div>
+      <ul class="tips"><li><kbd>Swipe up</kbd>Next idea</li><li><kbd>Tap card</kbd>Focus mode, hides everything else</li><li><kbd>Double-tap</kbd>Save an idea</li><li><kbd>Book name</kbd>Open that book's deep-dive</li><li><kbd>•••</kbd>Note, share, translate</li></ul>
       <div class="row"><button class="go" id="go">Start reading</button><button class="go ghost" data-listen-all>Listen to today</button></div>
     </div></section>`+quizCards(list);
   if(shelf.startsWith("book:")){const b=bookOf(shelf.slice(5));if(b){const mins=Math.max(1,Math.round(b.ids.reduce((s,i)=>s+secs(i),0)/60));
-    h+=`<section class="slot"><div class="card intro" style="--hue:var(--h-${b.theme})"><span class="glyph" aria-hidden="true">${esc(b.name[0])}</span>
-      <p class="meta"><span class="tag">Book deep-dive</span><span>${b.ids.length} idea${b.ids.length>1?"s":""} · about ${mins} min</span></p>
+    h+=`<section class="slot"><div class="card intro" style="--hue:var(--h-${b.theme})" lang="${b.lang}"><span class="glyph" aria-hidden="true">${esc(b.name[0])}</span>
+      <p class="meta"><span class="tag">Book deep-dive · ${LANGS[b.lang].name}</span><span>${b.ids.length} idea${b.ids.length>1?"s":""} · about ${mins} min</span></p>
       <h2 class="big">${esc(b.name)}</h2><p class="lede">${esc(b.author)} · ${yr(b.year)}</p>
       <div class="row"><button class="go" id="go">Start</button><button class="go ghost" data-listen-all>Listen</button><button class="go ghost" data-goto="books">All books</button></div></div></section>`;once("book-open")}}
   if(!list.length){const e=shelf==="notes"?["Nothing <em>noted</em> yet","Tap the pencil on any card to write what the idea means for you."]:["Nothing <em>saved</em> yet","Double-tap any card, or tap its bookmark, to keep it here for rereading."];
@@ -683,7 +856,7 @@ function render(){
       <h2 class="big">That's the <em>shelf</em>.</h2>
       <p class="lede" id="endLede"></p>
       <ul class="readlist" id="endList"></ul>
-      <div class="row"><button class="go" data-goto="books">Explore a book</button><button class="go ghost" data-goto="all">Browse all ${IDEAS.length}</button></div></div></section>`;
+      <div class="row"><button class="go" data-goto="books">Choose books</button><button class="go ghost" data-goto="saved">Saved ideas</button></div></div></section>`;
   feed.innerHTML=h;
   segs.className="segs"+(list.length>16?" bar1":"");
   segs.innerHTML=list.length>16?"<i></i>":list.map(()=>"<i></i>").join("");
@@ -722,7 +895,8 @@ paint();
 /* ---------- read aloud ---------- */
 let listening=false,speakingI=null;
 function speak(i){if(!synth)return;if(speakingI===i)return;synth.cancel();speakingI=i;
-  const [b,a,,,idea,body,tr]=IDEAS[i];const u=utter(`${idea}. ${body} ${set.tryOn?"Try this. "+tr:""} From ${b}, by ${a}.`);
+  const [b,a,,,idea,body,tr]=IDEAS[i],L=LANGS[langOf(i)];if(langOf(i)!=="en"&&!allVoices.some(x=>x.lang.toLowerCase().startsWith(langOf(i))))show(`No ${L.name} voice on this phone yet. See Reading settings.`);
+  const u=utter(`${idea}। ${body} ${set.tryOn?L.try+"। "+tr:""} ${L.from(b,a)}`.replace(/।/g,langOf(i)==="en"?".":"।"),langOf(i));
   u.onend=()=>{if(speakingI!==i)return;speakingI=null;markSpeaking();if(listening&&set.auto)setTimeout(()=>listening&&step(1),700);else{listening=false;markSpeaking()}};
   synth.speak(u);markSpeaking()}
 function stopSpeech(){listening=false;speakingI=null;try{synth&&synth.cancel()}catch(e){}markSpeaking()}
@@ -742,22 +916,24 @@ function rgba(hex,a){hex=hex.trim();if(!/^#[0-9a-f]{6}$/i.test(hex))return `rgba
 async function makeImage(i){
   const [b,a,y,t,idea,body]=IDEAS[i],cs=getComputedStyle(root),v=n=>cs.getPropertyValue(n).trim();
   const hue=v("--h-"+t),surf=v("--surface"),ink=v("--ink"),muted=v("--muted");
-  try{await Promise.all(['800 80px "Bricolage Grotesque"','700 36px "Bricolage Grotesque"','400 40px "Literata"','500 28px "JetBrains Mono"'].map(f=>document.fonts.load(f)))}catch(e){}
+  const l=langOf(i),IND=l==="bn"?'"Noto Sans Bengali"':'"Noto Sans Devanagari"',INDS=l==="bn"?'"Noto Serif Bengali"':'"Noto Serif Devanagari"',smp=l==="bn"?"অআ":"अआ";
+  try{await Promise.all(['800 80px "Bricolage Grotesque"','700 36px "Bricolage Grotesque"','400 40px "Literata"','500 28px "JetBrains Mono"'].map(f=>document.fonts.load(f)));if(l!=="en")await Promise.all([document.fonts.load(`700 80px ${IND}`,smp),document.fonts.load(`400 40px ${INDS}`,smp)])}catch(e){}
+  const TF=`"Bricolage Grotesque", ${IND}, sans-serif`,BF=`"Literata", ${INDS}, serif`,TLH=l==="en"?1.06:1.3;
   const W=1080,H=1350,P=96,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
   x.fillStyle=surf;x.fillRect(0,0,W,H);
   let g=x.createRadialGradient(W,0,0,W,0,1100);g.addColorStop(0,rgba(hue,.34));g.addColorStop(1,rgba(hue,0));x.fillStyle=g;x.fillRect(0,0,W,H);
   g=x.createRadialGradient(0,H,0,0,H,800);g.addColorStop(0,rgba(hue,.16));g.addColorStop(1,rgba(hue,0));x.fillStyle=g;x.fillRect(0,0,W,H);
   x.fillStyle=rgba(hue,.09);x.font='800 900px "Bricolage Grotesque", sans-serif';x.textAlign="right";x.textBaseline="alphabetic";x.fillText(b[0],W+30,H+150);x.textAlign="left";
-  x.fillStyle=hue;x.fillRect(P,P+4,18,18);x.font='500 28px "JetBrains Mono", monospace';x.fillText(THEMES[t].toUpperCase(),P+34,P+22);
+  x.fillStyle=hue;x.fillRect(P,P+4,18,18);x.font=`500 28px "JetBrains Mono", ${IND}, monospace`;x.fillText(themeName(t,l).toUpperCase(),P+34,P+22);
   // fit title + body into the space above the footer
   let ts=88,bs=42,tl,bl;const avail=H-P-140-(P+80);
-  for(let k=0;k<12;k++){x.font=`800 ${ts}px "Bricolage Grotesque", sans-serif`;tl=wrap(x,idea,W-2*P);x.font=`400 ${bs}px "Literata", serif`;bl=wrap(x,body,W-2*P);
-    if(tl.length*ts*1.06+40+bl.length*bs*1.5<=avail)break;ts*=.93;bs*=.94}
-  let yy=P+80+ts;x.fillStyle=ink;x.font=`800 ${ts}px "Bricolage Grotesque", sans-serif`;tl.forEach(l=>{x.fillText(l,P,yy);yy+=ts*1.06});
-  yy+=40-ts*.06+bs*.4;x.font=`400 ${bs}px "Literata", serif`;bl.forEach(l=>{x.fillText(l,P,yy);yy+=bs*1.5});
+  for(let k=0;k<12;k++){x.font=`800 ${ts}px ${TF}`;tl=wrap(x,idea,W-2*P);x.font=`400 ${bs}px ${BF}`;bl=wrap(x,body,W-2*P);
+    if(tl.length*ts*TLH+40+bl.length*bs*1.5<=avail)break;ts*=.93;bs*=.94}
+  let yy=P+80+ts;x.fillStyle=ink;x.font=`800 ${ts}px ${TF}`;tl.forEach(ln=>{x.fillText(ln,P,yy);yy+=ts*TLH});
+  yy+=40-ts*.06+bs*.4;x.font=`400 ${bs}px ${BF}`;bl.forEach(ln=>{x.fillText(ln,P,yy);yy+=bs*1.5});
   x.fillStyle=rgba(hue,.35);x.fillRect(P,H-P-108,W-2*P,2);
-  x.fillStyle=ink;x.font='700 38px "Bricolage Grotesque", sans-serif';x.fillText(b.length>38?b.slice(0,36)+"…":b,P,H-P-50);
-  x.fillStyle=muted;x.font='400 30px "Literata", serif';x.fillText(`${a} · ${yr(y)}`,P,H-P-6);
+  x.fillStyle=ink;x.font=`700 38px ${TF}`;x.fillText(b.length>38?b.slice(0,36)+"…":b,P,H-P-50);
+  x.fillStyle=muted;x.font=`400 30px ${BF}`;x.fillText(`${a} · ${yr(y)}`,P,H-P-6);
   x.textAlign="right";x.fillStyle=hue;x.font='800 40px "Bricolage Grotesque", sans-serif';x.fillText("Qshelf",W-P,H-P-6);
   return new Promise(r=>c.toBlob(r,"image/png"))}
 async function openShare(i){shareI=i;const img=$("#shareImg");img.removeAttribute("src");sheetOpen($("#shareSheet"));
@@ -767,6 +943,25 @@ async function openShare(i){shareI=i;const img=$("#shareImg");img.removeAttribut
 $("#shareNative").onclick=async()=>{try{await navigator.share({files:[new File([shareBlob],"qshelf-idea.png",{type:"image/png"})],title:IDEAS[shareI][4],text:`${IDEAS[shareI][4]}, from ${IDEAS[shareI][0]}. ${APP_URL}`});track("share-sent")}catch(e){}};
 $("#shareSave").addEventListener("click",()=>track("share-saved"));
 $("#shareCopy").onclick=()=>{const [b,a,,,idea,body]=IDEAS[shareI];const p=navigator.clipboard&&navigator.clipboard.writeText(`${idea}\n${body}\n— ${b}, ${a}\n${APP_URL}`);p?p.then(()=>show("Copied"),()=>show("Copy isn't allowed here")):show("Copy isn't allowed here")};
+
+/* ---------- card menu: note, share, translate, copy ---------- */
+let moreI=null;
+function openMore(i){moreI=i;const l=langOf(i);$("#moreIdea").textContent=`${IDEAS[i][4]} · ${IDEAS[i][0]}`;
+  $("#tlBtns").innerHTML=Object.entries(LANGS).filter(([k])=>k!==l).map(([k,v])=>`<button class="chip" data-tl="${k}">${v.name}</button>`).join("")+`<button class="chip" data-tl="other">Other language</button>`;
+  $("#tlOpen").hidden=true;sheetOpen($("#moreSheet"))}
+$("#mNote").onclick=()=>{const i=moreI;sheetClose();openNote(i)};
+$("#mShare").onclick=()=>{const i=moreI;sheetClose();openShare(i)};
+$("#mCopy").onclick=()=>{const [b,a,,,idea,body]=IDEAS[moreI];const p=navigator.clipboard&&navigator.clipboard.writeText(`${idea}\n${body}\n— ${b}, ${a}\n${APP_URL}`);p?p.then(()=>show("Copied"),()=>show("Copy isn't allowed here")):show("Copy isn't allowed here")};
+const gtUrl=(i,tl)=>{const [,,,,idea,body,tr]=IDEAS[i];return `https://translate.google.com/?sl=${langOf(i)}&tl=${tl==="other"?(navigator.language||"en").slice(0,2):tl}&text=${encodeURIComponent(idea+"\n\n"+body+"\n\n"+tr)}&op=translate`};
+$("#tlBtns").addEventListener("click",async e=>{const b=e.target.closest("[data-tl]");if(!b)return;const i=moreI,tl=b.dataset.tl,src=langOf(i);track("translate-"+src+"-"+tl);
+  if(tl!=="other"&&"Translator" in self){try{const av=await Translator.availability({sourceLanguage:src,targetLanguage:tl});
+      if(av!=="unavailable"){show("Translating…");const t=await Translator.create({sourceLanguage:src,targetLanguage:tl});const [,,,,idea,body,tr]=IDEAS[i];
+        const out=await Promise.all([idea,body,tr].map(x=>t.translate(x)));applyTranslation(i,out,tl);sheetClose();return}}catch(err){}}
+  const a=$("#tlOpen");a.href=gtUrl(i,tl);a.textContent=`Open in Google Translate (${tl==="other"?"your language":LANGS[tl].name})`;a.hidden=false;a.focus()});
+function applyTranslation(i,[idea,body,tr],tl){feed.querySelectorAll(`.slot[data-i="${i}"] .card`).forEach(c=>{
+  c.querySelector(".idea").textContent=idea;c.querySelector(".body").textContent=body;c.querySelector(".try span").textContent=tr;c.setAttribute("lang",tl);
+  const n=c.querySelector(".tnote");n.hidden=false;n.innerHTML=`Translated to ${LANGS[tl].name} on your device · <button class="linkbtn" data-orig="${i}">Show original</button>`})}
+function updBkCount(){const off=offSet(),shown=BOOKS.filter(b=>set.langs.includes(b.lang)),c=$("#bkCount");if(c)c.textContent=`${shown.filter(b=>!off.has(b.name)).length} of ${shown.length} in your deck`}
 
 /* ---------- interactions ---------- */
 let tt;function show(m){toast.textContent=m;toast.hidden=false;clearTimeout(tt);tt=setTimeout(()=>toast.hidden=true,2400)}
@@ -778,8 +973,11 @@ let tapT=null;
 feed.addEventListener("click",e=>{
   const q=(sel)=>e.target.closest(sel);let el;
   if(el=q("[data-save]"))return toggleSave(+el.dataset.save);
-  if(el=q("[data-note]"))return openNote(+el.dataset.note);
-  if(el=q("[data-share]"))return openShare(+el.dataset.share);
+  if(el=q("[data-more]"))return openMore(+el.dataset.more);
+  if(el=q("[data-lang]"))return toggleLang(el.dataset.lang);
+  if(el=q("[data-tog]")){const n=el.dataset.tog,o=new Set(set.off);o.has(n)?o.delete(n):o.add(n);set.off=[...o];store.set("set",set);el.setAttribute("aria-pressed",!o.has(n));updBkCount();return}
+  if(el=q("[data-allbooks]")){const shown=BOOKS.filter(b=>set.langs.includes(b.lang)).map(b=>b.name),o=new Set(set.off);shown.forEach(n=>el.dataset.allbooks==="1"?o.delete(n):o.add(n));set.off=[...o];store.set("set",set);
+    feed.querySelectorAll("[data-tog]").forEach(t=>t.setAttribute("aria-pressed",!o.has(t.dataset.tog)));updBkCount();return}
   if(el=q("[data-book]"))return setShelf("book:"+el.dataset.book);
   if(el=q("[data-listen]")){if(!synth)return show("Read-aloud isn't available here");const i=+el.dataset.listen;if(listening&&speakingI===i)return stopSpeech();listening=true;speakingI=null;speak(i);once("listen");return}
   if(el=q(".opt")){const card=el.closest(".card");if(card.dataset.done)return;card.dataset.done=1;const ok=el.dataset.ans==="1";
@@ -788,6 +986,7 @@ feed.addEventListener("click",e=>{
   if(q("#go")){step(1);return}
   if(q("[data-listen-all]")){if(!synth)return show("Read-aloud isn't available here");listening=true;once("listen");const first=feed.querySelector(".slot[data-i]");first&&first.scrollIntoView({behavior:"smooth",block:"start"});return}
   if(el=q("[data-goto]")){setShelf(el.dataset.goto);return}
+  if(el=q("[data-orig]")){const i=+el.dataset.orig,s=feed.querySelector(`.slot[data-i="${i}"]`),n=document.createElement("div");n.innerHTML=ideaCard(i,list.indexOf(i),list.length);s.replaceWith(n.firstElementChild);observe();return}
   if(q("button,a,ul.readlist,.opts"))return;
   const slot=q(".slot[data-i]");
   if(tapT){clearTimeout(tapT);tapT=null;if(slot){const i=+slot.dataset.i;if(!saved.has(keyOf(i)))toggleSave(i);const card=slot.firstElementChild,bu=document.createElement("span");bu.className="burst";bu.innerHTML=I.save;card.appendChild(bu);setTimeout(()=>bu.remove(),750)}return}
