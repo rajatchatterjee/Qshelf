@@ -1036,7 +1036,7 @@ $("#shareCopy").onclick=()=>{const [b,a]=IDEAS[shareI],{idea,body}=cardText(shar
 
 /* ---------- translations: bundled files first, then the phone's translator, then a free service ---------- */
 const TR={},MT=store.get("mt",{}),view={};   // view[i] = language a card is shown in ("orig" forces original)
-const TR_VER="1";
+const TR_VER="2";
 async function loadTR(tl){if(tl in TR)return TR[tl];TR[tl]=null;try{const r=await fetch(`tr/${tl}.json?v=${TR_VER}`);TR[tl]=r.ok?await r.json():{}}catch(e){TR[tl]={}}return TR[tl]}
 function trFor(i,tl){const k=keyOf(i);return (TR[tl]&&TR[tl][k])||(MT[tl]&&MT[tl][k])||null}
 function unent(s){const t=document.createElement("textarea");t.innerHTML=s;return t.value}
