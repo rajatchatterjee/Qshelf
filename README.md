@@ -31,6 +31,9 @@ It opens full screen and works offline after the first load.
 
 ## Adding ideas
 
+New books are added every Sunday by a scheduled task that follows `tools/WEEKLY.md` and uses `tools/add_ideas.py`. To add cards by hand, write them to a JSON file in the format described there and run `python3 tools/add_ideas.py new.json`.
+
+
 Ideas live in the `IDEAS` array in `index.html`, one line each: book, author, year (negative for BC), theme, idea, explanation, try-this, and an optional language code (`hi`, `bn`, `mr`; English when left out).
 
 ## Usage counts
