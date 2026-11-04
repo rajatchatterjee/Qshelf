@@ -9,7 +9,7 @@ Five minutes a day of big ideas from great books. Swipe through one idea per car
 
 ## Install
 
-Open https://rajatchatterjee.github.io/qshelf/ on your phone.
+Open https://rajatchatterjee.github.io/Qshelf/ on your phone.
 
 - Android (Chrome): ⋮ menu, then Install app
 - iPhone (Safari): Share, then Add to Home Screen
