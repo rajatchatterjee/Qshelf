@@ -3,7 +3,7 @@
 Five minutes a day of big ideas from great books. Swipe through one idea per card, each paraphrased from a well-known book and ending with a small "try this" action.
 
 - **Today**: twelve ideas a day, each from a different book, reshuffled daily
-- **375 ideas from 215 books**: 278 in English, 34 in Hindi, 33 in Bangla and 30 in Marathi, across Habits, Thinking, Money, Work, People, Meaning, Strategy and Health
+- **400 ideas from 225 books**: 294 in English, 38 in Hindi, 35 in Bangla and 33 in Marathi, across Habits, Thinking, Money, Work, People, Meaning, Strategy and Health
 - **Languages**: choose English, हिन्दी, বাংলা and मराठी in any mix. Hindi, Bangla and Marathi books appear in their own language
 - **Choose your books**: tick which books go in your daily deck on the Books shelf
 - **Translate on demand**: the ••• menu on a card translates it on the phone where supported, otherwise opens Google Translate
